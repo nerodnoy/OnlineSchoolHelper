@@ -1,19 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Генератор ссылки на Telegram</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Link Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Генератор ссылки на Telegram</h1>
-    <form method="post" action="/">
-        <label for="phone_number">Введите номер телефона:</label>
-        <input type="text" name="phone_number" required>
-        <button type="submit">Сгенерировать ссылку</button>
-    </form>
+<body class="bg-gray-100 font-sans">
 
-    {% if telegram_link %}
-    <h2>Результат</h2>
-    <p>Ссылка для отправки сообщения в телеграм: <a href="https://{{ telegram_link }}" target="_blank">{{ telegram_link }}</a></p>
-    {% endif %}
+    <div class="container mx-auto max-w-md p-8 bg-white shadow-lg rounded-md mt-16">
+
+        <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Telegram Link Generator</h1>
+
+        <form class="mb-8" method="post" action="/">
+            <label for="phone_number" class="block text-gray-700 text-sm font-bold mb-2">Enter a phone number:</label>
+            <input type="text" name="phone_number" class="w-full p-3 border border-gray-300 rounded-md" required>
+            <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">Generate Link</button>
+        </form>
+
+        {% if telegram_link %}
+        <div class="text-center">
+            <h2 class="text-2xl font-semibold text-blue-500 mb-2">Result</h2>
+            <p>Your link: <a href="https://{{ telegram_link }}" class="text-blue-500 hover:underline">{{ telegram_link }}</a></p>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
 </body>
 </html>
