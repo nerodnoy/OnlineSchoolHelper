@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Link Generator</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
 
     <div class="container mx-auto max-w-md p-8 bg-white shadow-lg rounded-md mt-16">
 
@@ -26,6 +27,10 @@
         {% endif %}
 
     </div>
+
+    <footer class="mt-5 text-center text-gray-500">
+        <p>Check out the code on <a href="https://github.com/yourusername/yourrepository" target="_blank" class="underline">GitHub</a></p>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
 </body>
