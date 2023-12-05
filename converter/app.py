@@ -1,10 +1,17 @@
 from flask import Flask, render_template, request
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
+
+secret_key = os.getenv('SECRET_KEY')
 app = Flask(__name__)
 
 
 def generate_telegram_link(phone_number):
-    cleaned_phone_number = ''.join(char for char in phone_number if char.isnumeric() or char == '+')
+    cleaned_phone_number = ''.join(
+        char for char in phone_number if char.isnumeric() or char == '+'
+    )
 
     if not cleaned_phone_number.startswith('+'):
         cleaned_phone_number = '+' + cleaned_phone_number
