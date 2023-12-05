@@ -1,4 +1,4 @@
-# Telegram Link Generator
+# [Telegram Link Generator](https://telegram-converter.onrender.com) [![vibe-check](https://github.com/nerodnoy/TelegramConverter/actions/workflows/vibe-check.yml/badge.svg)](https://github.com/nerodnoy/TelegramConverter/actions/workflows/vibe-check.yml)
 
 This project is a simple link generator for sending messages on Telegram. By entering the contact's phone number, the program processes it and generates a link, allowing you to easily compose a message to the contact on Telegram.
 
