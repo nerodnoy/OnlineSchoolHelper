@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Генератор ссылки на Telegram</title>
+</head>
+<body>
+    <h1>Генератор ссылки на Telegram</h1>
+    <form method="post" action="/">
+        <label for="phone_number">Введите номер телефона:</label>
+        <input type="text" name="phone_number" required>
+        <button type="submit">Сгенерировать ссылку</button>
+    </form>
+
+    {% if telegram_link %}
+    <h2>Результат</h2>
+    <p>Ссылка на контакт в телеграм: <a href="{{ telegram_link }}">{{ telegram_link }}</a></p>
+    {% endif %}
+</body>
+</html>
