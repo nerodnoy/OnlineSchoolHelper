@@ -6,22 +6,34 @@
     <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Feedback Generator</h1>
 
     <form method="post" action="/feedback">
-    <h3 class="text-xl font-semibold mb-2">{{ current_question }}</h3>
-    {% if current_question in questions %}
-        {% set current_question_info = questions[current_question] %}
-        {% for option in current_question_info['options'] %}
-            <input type="radio" name="{{ current_question }}" value="{{ option }}" id="{{ option }}">
-            <label for="{{ option }}">{{ option }}</label><br>
-        {% endfor %}
-        <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">Submit</button>
-    {% else %}
-        <div class="text-center mt-8">
-            <h2 class="text-2xl font-semibold text-blue-500 mb-2">Feedback</h2>
-            {% for question, answer in answers.items() %}
-                <p>{{ answer }}</p>
+        <h3 class="text-xl font-semibold mb-2">{{ current_question }}</h3>
+
+        {% if current_question in questions %}
+            {% set current_question_info = questions[current_question] %}
+            {% for option in current_question_info['options'] %}
+                <input type="radio" name="{{ current_question }}" value="{{ option }}" id="{{ option }}">
+                <label for="{{ option }}">{{ option }}</label><br>
             {% endfor %}
-        </div>
-    {% endif %}
+
+            <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">Submit</button>
+
+            <!-- Промежуточный итог -->
+            {% if answers %}
+                <div class="text-center mt-4">
+                    <h2 class="text-2xl font-semibold text-blue-500 mb-2">Intermediate Result</h2>
+                    {% for question, answer in answers %}
+                        <p>{{ answer }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="text-center mt-8">
+                <h2 class="text-2xl font-semibold text-blue-500 mb-2">Feedback</h2>
+                {% for question, answer in answers %}
+                    <p>{{ answer }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
     </form>
 
     <!-- Кнопка Начать сначала -->

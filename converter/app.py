@@ -23,16 +23,16 @@ def index():
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
-    answers = session.get('answers', {})
+    answers = session.get('answers', [])
     current_question = session.get('current_question', 'Количество посещенных занятий')
 
     if request.method == 'POST':
         selected_option = request.form.get(current_question)
         if current_question in questions:
             current_question_info = questions[current_question]
-            answers[current_question] = current_question_info['answers'].get(selected_option, '')
+            answers.append((current_question, current_question_info['answers'].get(selected_option, '')))
 
-            # Определение следующего вопроса с использованием новой структуры данных
+            # Определение следующего вопроса
             follow_up_question = current_question_info.get('follow_up', {}).get(selected_option)
             if follow_up_question:
                 current_question = follow_up_question
@@ -52,7 +52,7 @@ def restart():
     session.pop('answers', None)
     session.pop('current_question', None)
 
-    # Установка начального вопроса
+    # Не забыть установить начальный вопрос здесь
     session['current_question'] = 'Количество посещенных занятий'
 
     return redirect(url_for('feedback'))
