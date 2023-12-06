@@ -1,41 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Link Generator</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(45deg, #ffffff 25%, #f0f0f0 25%, #f0f0f0 50%, #ffffff 50%, #ffffff 75%, #f0f0f0 75%, #f0f0f0 100%);
-        }
-    </style>
-</head>
-<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+{% extends "layout.html" %}
 
-    <div class="container mx-auto max-w-md p-8 bg-white shadow-lg rounded-md mt-16">
+{% block title %}Telegram Link Generator{% endblock %}
 
-        <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Telegram Link Generator</h1>
-
-        <form class="mb-8" method="post" action="/">
-            <label for="phone_number" class="block text-gray-700 text-sm font-bold mb-2">Enter a phone number:</label>
-            <input type="text" name="phone_number" class="w-full p-3 border border-gray-300 rounded-md" required>
-            <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">Generate Link</button>
-        </form>
-
-        {% if telegram_link %}
+{% block content %}
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Telegram Link Generator</h1>
+    <form class="mb-8" method="post" action="/">
+        <label for="phone_number" class="block text-gray-700 text-sm font-bold mb-2">Enter a phone number:</label>
+        <input type="text" name="phone_number" class="w-full p-3 border border-gray-300 rounded-md" required>
+        <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">Generate Link</button>
+    </form>
+    {% if telegram_link %}
         <div class="text-center">
             <h2 class="text-2xl font-semibold text-blue-500 mb-2">Result</h2>
             <p>Your link: <a href="https://{{ telegram_link }}" class="text-blue-500 hover:underline">{{ telegram_link }}</a></p>
         </div>
-        {% endif %}
-
-    </div>
-
-    <footer class="mt-5 text-center text-gray-500">
-        <p>Check out the code on <a href="https://github.com/yourusername/yourrepository" target="_blank" class="underline">GitHub</a></p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
-</body>
-</html>
+    {% endif %}
+{% endblock %}
