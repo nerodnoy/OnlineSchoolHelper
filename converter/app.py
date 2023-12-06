@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from converter.utils import generate_telegram_link
 from dotenv import load_dotenv
 import os
 
@@ -6,18 +7,7 @@ load_dotenv()
 
 secret_key = os.getenv('SECRET_KEY')
 app = Flask(__name__)
-
-
-def generate_telegram_link(phone_number):
-    cleaned_phone_number = ''.join(
-        char for char in phone_number if char.isnumeric() or char == '+'
-    )
-
-    if not cleaned_phone_number.startswith('+'):
-        cleaned_phone_number = '+' + cleaned_phone_number
-
-    telegram_link = f"t.me/{cleaned_phone_number}"
-    return telegram_link
+app.secret_key = secret_key  # Установка секретного ключа Flask
 
 
 @app.route('/', methods=['GET', 'POST'])
