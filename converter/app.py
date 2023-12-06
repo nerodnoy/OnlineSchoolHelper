@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect, url_for
 from converter.utils import generate_telegram_link
 from converter.questions import questions
 from dotenv import load_dotenv
@@ -8,7 +8,7 @@ load_dotenv()
 
 secret_key = os.getenv('SECRET_KEY')
 app = Flask(__name__)
-app.secret_key = secret_key  # Установка секретного ключа Flask
+app.secret_key = secret_key
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -22,17 +22,35 @@ def index():
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
+    answers = session.get('answers', {})
+    current_question_index = session.get('current_question_index', 0)
+
     if request.method == 'POST':
-        answers = {}
-        for question in questions:
-            selected_option = request.form.get(question['question'])
-            answers[question['question']] = question['answers'].get(selected_option, '')
+        if current_question_index < len(questions):
+            current_question = questions[current_question_index]
+            selected_option = request.form.get(current_question['question'])
+            if 'answers' in current_question:
+                answers[current_question['question']] = current_question['answers'].get(selected_option, '')
 
-        # Сохраняем ответы в сессии
-        session['answers'] = answers
+            # Обновляем текущий вопрос
+            current_question_index += 1
+            session['current_question_index'] = current_question_index
 
-    # Передаем ответы в feedback.html для отображения
-    return render_template('feedback.html', questions=questions, answers=session.get('answers', {}))
+    session['answers'] = answers
+
+    return render_template('feedback.html', questions=questions, answers=answers,
+                           current_question_index=current_question_index)
+
+
+@app.route('/restart', methods=['POST'])
+def restart():
+    session.pop('answers', None)
+    session.pop('current_question_index', None)
+
+    # Установка начального индекса вопроса
+    session['current_question_index'] = 0
+
+    return redirect(url_for('feedback'))
 
 
 if __name__ == '__main__':
