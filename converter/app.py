@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from converter.utils import generate_telegram_link
 from converter.questions import questions
+from converter.question_logic import get_next_question
 from dotenv import load_dotenv
 import os
 
@@ -23,32 +24,36 @@ def index():
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
     answers = session.get('answers', {})
-    current_question_index = session.get('current_question_index', 0)
+    current_question = session.get('current_question', 'Количество посещенных занятий')
 
     if request.method == 'POST':
-        if current_question_index < len(questions):
-            current_question = questions[current_question_index]
-            selected_option = request.form.get(current_question['question'])
-            if 'answers' in current_question:
-                answers[current_question['question']] = current_question['answers'].get(selected_option, '')
+        selected_option = request.form.get(current_question)
+        if current_question in questions:
+            current_question_info = questions[current_question]
+            answers[current_question] = current_question_info['answers'].get(selected_option, '')
 
-            # Обновляем текущий вопрос
-            current_question_index += 1
-            session['current_question_index'] = current_question_index
+            # Определение следующего вопроса с использованием новой структуры данных
+            follow_up_question = current_question_info.get('follow_up', {}).get(selected_option)
+            if follow_up_question:
+                current_question = follow_up_question
+            else:
+                current_question = get_next_question(questions, current_question)
+
+        session['current_question'] = current_question
 
     session['answers'] = answers
 
-    return render_template('feedback.html', questions=questions, answers=answers,
-                           current_question_index=current_question_index)
+    return render_template('feedback.html', current_question=current_question, questions=questions,
+                           answers=answers)
 
 
 @app.route('/restart', methods=['POST'])
 def restart():
     session.pop('answers', None)
-    session.pop('current_question_index', None)
+    session.pop('current_question', None)
 
-    # Установка начального индекса вопроса
-    session['current_question_index'] = 0
+    # Установка начального вопроса
+    session['current_question'] = 'Количество посещенных занятий'
 
     return redirect(url_for('feedback'))
 
