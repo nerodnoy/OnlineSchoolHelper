@@ -41,7 +41,8 @@ def feedback():
                 answers.append(selected_answer)
 
                 # Определение следующего вопроса
-                follow_up_question = current_question_info.get('follow_up', {}).get(selected_option)
+                follow_up_question = current_question_info.get(
+                    'follow_up', {}).get(selected_option)
                 if follow_up_question:
                     current_question = follow_up_question
                 elif current_question_info.get('result', False):
@@ -56,8 +57,11 @@ def feedback():
 
     session['answers'] = answers
 
-    return render_template('feedback.html', current_question=current_question, questions=questions,
-                           answers=answers)
+    return render_template('feedback.html',
+                           current_question=current_question,
+                           questions=questions,
+                           answers=answers
+                           )
 
 
 @app.route('/restart', methods=['POST'])
