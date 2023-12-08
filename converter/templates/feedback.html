@@ -10,7 +10,7 @@
 
         {% if current_question in questions %}
             {% set current_question_info = questions[current_question] %}
-            <div class="flex flex-col space-y-2"> {# Группировка радиокнопок #}
+            <div class="flex flex-col space-y-2">
                 {% for option in current_question_info['options'] %}
                     <div class="flex items-center">
                         <input type="radio" name="{{ current_question }}" value="{{ option }}" id="{{ option }}">
@@ -33,9 +33,9 @@
             {% endblock %}
         {% endif %}
     </form>
-{% endblock %}
 
     <!-- Кнопка Начать сначала -->
     <form method="post" action="/restart" class="mt-4">
         <button type="submit" class="bg-red-500 text-white p-3 rounded-md hover:bg-red-600">Начать сначала</button>
     </form>
+{% endblock %}
