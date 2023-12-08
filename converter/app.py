@@ -3,6 +3,7 @@ from converter.utils import generate_telegram_link
 from converter.questions import questions
 from converter.question_logic import get_next_question
 from dotenv import load_dotenv
+import random
 import os
 
 load_dotenv()
@@ -30,14 +31,26 @@ def feedback():
         selected_option = request.form.get(current_question)
         if current_question in questions:
             current_question_info = questions[current_question]
-            answers.append((current_question, current_question_info['answers'].get(selected_option, '')))
 
-            # Определение следующего вопроса
-            follow_up_question = current_question_info.get('follow_up', {}).get(selected_option)
-            if follow_up_question:
-                current_question = follow_up_question
-            else:
-                current_question = get_next_question(questions, current_question)
+            # Проверяем, что список ответов не пуст
+            selected_answers = current_question_info['answers'].get(selected_option, [])
+            if selected_answers:
+
+                # Выбираем случайный вариант ответа
+                selected_answer = random.choice(selected_answers)
+                answers.append(selected_answer)
+
+                # Определение следующего вопроса
+                follow_up_question = current_question_info.get('follow_up', {}).get(selected_option)
+                if follow_up_question:
+                    current_question = follow_up_question
+                elif current_question_info.get('result', False):
+
+                    # Если это конечный результат, завершаем опрос
+                    return render_template('result.html', result=answers)
+
+                else:
+                    current_question = get_next_question(questions, current_question)
 
         session['current_question'] = current_question
 
@@ -51,6 +64,7 @@ def feedback():
 def restart():
     session.pop('answers', None)
     session.pop('current_question', None)
+    session.pop('result', None)
 
     # Не забыть установить начальный вопрос здесь
     session['current_question'] = 'Количество посещенных занятий'
@@ -59,4 +73,4 @@ def restart():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
