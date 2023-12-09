@@ -7,11 +7,17 @@
 
     <!-- Результат -->
     {% if result %}
+        <!-- Фраза с приветствием -->
+        <div class="text-center mt-4">
+            <p>Добрый день, {{ parent_name }}, меня зовут Илюшин Артём, я преподаватель онлайн-школы Алгоритмика.</p>
+            <p>Мне бы хотелось поделиться с вами результатами {{ student_name }} по итогам прохождения мини-курсов по изучению Python.</p>
+        </div>
+
+        <!-- Результаты -->
         <div id="finalResultText" class="text-center mt-4">
             {% for answer in result %}
-
                 <!-- Заменяем пробелы на имя ученика -->
-                <p>{{ answer|replace('___', student_name) }}</p>
+                <p>{{ answer|replace('имя_ученика', student_name) }}</p>
             {% endfor %}
         </div>
 
