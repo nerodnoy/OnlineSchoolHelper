@@ -7,7 +7,6 @@
 
     <!-- Результат -->
     {% if result %}
-        <!-- Фраза с приветствием -->
         <div class="text-center mt-4">
             <p>Добрый день, {{ parent_name }}, меня зовут Илюшин Артём, я преподаватель онлайн-школы Алгоритмика.</p>
             <p>Мне бы хотелось поделиться с вами результатами {{ student_name }} по итогам прохождения мини-курсов по изучению Python.</p>
@@ -22,12 +21,14 @@
         </div>
 
         <!-- Кнопка "Скопировать текст" -->
-        <button id="copyButton" class="mt-4 bg-green-500 text-white p-3 rounded-md hover:bg-green-600">Скопировать текст</button>
+        <button id="copyButton" class="mt-4 w-full bg-green-500 text-white p-3 rounded-md hover:bg-green-600">
+            Скопировать текст
+        </button>
 
-        <!-- Кнопка Начать сначала -->
-        <form method="post" action="/restart" class="mt-4">
-            <button type="submit">
-                <img src="https://i.ibb.co/CP7fW4z/pngwing-com-17.png" alt="Начать с начала" class="w-8 h-8">
+        <!-- Кнопка "Начать сначала" -->
+        <form method="post" action="/restart" class="mt-2">
+            <button type="submit" class="w-full bg-red-500 text-white p-3 rounded-md hover:bg-red-600">
+                Начать сначала
             </button>
         </form>
 

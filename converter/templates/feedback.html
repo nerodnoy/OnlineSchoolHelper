@@ -10,15 +10,21 @@
 
         <!-- Вопрос про имя ученика -->
         {% if current_question == 'Имя ученика' %}
-            <label for="student_name">Введите имя ученика:</label>
-            <input type="text" name="student_name" id="student_name" required>
-            <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">Submit</button>
+            <div class="mt-4">
+                <input type="text" name="student_name" id="student_name" placeholder="Введите имя ученика" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
+                <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">
+                    Submit
+                </button>
+            </div>
 
         <!-- Вопрос про имя родителя -->
         {% elif current_question == 'Имя родителя' %}
-            <label for="parent_name">Введите имя родителя:</label>
-            <input type="text" name="parent_name" id="parent_name" required>
-            <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">Submit</button>
+            <div class="mt-4">
+                <input type="text" name="parent_name" id="parent_name" placeholder="Введите имя родителя" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
+                <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">
+                    Submit
+                </button>
+            </div>
 
         <!-- Остальные вопросы -->
         {% elif current_question in questions %}
@@ -37,18 +43,20 @@
                 {% if current_question_info['input'] %}
                     <div class="flex items-center">
                         <label for="custom_input" class="ml-2">Ваш ответ:</label>
-                        <input type="text" name="custom_input" id="custom_input" required>
+                        <input type="text" name="custom_input" id="custom_input" required class="mt-1 p-2 border border-gray-300 rounded-md w-full">
                     </div>
                 {% endif %}
-                <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">Submit</button>
+                <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">
+                    Submit
+                </button>
             </div>
         {% endif %}
     </form>
 
     <!-- Кнопка Начать сначала -->
-    <form method="post" action="/restart" class="mt-4">
-        <button type="submit">
-            <img src="https://i.ibb.co/CP7fW4z/pngwing-com-17.png" alt="Начать с начала" class="w-8 h-8">
+    <form method="post" action="/restart" class="mt-2">
+        <button type="submit" class="w-full bg-red-500 text-white p-3 rounded-md hover:bg-red-600">
+            Начать сначала
         </button>
     </form>
 {% endblock %}
