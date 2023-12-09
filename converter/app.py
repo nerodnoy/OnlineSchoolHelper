@@ -33,18 +33,19 @@ def feedback():
         if current_question == 'Имя ученика':
             student_name = request.form.get('student_name', '')
             session['student_name'] = student_name
-            current_question = 'Имя родителя'  # Переходим к следующему вопросу
+            current_question = 'Имя родителя'
         elif current_question == 'Имя родителя':
             parent_name = request.form.get('parent_name', '')
             session['parent_name'] = parent_name
-            current_question = 'Количество посещенных занятий'  # Переходим к следующему вопросу
+            current_question = 'Количество посещенных занятий'
         else:
             selected_option = request.form.get(current_question)
             if current_question in questions:
                 current_question_info = questions[current_question]
 
                 # Проверяем, что список ответов не пуст
-                selected_answers = current_question_info['answers'].get(selected_option, [])
+                selected_answers = current_question_info['answers'].get(
+                    selected_option, [])
                 if selected_answers:
 
                     # Выбираем случайный вариант ответа
