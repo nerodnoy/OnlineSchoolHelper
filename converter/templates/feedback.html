@@ -21,6 +21,7 @@
 
             <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">Submit</button>
 
+            <!-- Текущий результат -->
             {% block intermediate_result %}
                 {% if answers %}
                     <div class="text-center mt-4">
@@ -36,6 +37,8 @@
 
     <!-- Кнопка Начать сначала -->
     <form method="post" action="/restart" class="mt-4">
-        <button type="submit" class="bg-red-500 text-white p-3 rounded-md hover:bg-red-600">Начать сначала</button>
+        <button type="submit">
+            <img src="https://i.ibb.co/CP7fW4z/pngwing-com-17.png" alt="Начать с начала" class="w-8 h-8">
+        </button>
     </form>
 {% endblock %}

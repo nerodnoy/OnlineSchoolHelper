@@ -20,7 +20,9 @@
 
     <!-- Кнопка Начать сначала -->
     <form method="post" action="/restart" class="mt-4">
-        <button type="submit" class="bg-red-500 text-white p-3 rounded-md hover:bg-red-600">Начать сначала</button>
+        <button type="submit">
+            <img src="https://i.ibb.co/CP7fW4z/pngwing-com-17.png" alt="Начать с начала" class="w-8 h-8">
+        </button>
     </form>
 
     <!-- Скрипт для копирования текста с id=finalResultText -->
@@ -29,7 +31,6 @@
         document.addEventListener('DOMContentLoaded', function () {
             var clipboard = new ClipboardJS('#copyButton', {
                 text: function () {
-                    // Копируем текст из элемента с id="finalResultText"
                     return document.getElementById('finalResultText').innerText;
                 }
             });
