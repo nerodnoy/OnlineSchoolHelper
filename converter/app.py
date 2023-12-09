@@ -25,33 +25,42 @@ def index():
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
     answers = session.get('answers', [])
-    current_question = session.get('current_question', 'Количество посещенных занятий')
+    current_question = session.get('current_question', 'Имя ученика')
+    student_name = session.get('student_name', '')
 
     if request.method == 'POST':
-        selected_option = request.form.get(current_question)
-        if current_question in questions:
-            current_question_info = questions[current_question]
+        if current_question == 'Имя ученика':
+            student_name = request.form.get('student_name', '')
+            session['student_name'] = student_name
+            current_question = 'Количество посещенных занятий'  # Переходим к следующему вопросу
+        else:
+            selected_option = request.form.get(current_question)
+            if current_question in questions:
+                current_question_info = questions[current_question]
 
-            # Проверяем, что список ответов не пуст
-            selected_answers = current_question_info['answers'].get(selected_option, [])
-            if selected_answers:
+                # Проверяем, что список ответов не пуст
+                selected_answers = current_question_info['answers'].get(selected_option, [])
+                if selected_answers:
 
-                # Выбираем случайный вариант ответа
-                selected_answer = random.choice(selected_answers)
-                answers.append(selected_answer)
+                    # Выбираем случайный вариант ответа
+                    selected_answer = random.choice(selected_answers)
+                    answers.append(selected_answer)
 
-                # Определение следующего вопроса
-                follow_up_question = current_question_info.get(
-                    'follow_up', {}).get(selected_option)
-                if follow_up_question:
-                    current_question = follow_up_question
-                elif current_question_info.get('result', False):
+                    # Определение следующего вопроса
+                    follow_up_question = current_question_info.get(
+                        'follow_up', {}).get(selected_option)
+                    if follow_up_question:
+                        current_question = follow_up_question
+                    elif current_question_info.get('result', False):
 
-                    # Если это конечный результат, завершаем опрос
-                    return render_template('result.html', result=answers)
+                        # Если это конечный результат, завершаем опрос
+                        return render_template('result.html',
+                                               result=answers,
+                                               student_name=student_name
+                                               )
 
-                else:
-                    current_question = get_next_question(questions, current_question)
+                    else:
+                        current_question = get_next_question(questions, current_question)
 
         session['current_question'] = current_question
 
@@ -60,7 +69,8 @@ def feedback():
     return render_template('feedback.html',
                            current_question=current_question,
                            questions=questions,
-                           answers=answers
+                           answers=answers,
+                           student_name=student_name
                            )
 
 
@@ -71,7 +81,7 @@ def restart():
     session.pop('result', None)
 
     # Не забыть установить начальный вопрос здесь
-    session['current_question'] = 'Количество посещенных занятий'
+    session['current_question'] = 'Имя ученика'
 
     return redirect(url_for('feedback'))
 

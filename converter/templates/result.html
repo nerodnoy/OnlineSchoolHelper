@@ -5,41 +5,45 @@
 {% block content %}
     <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Result</h1>
 
+    <!-- Результат -->
     {% if result %}
         <div id="finalResultText" class="text-center mt-4">
             {% for answer in result %}
-                <p>{{ answer }}</p>
+
+                <!-- Заменяем пробелы на имя ученика -->
+                <p>{{ answer|replace('___', student_name) }}</p>
             {% endfor %}
         </div>
 
-    <!-- Кнопка "Скопировать текст" -->
-    <button id="copyButton" class="mt-4 bg-green-500 text-white p-3 rounded-md hover:bg-green-600">Скопировать текст</button>
+        <!-- Кнопка "Скопировать текст" -->
+        <button id="copyButton" class="mt-4 bg-green-500 text-white p-3 rounded-md hover:bg-green-600">Скопировать текст</button>
 
-    <!-- Кнопка Начать сначала -->
-    <form method="post" action="/restart" class="mt-4">
-        <button type="submit">
-            <img src="https://i.ibb.co/CP7fW4z/pngwing-com-17.png" alt="Начать с начала" class="w-8 h-8">
-        </button>
-    </form>
+        <!-- Кнопка Начать сначала -->
+        <form method="post" action="/restart" class="mt-4">
+            <button type="submit">
+                <img src="https://i.ibb.co/CP7fW4z/pngwing-com-17.png" alt="Начать с начала" class="w-8 h-8">
+            </button>
+        </form>
 
-    <!-- Скрипт для копирования текста с id=finalResultText -->
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var clipboard = new ClipboardJS('#copyButton', {
-                text: function () {
-                    return document.getElementById('finalResultText').innerText;
-                }
+        <!-- Скрипт для копирования текста с id=finalResultText -->
+        <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var clipboard = new ClipboardJS('#copyButton', {
+                    text: function () {
+                        return document.getElementById('finalResultText').innerText;
+                    }
+                });
+
+                clipboard.on('success', function (e) {
+                    alert('Текст скопирован в буфер обмена!');
+                    e.clearSelection();
+                });
+
+                clipboard.on('error', function (e) {
+                    alert('Не удалось скопировать текст. Используйте сочетание клавиш.');
+                });
             });
-
-            clipboard.on('success', function (e) {
-                alert('Текст скопирован в буфер обмена!');
-                e.clearSelection();
-            });
-
-            clipboard.on('error', function (e) {
-                alert('Не удалось скопировать текст. Используйте сочетание клавиш.');
-            });
-        });
-    </script>
+        </script>
+    {% endif %}
 {% endblock %}
