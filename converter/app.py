@@ -27,11 +27,16 @@ def feedback():
     answers = session.get('answers', [])
     current_question = session.get('current_question', 'Имя ученика')
     student_name = session.get('student_name', '')
+    parent_name = session.get('parent_name', '')
 
     if request.method == 'POST':
         if current_question == 'Имя ученика':
             student_name = request.form.get('student_name', '')
             session['student_name'] = student_name
+            current_question = 'Имя родителя'  # Переходим к следующему вопросу
+        elif current_question == 'Имя родителя':
+            parent_name = request.form.get('parent_name', '')
+            session['parent_name'] = parent_name
             current_question = 'Количество посещенных занятий'  # Переходим к следующему вопросу
         else:
             selected_option = request.form.get(current_question)
@@ -56,21 +61,21 @@ def feedback():
                         # Если это конечный результат, завершаем опрос
                         return render_template('result.html',
                                                result=answers,
-                                               student_name=student_name
+                                               student_name=student_name,
+                                               parent_name=parent_name
                                                )
+                else:
+                    current_question = get_next_question(questions, current_question)
 
-                    else:
-                        current_question = get_next_question(questions, current_question)
-
-        session['current_question'] = current_question
-
+    session['current_question'] = current_question
     session['answers'] = answers
 
     return render_template('feedback.html',
                            current_question=current_question,
                            questions=questions,
                            answers=answers,
-                           student_name=student_name
+                           student_name=student_name,
+                           parent_name=parent_name
                            )
 
 

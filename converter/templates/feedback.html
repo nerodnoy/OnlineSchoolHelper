@@ -13,7 +13,11 @@
             <label for="student_name">Введите имя ученика:</label>
             <input type="text" name="student_name" id="student_name" required>
             <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">Submit</button>
-
+        <!-- Вопрос про имя родителя -->
+        {% elif current_question == 'Имя родителя' %}
+            <label for="parent_name">Введите имя родителя:</label>
+            <input type="text" name="parent_name" id="parent_name" required>
+            <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">Submit</button>
         <!-- Остальные вопросы -->
         {% elif current_question in questions %}
             {% set current_question_info = questions[current_question] %}
