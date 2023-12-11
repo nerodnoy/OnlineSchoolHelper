@@ -3,16 +3,16 @@
 
 To add:
 
-1. Add text to copy: Делимся обратной связью. -> feedback.html
-2. Add options to: Давал ОС -> questions.py
-3. Add options to: Выводы -> questions.py
+1. Add text to copy: Делимся обратной связью. -> feedback.html ✅
+2. Add options to: Давал ОС -> questions.py ✅
+3. Add options to: Выводы -> questions.py ✅
 
 To fix:
 
-1. Fix "mic answers" -> questions.py
-2. Fix Wide text -> result.html
+1. Fix "mic answers" -> questions.py ✅
+2. Fix Wide text -> result.html ✅
 3. Fix Messenger pages do not open in separate windows ✅
-4. Fix 'и, к сожалению, третье пропустил' -> questions.py (replace with 'Третье занятия, к сожалению, пропустил')
+4. Fix 'и, к сожалению, третье пропустил' -> questions.py ✅
 
 To implement:
 
