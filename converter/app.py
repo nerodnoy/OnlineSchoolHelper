@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from converter.utils import generate_telegram_link
+from converter.utils import generate_telegram_link, generate_whatsapp_link
 from converter.questions import questions
 from converter.question_logic import get_next_question
 from dotenv import load_dotenv
@@ -16,10 +16,15 @@ app.secret_key = secret_key
 @app.route('/', methods=['GET', 'POST'])
 def index():
     telegram_link = None
+    whatsapp_link = None
     if request.method == 'POST':
         phone_number = request.form['phone_number']
         telegram_link = generate_telegram_link(phone_number)
-    return render_template('index.html', telegram_link=telegram_link)
+        whatsapp_link = generate_whatsapp_link(phone_number)
+    return render_template('index.html',
+                           telegram_link=telegram_link,
+                           whatsapp_link=whatsapp_link
+                           )
 
 
 @app.route('/feedback', methods=['GET', 'POST'])
