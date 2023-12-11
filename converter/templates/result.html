@@ -3,55 +3,88 @@
 {% block title %}Final Result{% endblock %}
 
 {% block content %}
-    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Result</h1>
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Result</h1>
 
-    <!-- Результат -->
-    {% if result %}
-        <div class="text-center mt-4">
-            <p>Добрый день, {{ parent_name }}, меня зовут Илюшин Артём, я преподаватель онлайн-школы Алгоритмика.</p>
-            <br>
-            <p>Мне бы хотелось поделиться с вами результатами {{ student_name }} по итогам прохождения мини-курсов по изучению Python.</p>
-        </div>
+        <!-- Результат -->
+        {% if result %}
+            <div class="text-center mt-4">
+                <p>Добрый день, {{ parent_name }}, меня зовут Илюшин Артём, я преподаватель онлайн-школы Алгоритмика.</p>
+                <br>
+                <p>Мне бы хотелось поделиться с вами результатами {{ student_name }} по итогам прохождения мини-курсов по изучению Python.</p>
+            </div>
 
-        <!-- Результаты -->
-        <div id="finalResultText" class="text-center mt-4">
-            {% for answer in result %}
-                <!-- Заменяем пробелы на имя ученика -->
-                <p>{{ answer|replace('имя_ученика', student_name) }}</p>
-            {% endfor %}
-        </div>
+            <!-- Результаты -->
+            <div id="finalResultText" class="text-center mt-4">
+                {% for answer in result %}
+                    <!-- Заменяем пробелы на имя ученика -->
+                    <p>{{ answer|replace('имя_ученика', student_name) }}</p>
+                {% endfor %}
+            </div>
 
-        <!-- Кнопка "Скопировать текст" -->
-        <button id="copyButton" class="mt-4 w-full bg-green-500 text-white p-3 rounded-md hover:bg-green-600">
-            Скопировать текст
-        </button>
-
-        <!-- Кнопка "Начать сначала" -->
-        <form method="post" action="/restart" class="mt-2">
-            <button type="submit" class="w-full bg-red-500 text-white p-3 rounded-md hover:bg-red-600">
-                Начать сначала
+            <!-- Кнопка "Скопировать текст" -->
+            <button id="copyButton" class="mt-4 w-full bg-green-500 text-white p-3 rounded-md hover:bg-green-600">
+                Скопировать результат
             </button>
-        </form>
 
-        <!-- Скрипт для копирования текста с id=finalResultText -->
-        <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var clipboard = new ClipboardJS('#copyButton', {
-                    text: function () {
-                        return document.getElementById('finalResultText').innerText;
-                    }
-                });
+            <!-- Кнопка "Начать сначала" -->
+            <form method="post" action="/restart" class="mt-2">
+                <button type="submit" class="w-full bg-red-500 text-white p-3 rounded-md hover:bg-red-600">
+                    Начать сначала
+                </button>
+            </form>
 
-                clipboard.on('success', function (e) {
-                    alert('Текст скопирован в буфер обмена!');
-                    e.clearSelection();
-                });
+            <!-- Текст для чата -->
+            <div id="TextToParents" class="text-center mt-4">
+                <p>Добрый день! Это онлайн-школа "Алгоритмика". Делимся с вами обратной связью по итогам прохождения мини-курсов по изучению Python ☺️</p>
+            </div>
 
-                clipboard.on('error', function (e) {
-                    alert('Не удалось скопировать текст. Используйте сочетание клавиш.');
+            <!-- Кнопка "Скопировать текст" -->
+            <button id="copyButton2" class="mt-4 w-full bg-green-500 text-white p-3 rounded-md hover:bg-green-600">
+                Скопировать текст для отправки
+            </button>
+
+            <!-- Скрипт для копирования текста с id=finalResultText -->
+            <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var clipboard = new ClipboardJS('#copyButton', {
+                        text: function () {
+                            return document.getElementById('finalResultText').innerText;
+                        }
+                    });
+
+                    clipboard.on('success', function (e) {
+                        alert('Текст скопирован в буфер обмена!');
+                        e.clearSelection();
+                    });
+
+                    clipboard.on('error', function (e) {
+                        alert('Не удалось скопировать текст. Используйте сочетание клавиш.');
+                    });
                 });
-            });
-        </script>
-    {% endif %}
+            </script>
+
+            <!-- Скрипт для копирования текста с id=TextToParents -->
+            <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var clipboard = new ClipboardJS('#copyButton2', {
+                        text: function () {
+                            return document.getElementById('TextToParents').innerText;
+                        }
+                    });
+
+                    clipboard.on('success', function (e) {
+                        alert('Текст скопирован в буфер обмена!');
+                        e.clearSelection();
+                    });
+
+                    clipboard.on('error', function (e) {
+                        alert('Не удалось скопировать текст. Используйте сочетание клавиш.');
+                    });
+                });
+            </script>
+        {% endif %}
+    </div>
 {% endblock %}
