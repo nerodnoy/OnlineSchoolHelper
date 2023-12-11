@@ -12,10 +12,8 @@
         {% endfor %}
     </ul>
 
-    <!-- Форма создания новой группы -->
-    <form action="{{ url_for('create_group') }}" method="post">
-        <label for="group_name">Create New Group:</label>
-        <input type="text" id="group_name" name="group_name" required>
-        <button type="submit">Create</button>
-    </form>
+    <!-- Кнопка для перехода к созданию новой группы -->
+    <a href="{{ url_for('create_group') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+        Create New Group
+    </a>
 {% endblock %}
