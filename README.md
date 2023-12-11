@@ -1,5 +1,5 @@
-# [Telegram Link Generator](https://telegram-converter.onrender.com) [
-![vibe-check](https://github.com/nerodnoy/TelegramConverter/actions/workflows/vibe-check.yml/badge.svg)](https://github.com/nerodnoy/TelegramConverter/actions/workflows/vibe-check.yml)
+# [Telegram Link Generator](https://telegram-converter.onrender.com)
+[![vibe-check](https://github.com/nerodnoy/TelegramConverter/actions/workflows/vibe-check.yml/badge.svg)](https://github.com/nerodnoy/TelegramConverter/actions/workflows/vibe-check.yml)
 
 To add:
 
