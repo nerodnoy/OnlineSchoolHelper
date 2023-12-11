@@ -1,18 +1,4 @@
-# [Telegram Link Generator](https://telegram-converter.onrender.com)
-[![vibe-check](https://github.com/nerodnoy/TelegramConverter/actions/workflows/vibe-check.yml/badge.svg)](https://github.com/nerodnoy/TelegramConverter/actions/workflows/vibe-check.yml)
-
-To add:
-
-1. Add text to copy: Делимся обратной связью. -> feedback.html ✅
-2. Add options to: Давал ОС -> questions.py ✅
-3. Add options to: Выводы -> questions.py ✅
-
-To fix:
-
-1. Fix "mic answers" -> questions.py ✅
-2. Fix Wide text -> result.html ✅
-3. Fix Messenger pages do not open in separate windows ✅
-4. Fix 'и, к сожалению, третье пропустил' -> questions.py ✅
+# [Online School Helper](https://telegram-converter.onrender.com)
 
 To implement:
 
