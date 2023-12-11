@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block title %}Create New Group{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Create New Group</h1>
+
+    <!-- Форма создания новой группы -->
+    <form method="post" action="/create_group">
+        <label for="group_name" class="block text-gray-700 text-sm font-bold mb-2">Group Name:</label>
+        <input type="text" name="group_name" class="w-full p-3 border border-gray-300 rounded-md" required>
+        <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">Create Group</button>
+    </form>
+
+{% endblock %}

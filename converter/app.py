@@ -102,5 +102,46 @@ def handle_error(e):
     return render_template('error.html', error=str(e))
 
 
+created_groups = []
+
+
+@app.route('/groups/create', methods=['GET', 'POST'])
+def create_group():
+    if request.method == 'POST':
+        group_name = request.form.get('group_name')
+
+        # Ваша логика для создания группы
+        # ...
+
+        # Сохраняем имя созданной группы в список
+        created_groups.append(group_name)
+
+        # После успешного создания группы, редиректим на страницу с деталями группы
+        return redirect(url_for('list_groups', group_name=group_name))
+
+    return render_template('create_group.html')
+
+
+@app.route('/groups/', methods=['GET'])
+def list_groups():
+    # Передаем список созданных групп на страницу /groups/
+    return render_template('list_groups.html', created_groups=created_groups)
+
+
+@app.route('/groups/<group_name>/', methods=['GET'])
+def view_group(group_name):
+    # Возвращаем шаблон для страницы просмотра группы
+    return render_template('view_group.html', group_name=group_name)
+
+
+@app.route('/groups/<group_name>/delete', methods=['POST'])
+def delete_group(group_name):
+    # Удаление группы из списка
+    created_groups.remove(group_name)
+
+    # Редирект на страницу со списком групп
+    return redirect(url_for('list_groups'))
+
+
 if __name__ == '__main__':
     app.run()

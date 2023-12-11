@@ -9,26 +9,32 @@
         body {
             background: linear-gradient(45deg, #ffffff 25%, #f0f0f0 25%, #f0f0f0 50%, #ffffff 50%, #ffffff 75%, #f0f0f0 75%, #f0f0f0 100%);
         }
+
+        .group:hover .absolute {
+            display: block;
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans flex flex-col min-h-screen">
 
-    <!-- Навигационная панель -->
-    <nav class="bg-gray-800 p-4">
-        <div class="container mx-auto flex justify-between items-center">
+<!-- Навигационная панель -->
+<nav class="bg-gray-800 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Website name -->
+        <a href="/" class="text-white text-xl font-bold">nerodnoy</a>
 
-            <!-- Website name -->
-            <a href="/" class="text-white text-xl font-bold">nerodnoy</a>
-            <div class="space-x-4">
+        <div class="space-x-4">
+            <!-- name 1 -->
+            <a href="/" class="text-white">Telegram</a>
 
-                <!-- name 1 -->
-                <a href="/" class="text-white">Telegram</a>
+            <!-- name 2 -->
+            <a href="/feedback" class="text-white">Feedback</a>
 
-                <!-- name 2 -->
-                <a href="/feedback" class="text-white">Feedback</a>
-            </div>
+            <!-- name 3 -->
+            <a href="/groups" class="text-white" >Groups</a>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <!-- Основное содержание страницы -->
     <div class="container mx-auto max-w-lg p-8 bg-white shadow-lg rounded-md mt-16">
@@ -42,5 +48,6 @@
 
     <!-- Скрипты и зависимости Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+
 </body>
 </html>
