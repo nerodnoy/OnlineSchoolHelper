@@ -5,12 +5,25 @@
 {% block content %}
     <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">All Groups</h1>
 
-    <!-- Выводим список всех созданных групп -->
-    <ul>
-        {% for group_name in created_groups %}
-            <li><a href="{{ url_for('view_group', group_name=group_name) }}">{{ group_name }}</a></li>
-        {% endfor %}
-    </ul>
+    <!-- Выводим список всех созданных групп в виде таблицы -->
+    <table class="min-w-full">
+        <thead>
+            <tr>
+                <th class="border border-gray-300 px-4 py-2">ID</th>
+                <th class="border border-gray-300 px-4 py-2">Group Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for group in created_groups %}
+                <tr>
+                    <td class="border border-gray-300 px-4 py-2">{{ group.id }}</td>
+                    <td class="border border-gray-300 px-4 py-2">
+                        <a href="{{ url_for('view_group', group_name=group.name) }}">{{ group.name }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <!-- Кнопка для перехода к созданию новой группы -->
     <a href="{{ url_for('create_group') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">

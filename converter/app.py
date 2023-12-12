@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, abort
 from converter.utils import generate_telegram_link, generate_whatsapp_link
+from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name
 from converter.questions import questions
 from converter.question_logic import get_next_question
 from dotenv import load_dotenv
@@ -11,6 +12,8 @@ load_dotenv()
 secret_key = os.getenv('SECRET_KEY')
 app = Flask(__name__)
 app.secret_key = secret_key
+
+create_table()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -102,44 +105,34 @@ def handle_error(e):
     return render_template('error.html', error=str(e))
 
 
-created_groups = []
-
-
 @app.route('/groups/create', methods=['GET', 'POST'])
 def create_group():
     if request.method == 'POST':
         group_name = request.form.get('group_name')
-
-        # Ваша логика для создания группы
-        # ...
-
-        # Сохраняем имя созданной группы в список
-        created_groups.append(group_name)
-
-        # После успешного создания группы, редиректим на страницу с деталями группы
-        return redirect(url_for('list_groups', group_name=group_name))
+        add_group(group_name)
+        return redirect(url_for('list_groups'))
 
     return render_template('create_group.html')
 
 
 @app.route('/groups/', methods=['GET'])
 def list_groups():
-    # Передаем список созданных групп на страницу /groups/
+    created_groups = get_all_groups()
     return render_template('list_groups.html', created_groups=created_groups)
 
 
 @app.route('/groups/<group_name>/', methods=['GET'])
 def view_group(group_name):
-    # Возвращаем шаблон для страницы просмотра группы
-    return render_template('view_group.html', group_name=group_name)
+    group = get_group_by_name(group_name)
+    if group:
+        return render_template('view_group.html', group=group)
+    else:
+        abort(404)
 
 
 @app.route('/groups/<group_name>/delete', methods=['POST'])
 def delete_group(group_name):
-    # Удаление группы из списка
-    created_groups.remove(group_name)
-
-    # Редирект на страницу со списком групп
+    delete_group(group_name)
     return redirect(url_for('list_groups'))
 
 
