@@ -100,9 +100,9 @@ def restart():
     return redirect(url_for('feedback'))
 
 
-# @app.errorhandler(Exception)
-# def handle_error(e):
-#     return render_template('error.html', error=str(e))
+@app.errorhandler(Exception)
+def handle_error(e):
+    return render_template('error.html', error=str(e))
 
 
 @app.route('/groups/create', methods=['GET', 'POST'])
@@ -117,8 +117,8 @@ def create_group():
 
 @app.route('/groups/', methods=['GET'])
 def list_groups():
-    created_groups = get_all_groups()
-    return render_template('list_groups.html', created_groups=created_groups)
+    groups = get_all_groups()
+    return render_template('list_groups.html', groups=groups)
 
 
 @app.route('/groups/<group_name>/', methods=['GET'])
