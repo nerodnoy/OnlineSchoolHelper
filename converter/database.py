@@ -49,3 +49,8 @@ def get_group_by_name(group_name):
 def delete_group(group_name):
     query = 'DELETE FROM groups WHERE name=(%s)'
     execute_query(query, [group_name], commit=True)
+
+
+def clear_database():
+    query = 'DELETE FROM groups'
+    execute_query(query, commit=True)

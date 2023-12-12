@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for, abort
 from converter.utils import generate_telegram_link, generate_whatsapp_link
-from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name
+from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name, clear_database
 from converter.questions import questions
 from converter.question_logic import get_next_question
 from dotenv import load_dotenv
@@ -133,6 +133,12 @@ def view_group(group_name):
 @app.route('/groups/<group_name>/delete', methods=['POST'])
 def delete_group_route(group_name):
     delete_group(group_name)
+    return redirect(url_for('list_groups'))
+
+
+@app.route('/clear_database', methods=['POST'])
+def clear_all_data():
+    clear_database()
     return redirect(url_for('list_groups'))
 
 
