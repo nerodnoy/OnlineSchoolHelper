@@ -5,15 +5,35 @@
 {% block content %}
     <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Group Details</h1>
 
-    <p>ID: {{ group.id }}</p>
-    <p>Name: {{ group.group_name }}</p>
+    <p>Group Name: {{ group.name }}</p>
 
-    <!-- Добавьте здесь остальные детали группы, если они есть -->
+    <!-- Кнопка для удаления группы с подтверждением -->
+    <button onclick="showConfirmationModal()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
+        Delete Group
+    </button>
 
-    <!-- Кнопка для удаления группы -->
-    <form action="{{ url_for('delete_group', group_name=group.group_name) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this group?');">
-        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
-            Delete Group
-        </button>
-    </form>
+    <!-- Модальное окно с подтверждением удаления -->
+    <div id="confirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center">
+        <div class="bg-white p-8 rounded shadow-md">
+            <p>Вы уверены, что хотите удалить группу "{{ group.name }}"?</p>
+            <form id="deleteForm" method="post" action="{{ url_for('delete_group_route', group_name=group.name) }}">
+                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
+                    Да, удалить
+                </button>
+                <button type="button" onclick="hideConfirmationModal()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
+                    Отмена
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showConfirmationModal() {
+            document.getElementById('confirmationModal').classList.remove('hidden');
+        }
+
+        function hideConfirmationModal() {
+            document.getElementById('confirmationModal').classList.add('hidden');
+        }
+    </script>
 {% endblock %}

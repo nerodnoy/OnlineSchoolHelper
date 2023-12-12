@@ -100,9 +100,9 @@ def restart():
     return redirect(url_for('feedback'))
 
 
-@app.errorhandler(Exception)
-def handle_error(e):
-    return render_template('error.html', error=str(e))
+# @app.errorhandler(Exception)
+# def handle_error(e):
+#     return render_template('error.html', error=str(e))
 
 
 @app.route('/groups/create', methods=['GET', 'POST'])
@@ -131,7 +131,7 @@ def view_group(group_name):
 
 
 @app.route('/groups/<group_name>/delete', methods=['POST'])
-def delete_group(group_name):
+def delete_group_route(group_name):
     delete_group(group_name)
     return redirect(url_for('list_groups'))
 
