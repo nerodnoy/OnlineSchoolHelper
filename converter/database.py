@@ -28,7 +28,7 @@ def create_table():
         cursor.execute('''CREATE TABLE IF NOT EXISTS groups
                           (id SERIAL PRIMARY KEY,
                            name TEXT NOT NULL,
-                           link TEXT)''')  # Добавляем поле link в таблицу
+                           link TEXT)''')
 
 
 def add_group(group_name, link=None):
