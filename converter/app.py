@@ -111,9 +111,10 @@ def create_group():
         skill = request.form.get('skill')
         time = request.form.get('time')
         day = request.form.get('day')
+        link = request.form.get('link')
 
         group_name = f"{skill} {time} {day}"
-        add_group(group_name)
+        add_group(group_name, link)
         return redirect(url_for('list_groups'))
 
     return render_template('create_group.html')

@@ -27,12 +27,13 @@ def create_table():
         cursor = connection.cursor()
         cursor.execute('''CREATE TABLE IF NOT EXISTS groups
                           (id SERIAL PRIMARY KEY,
-                           name TEXT NOT NULL)''')
+                           name TEXT NOT NULL,
+                           link TEXT)''')  # Добавляем поле link в таблицу
 
 
-def add_group(group_name):
-    query = 'INSERT INTO groups (name) VALUES (%s)'
-    data = (group_name,)
+def add_group(group_name, link=None):
+    query = 'INSERT INTO groups (name, link) VALUES (%s, %s)'
+    data = (group_name, link)
     execute_query(query, data, commit=True)
 
 

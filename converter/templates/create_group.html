@@ -7,28 +7,33 @@
 
     <!-- Форма создания новой группы -->
     <form action="{{ url_for('create_group') }}" method="post">
-        <label for="skill">Part 1:</label>
+        <label for="skill">Уровень:</label>
         <select id="skill" name="skill" required>
             <option value="START">START</option>
             <option value="PRO">PRO</option>
         </select>
 
-        <label for="time">Part 2:</label>
+        <label for="time">Время:</label>
         <select id="time" name="time" required>
             <option value="16:00">16:00</option>
             <option value="17:00">17:00</option>
             <option value="18:00">18:00</option>
         </select>
 
-        <label for="day">Part 3:</label>
+        <label for="day">День:</label>
         <select id="day" name="day" required>
             <option value="Понедельник">Понедельник</option>
             <option value="Четверг">Четверг</option>
             <option value="Пятница">Пятница</option>
         </select>
 
-        <button type="submit">Create</button>
+    <!-- Добавьте поле ввода для ссылки -->
+    <label for="link">Link:</label>
+    <input type="text" id="link" name="link">
+
+    <button type="submit">Create</button>
     </form>
+
 
     <a href="{{ url_for('list_groups') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
         Back to Groups
