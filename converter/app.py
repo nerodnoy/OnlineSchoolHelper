@@ -100,15 +100,19 @@ def restart():
     return redirect(url_for('feedback'))
 
 
-@app.errorhandler(Exception)
-def handle_error(e):
-    return render_template('error.html', error=str(e))
+# @app.errorhandler(Exception)
+# def handle_error(e):
+#     return render_template('error.html', error=str(e))
 
 
 @app.route('/groups/create', methods=['GET', 'POST'])
 def create_group():
     if request.method == 'POST':
-        group_name = request.form.get('group_name')
+        skill = request.form.get('skill')
+        time = request.form.get('time')
+        day = request.form.get('day')
+
+        group_name = f"{skill} {time} {day}"
         add_group(group_name)
         return redirect(url_for('list_groups'))
 
