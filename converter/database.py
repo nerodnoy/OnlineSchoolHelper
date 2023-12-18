@@ -74,3 +74,8 @@ def add_student(name, notes_lesson1=None, notes_lesson2=None, present=True, grou
 def get_students_for_group(group_id):
     query = 'SELECT * FROM students WHERE group_id=(%s)'
     return execute_query(query, [group_id], fetchall=True)
+
+
+def delete_student(student_id):
+    query = 'DELETE FROM students WHERE id=(%s)'
+    execute_query(query, [student_id], commit=True)

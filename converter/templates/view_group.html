@@ -17,6 +17,7 @@
         <button type="submit">Добавить студентов</button>
     </form>
 
+    <!-- Таблица с учениками -->
     <table class="min-w-full">
         <thead>
             <tr>
@@ -24,6 +25,7 @@
                 <th class="border border-gray-300 px-4 py-2">Заметки по 1-му уроку</th>
                 <th class="border border-gray-300 px-4 py-2">Заметки по 2-му уроку</th>
                 <th class="border border-gray-300 px-4 py-2">Присутствовал на уроке</th>
+                <th class="border border-gray-300 px-4 py-2">Действия</th>
             </tr>
         </thead>
         <tbody>
@@ -33,6 +35,11 @@
                     <td class="border border-gray-300 px-4 py-2">{{ student.notes_lesson1 }}</td>
                     <td class="border border-gray-300 px-4 py-2">{{ student.notes_lesson2 }}</td>
                     <td class="border border-gray-300 px-4 py-2">{{ student.present }}</td>
+                    <td class="border border-gray-300 px-4 py-2">
+                        <form method="post" action="{{ url_for('delete_student_route', group_name=group.name, student_id=student.id) }}">
+                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Удалить</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

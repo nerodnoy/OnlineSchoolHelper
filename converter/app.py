@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for, abort
 from converter.utils import generate_telegram_link, generate_whatsapp_link
-from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name, clear_database, get_students_for_group
+from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name, clear_database, get_students_for_group, delete_student
 from converter.students import parse_and_add_students
 from converter.questions import questions
 from converter.question_logic import get_next_question
@@ -157,6 +157,12 @@ def add_students(group_name):
     # Вызываем функцию для парсинга HTML и добавления студентов в базу данных
     parse_and_add_students(group_name, students_html)
 
+    return redirect(url_for('view_group', group_name=group_name))
+
+
+@app.route('/groups/<group_name>/delete_student/<int:student_id>', methods=['POST'])
+def delete_student_route(group_name, student_id):
+    delete_student(student_id)
     return redirect(url_for('view_group', group_name=group_name))
 
 
