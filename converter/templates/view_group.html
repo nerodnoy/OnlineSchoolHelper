@@ -6,12 +6,37 @@
     <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Group Details</h1>
 
     <h1>Название: {{ group.name }}</h1>
-
-    <!-- group.link мы будем использовать, когда формируем сообщение куратору -->
     <h1>Ссылка на группу: {{ group.link }}</h1>
 
-    <!-- Тут делаем таблицу -->
 
+    <!-- Форма для вставки HTML-разметки с учениками -->
+    <form id="studentsForm" method="post" action="{{ url_for('add_students', group_name=group.name) }}">
+        <label for="studentsHtml">HTML-разметка с учениками:</label>
+        <textarea id="studentsHtml" name="studentsHtml" rows="5" required></textarea>
+
+        <button type="submit">Добавить студентов</button>
+    </form>
+
+    <table class="min-w-full">
+        <thead>
+            <tr>
+                <th class="border border-gray-300 px-4 py-2">Имя ученика</th>
+                <th class="border border-gray-300 px-4 py-2">Заметки по 1-му уроку</th>
+                <th class="border border-gray-300 px-4 py-2">Заметки по 2-му уроку</th>
+                <th class="border border-gray-300 px-4 py-2">Присутствовал на уроке</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td class="border border-gray-300 px-4 py-2">{{ student.name }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ student.notes_lesson1 }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ student.notes_lesson2 }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ student.present }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <!-- Кнопка для удаления группы с подтверждением -->
     <button onclick="showConfirmationModal()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
@@ -46,4 +71,12 @@
             document.getElementById('confirmationModal').classList.add('hidden');
         }
     </script>
+
+
+    <script>
+        console.log("Group Name: {{ group.name }}");
+        console.log("Group Link: {{ group.link }}");
+        console.log("Students: {{ group.students }}");
+    </script>
+
 {% endblock %}

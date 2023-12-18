@@ -29,12 +29,20 @@ def create_table():
                           (id SERIAL PRIMARY KEY,
                            name TEXT NOT NULL,
                            link TEXT)''')
+        cursor.execute('''CREATE TABLE IF NOT EXISTS students
+                          (id SERIAL PRIMARY KEY,
+                           name VARCHAR(255) NOT NULL,
+                           notes_lesson1 TEXT,
+                           notes_lesson2 TEXT,
+                           present BOOLEAN,
+                           group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE)''')
 
 
 def add_group(group_name, link=None):
-    query = 'INSERT INTO groups (name, link) VALUES (%s, %s)'
+    query = 'INSERT INTO groups (name, link) VALUES (%s, %s) RETURNING id'
     data = (group_name, link)
-    execute_query(query, data, commit=True)
+    result = execute_query(query, data, commit=True)
+    return result['id'] if result else None
 
 
 def get_all_groups():
@@ -55,3 +63,14 @@ def delete_group(group_name):
 def clear_database():
     query = 'DELETE FROM groups'
     execute_query(query, commit=True)
+
+
+def add_student(name, notes_lesson1=None, notes_lesson2=None, present=True, group_id=None):
+    query = 'INSERT INTO students (name, notes_lesson1, notes_lesson2, present, group_id) VALUES (%s, %s, %s, %s, %s)'
+    data = (name, notes_lesson1, notes_lesson2, present, group_id)
+    execute_query(query, data, commit=True)
+
+
+def get_students_for_group(group_id):
+    query = 'SELECT * FROM students WHERE group_id=(%s)'
+    return execute_query(query, [group_id], fetchall=True)

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for, abort
 from converter.utils import generate_telegram_link, generate_whatsapp_link
-from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name, clear_database
+from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name, clear_database, get_students_for_group
+from converter.students import parse_and_add_students
 from converter.questions import questions
 from converter.question_logic import get_next_question
 from dotenv import load_dotenv
@@ -130,7 +131,9 @@ def list_groups():
 def view_group(group_name):
     group = get_group_by_name(group_name)
     if group:
-        return render_template('view_group.html', group=group)
+        group_id = group['id']  # Получаем ID группы
+        students = get_students_for_group(group_id)
+        return render_template('view_group.html', group=group, students=students)
     else:
         abort(404)
 
@@ -145,6 +148,16 @@ def delete_group_route(group_name):
 def clear_all_data():
     clear_database()
     return redirect(url_for('list_groups'))
+
+
+@app.route('/groups/<group_name>/add_students', methods=['POST'])
+def add_students(group_name):
+    students_html = request.form.get('studentsHtml')
+
+    # Вызываем функцию для парсинга HTML и добавления студентов в базу данных
+    parse_and_add_students(group_name, students_html)
+
+    return redirect(url_for('view_group', group_name=group_name))
 
 
 if __name__ == '__main__':
