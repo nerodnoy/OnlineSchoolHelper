@@ -65,9 +65,11 @@ def clear_database():
     execute_query(query, commit=True)
 
 
-def add_student(name, notes_lesson1=None, notes_lesson2=None, present=True, group_id=None):
+def add_student(name, notes_lesson1=None, notes_lesson2=None, present=None, group_id=None):
     query = 'INSERT INTO students (name, notes_lesson1, notes_lesson2, present, group_id) VALUES (%s, %s, %s, %s, %s)'
-    data = (name, notes_lesson1, notes_lesson2, present, group_id)
+
+    # Меняем None на значение, которое можно передать в execute_query
+    data = (name, notes_lesson1 or '', notes_lesson2 or '', present, group_id)
     execute_query(query, data, commit=True)
 
 
@@ -79,3 +81,9 @@ def get_students_for_group(group_id):
 def delete_student(student_id):
     query = 'DELETE FROM students WHERE id=(%s)'
     execute_query(query, [student_id], commit=True)
+
+
+def update_student_notes(student_id, notes_lesson1=None, notes_lesson2=None):
+    query = 'UPDATE students SET notes_lesson1=%s, notes_lesson2=%s WHERE id=%s'
+    data = (notes_lesson1, notes_lesson2, student_id)
+    execute_query(query, data, commit=True)

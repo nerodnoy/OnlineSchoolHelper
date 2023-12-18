@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for, abort
 from converter.utils import generate_telegram_link, generate_whatsapp_link
-from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name, clear_database, get_students_for_group, delete_student
+from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name, clear_database, get_students_for_group, delete_student, update_student_notes
 from converter.students import parse_and_add_students
 from converter.questions import questions
 from converter.question_logic import get_next_question
@@ -163,6 +163,18 @@ def add_students(group_name):
 @app.route('/groups/<group_name>/delete_student/<int:student_id>', methods=['POST'])
 def delete_student_route(group_name, student_id):
     delete_student(student_id)
+    return redirect(url_for('view_group', group_name=group_name))
+
+
+@app.route('/groups/<group_name>/students/<int:student_id>/update_notes/<int:lesson_number>', methods=['POST'])
+def update_notes(group_name, student_id, lesson_number):
+    notes = request.form.get('notes')
+
+    if lesson_number == 1:
+        update_student_notes(student_id, notes_lesson1=notes)
+    elif lesson_number == 2:
+        update_student_notes(student_id, notes_lesson2=notes)
+
     return redirect(url_for('view_group', group_name=group_name))
 
 
