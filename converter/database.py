@@ -98,6 +98,11 @@ def mark_student_absent(student_id):
     execute_query(query, [student_id], commit=True)
 
 
+def mark_student_present(student_id):
+    query = 'UPDATE students SET present=True WHERE id=(%s)'
+    execute_query(query, [student_id], commit=True)
+
+
 def get_absent_students(group_id):
     query = 'SELECT * FROM students WHERE group_id=(%s) AND present=false ORDER BY name'
     return execute_query(query, [group_id], fetchall=True)
