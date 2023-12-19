@@ -6,7 +6,6 @@
     <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Group Details</h1>
 
     <h1>Название: {{ group.name }}</h1>
-    <h1>Ссылка на группу: {{ group.link }}</h1>
 
     <!-- Форма для вставки HTML-разметки с учениками -->
     <form id="studentsForm" method="post" action="{{ url_for('add_students', group_name=group.name) }}">

@@ -191,7 +191,7 @@ def prepare_absent_list(group_name):
     if group:
         group_id = group['id']
         absent_students = get_absent_students(group_id)
-        return render_template('absent_list.html', absent_students=absent_students, group_name=group_name)
+        return render_template('absent_list.html', absent_students=absent_students, group_name=group_name, group=group)
     else:
         # Обработка случая, если группа не найдена
         return render_template('error.html', message='Group not found')
