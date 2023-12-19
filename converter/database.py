@@ -83,7 +83,14 @@ def delete_student(student_id):
     execute_query(query, [student_id], commit=True)
 
 
-def update_student_notes(student_id, notes_lesson1=None, notes_lesson2=None):
-    query = 'UPDATE students SET notes_lesson1=%s, notes_lesson2=%s WHERE id=%s'
-    data = (notes_lesson1, notes_lesson2, student_id)
+def update_student_notes1(student_id, notes_lesson1):
+    query = 'UPDATE students SET notes_lesson1=%s WHERE id=%s'
+    data = (notes_lesson1, student_id)
     execute_query(query, data, commit=True)
+
+
+def update_student_notes2(student_id, notes_lesson2):
+    query = 'UPDATE students SET notes_lesson2=%s WHERE id=%s'
+    data = (notes_lesson2, student_id)
+    execute_query(query, data, commit=True)
+

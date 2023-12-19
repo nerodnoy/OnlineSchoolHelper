@@ -31,18 +31,20 @@
                 <tr>
                     <td class="border border-gray-300 px-4 py-2">{{ student.name }}</td>
                     <td class="border border-gray-300 px-4 py-2">
-                        <form method="post" action="{{ url_for('update_notes', group_name=group.name, student_id=student.id, lesson_number=1) }}">
-                            <textarea name="notes" rows="2" cols="30">{{ student.notes_lesson1 or '' }}</textarea>
+                        <form method="post" action="{{ url_for('update_notes1', group_name=group.name, student_id=student.id) }}">
+                            <textarea name="notes_lesson1" rows="2" cols="30">{{ student.notes_lesson1 }}</textarea>
                             <button type="submit">Сохранить</button>
                         </form>
                     </td>
                     <td class="border border-gray-300 px-4 py-2">
-                        <form method="post" action="{{ url_for('update_notes', group_name=group.name, student_id=student.id, lesson_number=2) }}">
-                            <textarea name="notes" rows="2" cols="30">{{ student.notes_lesson2 or '' }}</textarea>
+                        <form method="post" action="{{ url_for('update_notes2', group_name=group.name, student_id=student.id) }}">
+                            <textarea name="notes_lesson2" rows="2" cols="30">{{ student.notes_lesson2 }}</textarea>
                             <button type="submit">Сохранить</button>
                         </form>
                     </td>
-                    <td class="border border-gray-300 px-4 py-2">{{ student.present }}</td>
+                    <td class="border border-gray-300 px-4 py-2">
+                        Пустота
+                    </td>
                     <!-- Кнопка для удаления ученика с подтверждением -->
                     <td class="border border-gray-300 px-4 py-2">
                         <button onclick="showDeleteConfirmation('{{ student.name }}', {{ student.id }})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Удалить</button>
