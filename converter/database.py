@@ -92,3 +92,12 @@ def update_student_notes2(student_id, notes_lesson2):
     data = (notes_lesson2, student_id)
     execute_query(query, data, commit=True)
 
+
+def mark_student_absent(student_id):
+    query = 'UPDATE students SET present=false WHERE id=(%s)'
+    execute_query(query, [student_id], commit=True)
+
+
+def get_absent_students(group_id):
+    query = 'SELECT * FROM students WHERE group_id=(%s) AND present=false ORDER BY name'
+    return execute_query(query, [group_id], fetchall=True)

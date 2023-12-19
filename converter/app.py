@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, session, redirect, url_for, abort
+from flask import Flask, render_template, request, session, redirect, url_for, abort, jsonify
 from converter.utils import generate_telegram_link, generate_whatsapp_link
-from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name, clear_database, get_students_for_group, delete_student, update_student_notes1, update_student_notes2
+from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name, clear_database, \
+    get_students_for_group, delete_student, update_student_notes1, update_student_notes2, \
+    get_absent_students, mark_student_absent
 from converter.students import parse_and_add_students
 from converter.questions import questions
 from converter.question_logic import get_next_question
@@ -175,6 +177,24 @@ def update_notes2(group_name, student_id):
     notes_lesson2 = request.form.get('notes_lesson2')
     update_student_notes2(student_id, notes_lesson2=notes_lesson2)
     return redirect(url_for('view_group', group_name=group_name))
+
+
+@app.route('/mark_absent/<group_name>/<student_id>', methods=['POST'])
+def mark_absent(group_name, student_id):
+    mark_student_absent(student_id)
+    return redirect(url_for('view_group', group_name=group_name))
+
+
+@app.route('/prepare_absent_list/<group_name>', methods=['POST'])
+def prepare_absent_list(group_name):
+    group = get_group_by_name(group_name)
+    if group:
+        group_id = group['id']
+        absent_students = get_absent_students(group_id)
+        return render_template('absent_list.html', absent_students=absent_students, group_name=group_name)
+    else:
+        # Обработка случая, если группа не найдена
+        return render_template('error.html', message='Group not found')
 
 
 if __name__ == '__main__':

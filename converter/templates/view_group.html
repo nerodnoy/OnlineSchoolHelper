@@ -1,4 +1,4 @@
-
+{% extends 'layout.html' %}
 
 {% block title %}Group Details{% endblock %}
 
@@ -22,7 +22,7 @@
                 <th class="border border-gray-300 px-4 py-2">Имя ученика</th>
                 <th class="border border-gray-300 px-4 py-2">Заметки по 1-му уроку</th>
                 <th class="border border-gray-300 px-4 py-2">Заметки по 2-му уроку</th>
-                <th class="border border-gray-300 px-4 py-2">Присутствовал на уроке</th>
+                <th class="border border-gray-300 px-4 py-2">Присутствует на уроке</th>
                 <th class="border border-gray-300 px-4 py-2">Действия</th>
             </tr>
         </thead>
@@ -42,8 +42,16 @@
                             <button type="submit">Сохранить</button>
                         </form>
                     </td>
+
+                    <!-- PRESENT -->
                     <td class="border border-gray-300 px-4 py-2">
-                        Пустота
+                        {% if student.present %}
+                            <span>Присутствовал</span>
+                        {% else %}
+                            <form method="post" action="{{ url_for('mark_absent', group_name=group.name, student_id=student.id) }}">
+                                <button type="submit">Отсутствует</button>
+                            </form>
+                        {% endif %}
                     </td>
 
                     <!-- Кнопка для удаления ученика с подтверждением -->
@@ -70,6 +78,13 @@
         </tbody>
     </table>
 
+    <!-- Кнопка для создания списка отсутствующих -->
+    <form method="post" action="{{ url_for('prepare_absent_list', group_name=group.name) }}">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+            Создать список отсутствующих
+        </button>
+    </form>
+
     <!-- Кнопка для удаления группы с подтверждением -->
     <button onclick="showConfirmationModal()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
         Delete Group
@@ -77,7 +92,7 @@
 
     <!-- Кнопка для возврата к списку групп -->
     <a href="{{ url_for('list_groups') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-        Back to Groups
+        Назад к списку групп
     </a>
 
     <!-- Модальное окно с подтверждением удаления группы -->
