@@ -5,9 +5,10 @@
 {% block content %}
     <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Список отсутствующих</h1>
 
+    <h2>{{ group.name }}</h2>
+    <br>
     <h2>Ссылка на группу: <a href="{{ group.link }}" target="_blank" id="groupLink">{{ group.link }}</a></h2>
     <br>
-
     <h2>Ждём на занятии:</h2>
     <br>
 
@@ -21,7 +22,7 @@
                 {% endif %}
             {% endfor %}
         {% else %}
-            <li>Все ученики присутствуют на занятии.</li>
+            <li>Нет данных об отсутствующих учениках.</li>
         {% endif %}
     </ul>
 
@@ -35,33 +36,40 @@
         Назад к группе
     </a>
 
-<!-- Скрипт для копирования текста с id=studentsList -->
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var clipboard = new ClipboardJS('#copyButton', {
-            text: function () {
-                var copiedText = '';
-                copiedText += 'Ссылка на группу: ' + decodeURIComponent('{{ group.link }}') + '\n\n';
-                copiedText += 'Ждём на занятии:\n\n';
+    <!-- В зависимости от дня недели пишем разным кураторам -->
+    {% if 'Понедельник' in group.name %}
+        <p><a href="https://t.me/+79272559173" target="_blank">Отправить Валерии</a></p>
+    {% elif 'Четверг' in group.name or 'Пятница' in group.name %}
+        <p><a href="https://t.me/ira_frolova" target="_blank">Отправить Ирине</a></p>
+    {% endif %}
 
-                var studentsList = document.getElementById('studentsList');
-                for (var i = 0; i < studentsList.children.length; i++) {
-                    copiedText += studentsList.children[i].innerText + '\n';
+    <!-- Скрипт для копирования текста с id=studentsList -->
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var clipboard = new ClipboardJS('#copyButton', {
+                text: function () {
+                    var copiedText = '';
+                    copiedText += 'Ссылка на группу: ' + decodeURIComponent('{{ group.link }}') + '\n\n';
+                    copiedText += 'Ждём на занятии:\n\n';
+
+                    var studentsList = document.getElementById('studentsList');
+                    for (var i = 0; i < studentsList.children.length; i++) {
+                        copiedText += studentsList.children[i].innerText + '\n';
+                    }
+
+                    return copiedText;
                 }
+            });
 
-                return copiedText;
-            }
-        });
+            clipboard.on('success', function (e) {
+                alert('Текст скопирован в буфер обмена!');
+                e.clearSelection();
+            });
 
-        clipboard.on('success', function (e) {
-            alert('Текст скопирован в буфер обмена!');
-            e.clearSelection();
+            clipboard.on('error', function (e) {
+                alert('Не удалось скопировать текст. Используйте сочетание клавиш.');
+            });
         });
-
-        clipboard.on('error', function (e) {
-            alert('Не удалось скопировать текст. Используйте сочетание клавиш.');
-        });
-    });
-</script>
+    </script>
 {% endblock %}
