@@ -65,7 +65,7 @@ def clear_database():
     execute_query(query, commit=True)
 
 
-def add_student(name, notes_lesson1=None, notes_lesson2=None, present=None, group_id=None):
+def add_student(name, notes_lesson1=None, notes_lesson2=None, present=True, group_id=None):
     query = 'INSERT INTO students (name, notes_lesson1, notes_lesson2, present, group_id) VALUES (%s, %s, %s, %s, %s)'
     data = (name, notes_lesson1 or '', notes_lesson2 or '', present, group_id)
     execute_query(query, data, commit=True)
@@ -101,3 +101,8 @@ def mark_student_absent(student_id):
 def get_absent_students(group_id):
     query = 'SELECT * FROM students WHERE group_id=(%s) AND present=false ORDER BY name'
     return execute_query(query, [group_id], fetchall=True)
+
+
+def get_student_by_id(student_id):
+    query = 'SELECT * FROM students WHERE id=(%s)'
+    return execute_query(query, [student_id])

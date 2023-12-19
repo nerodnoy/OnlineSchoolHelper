@@ -45,11 +45,12 @@
 
                     <!-- PRESENT -->
                     <td class="border border-gray-300 px-4 py-2">
-                        {% if student.present %}
-                            <span>Присутствовал</span>
-                        {% else %}
+                        <span class="presence-indicator {% if student.present %}present{% else %}absent{% endif %}">
+                            {{ "" if student.present else "❌"}}
+                        </span>
+                        {% if student.present == True %}
                             <form method="post" action="{{ url_for('mark_absent', group_name=group.name, student_id=student.id) }}">
-                                <button type="submit">Отсутствует</button>
+                                <button type="submit">✅</button>
                             </form>
                         {% endif %}
                     </td>
