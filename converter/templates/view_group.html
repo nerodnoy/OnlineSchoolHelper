@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+
 
 {% block title %}Group Details{% endblock %}
 
@@ -45,9 +45,11 @@
                     <td class="border border-gray-300 px-4 py-2">
                         Пустота
                     </td>
+
                     <!-- Кнопка для удаления ученика с подтверждением -->
                     <td class="border border-gray-300 px-4 py-2">
                         <button onclick="showDeleteConfirmation('{{ student.name }}', {{ student.id }})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Удалить</button>
+
                         <!-- Модальное окно с подтверждением удаления ученика -->
                         <div id="confirmationModal_{{ student.id }}" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center">
                             <div class="bg-white p-8 rounded shadow-md">

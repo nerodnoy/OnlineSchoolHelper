@@ -67,14 +67,12 @@ def clear_database():
 
 def add_student(name, notes_lesson1=None, notes_lesson2=None, present=None, group_id=None):
     query = 'INSERT INTO students (name, notes_lesson1, notes_lesson2, present, group_id) VALUES (%s, %s, %s, %s, %s)'
-
-    # Меняем None на значение, которое можно передать в execute_query
     data = (name, notes_lesson1 or '', notes_lesson2 or '', present, group_id)
     execute_query(query, data, commit=True)
 
 
 def get_students_for_group(group_id):
-    query = 'SELECT * FROM students WHERE group_id=(%s)'
+    query = 'SELECT * FROM students WHERE group_id=(%s) ORDER BY name'
     return execute_query(query, [group_id], fetchall=True)
 
 

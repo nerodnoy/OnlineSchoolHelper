@@ -153,10 +153,7 @@ def clear_all_data():
 @app.route('/groups/<group_name>/add_students', methods=['POST'])
 def add_students(group_name):
     students_html = request.form.get('studentsHtml')
-
-    # Вызываем функцию для парсинга HTML и добавления студентов в базу данных
     parse_and_add_students(group_name, students_html)
-
     return redirect(url_for('view_group', group_name=group_name))
 
 
