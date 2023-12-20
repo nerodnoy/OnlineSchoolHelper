@@ -9,20 +9,19 @@
     <br>
     <h2><a href="{{ group.link }}" target="_blank" id="groupLink">Ссылка на группу:  {{ group.link }}</a></h2>
     <br>
-    <h2>Ждём на занятии:</h2>
-    <br>
 
     <!-- Отображение списка отсутствующих в столбик -->
     <ul id="studentsList">
         {% if absent_students %}
             {% for student in absent_students %}
                 {% if not student.present %}
-                    <li><a href="{{ url_for('view_student', group_name=group_name, student_id=student.id) }}">{{ student.name }}</a></li>
+                    Ждём на занятии:
+                    <li><a href="{{ url_for('view_student_in_group', group_name=group.name, student_id=student.id) }}">{{ student.name }}</a></li>
                     <!-- Другие детали студента, если необходимо -->
                 {% endif %}
             {% endfor %}
         {% else %}
-            <li>Нет данных об отсутствующих учениках.</li>
+            <li>Все ученики присутствуют на занятии</li>
         {% endif %}
     </ul>
 
