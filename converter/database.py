@@ -126,7 +126,7 @@ def add_student_info(student_id, info):
 
 
 def get_student_info(student_id):
-    query = 'SELECT si.info FROM students_info si WHERE si.student_id = %s'
+    query = 'SELECT si.info FROM students_info si WHERE si.student_id = %s ORDER BY id DESC LIMIT 1'
     data = (student_id,)
     result = execute_query(query, data)
     return result['info'] if result else None

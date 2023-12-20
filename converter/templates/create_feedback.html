@@ -22,7 +22,11 @@
                 <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">
                     Submit
                 </button>
+
             </div>
         {% endif %}
+    </form>
+    <form method="post" action="{{ url_for('reset_feedback', student_id=student.id) }}">
+         <button type="submit">Начать сначала</button>
     </form>
 {% endblock %}
