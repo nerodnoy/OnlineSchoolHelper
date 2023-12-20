@@ -36,9 +36,9 @@
     </a>
 
     <!-- В зависимости от дня недели пишем разным кураторам -->
-    {% if 'Понедельник' in group.name %}
+    {% if 'monday' in group.name %}
         <p><a href="https://t.me/+79272559173" target="_blank">Отправить Валерии</a></p>
-    {% elif 'Четверг' in group.name or 'Пятница' in group.name %}
+    {% elif 'thursday' in group.name or 'friday' in group.name %}
         <p><a href="https://t.me/ira_frolova" target="_blank">Отправить Ирине</a></p>
     {% endif %}
 

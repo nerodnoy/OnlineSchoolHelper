@@ -103,9 +103,9 @@ def restart():
     return redirect(url_for('feedback'))
 
 
-# @app.errorhandler(Exception)
-# def handle_error(e):
-#     return render_template('error.html', error=str(e))
+@app.errorhandler(Exception)
+def handle_error(e):
+    return render_template('error.html', error=str(e))
 
 
 @app.route('/groups/create', methods=['GET', 'POST'])
@@ -116,9 +116,9 @@ def create_group():
         day = request.form.get('day')
         link = request.form.get('link')
 
-        group_name = f"{skill} {time} {day}"
+        group_name = f"{skill}-{time}-{day}"
         add_group(group_name, link)
-        return redirect(url_for('list_groups'))
+        return redirect(url_for('view_group', group_name=group_name))
 
     return render_template('create_group.html')
 
@@ -193,7 +193,7 @@ def prepare_absent_list(group_name):
         absent_students = get_absent_students(group_id)
         return render_template('absent_list.html', absent_students=absent_students, group_name=group_name, group=group)
     else:
-        return render_template('error.html', message='Group not found')
+        abort(404)
 
 
 @app.route('/reset_absent/<group_name>', methods=['POST'])
@@ -206,14 +206,13 @@ def reset_absent(group_name):
             mark_student_present(student['id'])
         return redirect(url_for('view_group', group_name=group_name))
     else:
-        return render_template('error.html', message='Group not found')
+        abort(404)
 
 
 @app.route('/groups/<group_name>/students/<int:student_id>', methods=['GET'])
 def view_student_in_group(group_name, student_id):
     student = get_student_by_id(student_id)
     if student:
-        # Получите информацию о студенте из таблицы students_info
         info = get_student_info(student_id)
         return render_template('view_student.html', student=student, info=info, group_name=group_name)
     else:
