@@ -5,12 +5,13 @@
 {% block content %}
     <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Group Details</h1>
 
-    <h1>Название: {{ group.name }}</h1>
+    <!-- Cпрятал ссылку на группу внутрь имени -->
+    <h2> <a href="{{ group.link }}" target="_blank" id="groupLink">Группа {{ group.name }}</a></h2>
 
     <!-- Форма для вставки HTML-разметки с учениками -->
     <form id="studentsForm" method="post" action="{{ url_for('add_students', group_name=group.name) }}">
         <label for="studentsHtml">HTML-разметка с учениками:</label>
-        <textarea id="studentsHtml" name="studentsHtml" rows="5" required></textarea>
+        <textarea id="studentsHtml" name="studentsHtml" rows="1" required></textarea>
         <button type="submit">Добавить студентов</button>
     </form>
 
