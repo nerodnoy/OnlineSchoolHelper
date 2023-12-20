@@ -13,4 +13,9 @@
     <h3>Заметки по 2-му уроку:</h3>
     <p>{{ student.notes_lesson2 }}</p>
 
+    <!-- Кнопка для возврата к группе -->
+    <a href="{{ url_for('view_group', group_name=group_name) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+        Назад к группе
+    </a>
+
 {% endblock %}

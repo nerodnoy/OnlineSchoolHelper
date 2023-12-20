@@ -209,13 +209,13 @@ def reset_absent(group_name):
         return render_template('error.html', message='Group not found')
 
 
-@app.route('/students/<int:student_id>', methods=['GET'])
-def view_student(student_id):
+@app.route('/groups/<group_name>/students/<int:student_id>', methods=['GET'])
+def view_student_in_group(group_name, student_id):
     student = get_student_by_id(student_id)
     if student:
         # Получите информацию о студенте из таблицы students_info
         info = get_student_info(student_id)
-        return render_template('view_student.html', student=student, info=info)
+        return render_template('view_student.html', student=student, info=info, group_name=group_name)
     else:
         abort(404)
 

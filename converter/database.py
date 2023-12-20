@@ -120,7 +120,6 @@ def add_student_info(student_id, info):
 
 
 def get_student_info(student_id):
-    query = 'SELECT info FROM students_info WHERE student_id = %s'
+    query = 'SELECT si.info, g.name AS group_name FROM students_info si JOIN groups g ON si.group_id = g.id WHERE si.student_id = %s'
     data = (student_id,)
-    result = execute_query(query, data)
-    return result[0] if result else None
+    return execute_query(query, data)

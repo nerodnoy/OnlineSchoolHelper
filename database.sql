@@ -16,6 +16,8 @@ CREATE TABLE IF NOT EXISTS students (
 CREATE TABLE students_info (
     id SERIAL PRIMARY KEY,
     student_id INTEGER,
+    group_id INTEGER,
     info TEXT,
-    FOREIGN KEY (student_id) REFERENCES students (id)
+    FOREIGN KEY (student_id) REFERENCES students (id),
+    FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE CASCADE
 );
