@@ -36,6 +36,12 @@ def create_table():
                            notes_lesson2 TEXT,
                            present BOOLEAN,
                            group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE)''')
+        cursor.execute('''CREATE TABLE IF NOT EXISTS students_info (
+                            id SERIAL PRIMARY KEY,
+                            student_id INTEGER REFERENCES students(id) ON DELETE CASCADE,
+                            group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
+                            info TEXT
+                        )''')
 
 
 def add_group(group_name, link=None):
@@ -120,6 +126,19 @@ def add_student_info(student_id, info):
 
 
 def get_student_info(student_id):
-    query = 'SELECT si.info, g.name AS group_name FROM students_info si JOIN groups g ON si.group_id = g.id WHERE si.student_id = %s'
+    query = 'SELECT si.info FROM students_info si WHERE si.student_id = %s'
     data = (student_id,)
-    return execute_query(query, data)
+    result = execute_query(query, data)
+    return result['info'] if result else None
+
+
+def update_student_info(student_id, info):
+    query = 'UPDATE students_info SET info=%s WHERE student_id=%s'
+    data = (info, student_id)
+    execute_query(query, data, commit=True)
+
+
+def save_feedback_to_database(student_id, feedback_data):
+    query = "INSERT INTO students_info (student_id, info) VALUES (%s, %s)"
+    data = (student_id, feedback_data)
+    execute_query(query, data, commit=True)

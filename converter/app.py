@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, session, redirect, url_for, a
 from converter.utils import generate_telegram_link, generate_whatsapp_link
 from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name, clear_database, \
     get_students_for_group, delete_student, update_student_notes1, update_student_notes2, \
-    get_absent_students, mark_student_absent, mark_student_present, get_student_by_id, get_student_info
+    get_absent_students, mark_student_absent, mark_student_present, get_student_by_id, get_student_info, \
+    save_feedback_to_database, update_student_info
 from converter.students import parse_and_add_students
 from converter.questions import questions
 from converter.question_logic import get_next_question
@@ -33,79 +34,83 @@ def index():
                            )
 
 
-@app.route('/feedback', methods=['GET', 'POST'])
-def feedback():
-    answers = session.get('answers', [])
-    current_question = session.get('current_question', 'Имя ученика')
-    student_name = session.get('student_name', '')
-    parent_name = session.get('parent_name', '')
-
-    if request.method == 'POST':
-        if current_question == 'Имя ученика':
-            student_name = request.form.get('student_name', '')
-            session['student_name'] = student_name
-            current_question = 'Имя родителя'
-        elif current_question == 'Имя родителя':
-            parent_name = request.form.get('parent_name', '')
-            session['parent_name'] = parent_name
-            current_question = 'Количество посещенных занятий'
-        else:
-            selected_option = request.form.get(current_question)
-            if current_question in questions:
-                current_question_info = questions[current_question]
-
-                # Проверяем, что список ответов не пуст
-                selected_answers = current_question_info['answers'].get(
-                    selected_option, [])
-                if selected_answers:
-
-                    # Выбираем случайный вариант ответа
-                    selected_answer = random.choice(selected_answers)
-                    answers.append(selected_answer)
-
-                    # Определение следующего вопроса
-                    follow_up_question = current_question_info.get(
-                        'follow_up', {}).get(selected_option)
-                    if follow_up_question:
-                        current_question = follow_up_question
-                    elif current_question_info.get('result', False):
-
-                        # Если это конечный результат, завершаем опрос
-                        return render_template('result.html',
-                                               result=answers,
-                                               student_name=student_name,
-                                               parent_name=parent_name
-                                               )
-                else:
-                    current_question = get_next_question(questions, current_question)
-
-    session['current_question'] = current_question
-    session['answers'] = answers
-
-    return render_template('feedback.html',
-                           current_question=current_question,
-                           questions=questions,
-                           answers=answers,
-                           student_name=student_name,
-                           parent_name=parent_name
-                           )
-
-
-@app.route('/restart', methods=['POST'])
-def restart():
-    session.pop('answers', None)
-    session.pop('current_question', None)
-    session.pop('result', None)
-
-    # Не забыть установить начальный вопрос здесь
-    session['current_question'] = 'Имя ученика'
-
-    return redirect(url_for('feedback'))
+# @app.route('/feedback', methods=['GET', 'POST'])
+# def feedback():
+#     answers = session.get('answers', [])
+#     current_question = session.get('current_question', 'Имя ученика')
+#     student_name = session.get('student_name', '')
+#     parent_name = session.get('parent_name', '')
+#
+#     if request.method == 'POST':
+#         if current_question == 'Имя ученика':
+#             student_name = request.form.get('student_name', '')
+#             session['student_name'] = student_name
+#             current_question = 'Имя родителя'
+#         elif current_question == 'Имя родителя':
+#             parent_name = request.form.get('parent_name', '')
+#             session['parent_name'] = parent_name
+#             current_question = 'Количество посещенных занятий'
+#         else:
+#             selected_option = request.form.get(current_question)
+#             if current_question in questions:
+#                 current_question_info = questions[current_question]
+#
+#                 # Проверяем, что список ответов не пуст
+#                 selected_answers = current_question_info['answers'].get(
+#                     selected_option, [])
+#                 if selected_answers:
+#
+#                     # Выбираем случайный вариант ответа
+#                     selected_answer = random.choice(selected_answers)
+#                     answers.append(selected_answer)
+#
+#                     # Определение следующего вопроса
+#                     follow_up_question = current_question_info.get(
+#                         'follow_up', {}).get(selected_option)
+#                     if follow_up_question:
+#                         current_question = follow_up_question
+#                     elif current_question_info.get('result', False):
+#
+#                         # Если это конечный результат, завершаем опрос
+#                         return render_template('result.html',
+#                                                result=answers,
+#                                                student_name=student_name,
+#                                                parent_name=parent_name
+#                                                )
+#                 else:
+#                     current_question = get_next_question(questions, current_question)
+#
+#     session['current_question'] = current_question
+#     session['answers'] = answers
+#
+#     return render_template('feedback.html',
+#                            current_question=current_question,
+#                            questions=questions,
+#                            answers=answers,
+#                            student_name=student_name,
+#                            parent_name=parent_name
+#                            )
 
 
-@app.errorhandler(Exception)
-def handle_error(e):
-    return render_template('error.html', error=str(e))
+@app.route('/students/<int:student_id>/reset_feedback', methods=['POST'])
+def reset_feedback(student_id):
+    # Сбрасываем info у студента
+    update_student_info(student_id, info='')
+
+    # Устанавливаем первый вопрос после сброса
+    first_question = 'Количество посещенных занятий'
+
+    # Сохраняем текущий вопрос и ответы в сессию
+    session['current_question'] = first_question
+    session['answers'] = []
+
+    # Перенаправляем на страницу обратной связи для начала опроса заново
+    return redirect(url_for('create_feedback', student_id=student_id))
+
+
+# @app.errorhandler(Exception)
+# def handle_error(e):
+#     return render_template('error.html', error=str(e))
 
 
 @app.route('/groups/create', methods=['GET', 'POST'])
@@ -217,6 +222,57 @@ def view_student_in_group(group_name, student_id):
         return render_template('view_student.html', student=student, info=info, group_name=group_name)
     else:
         abort(404)
+
+
+@app.route('/students/<int:student_id>/create_feedback', methods=['GET', 'POST'])
+def create_feedback(student_id):
+    student = get_student_by_id(student_id)
+    answers = session.get('answers', [])
+    current_question = session.get('current_question', 'Количество посещенных занятий')
+
+    if request.method == 'POST':
+        selected_option = request.form.get(current_question)
+        if current_question in questions:
+            current_question_info = questions[current_question]
+
+            # Проверяем, что список ответов не пуст
+            selected_answers = current_question_info['answers'].get(selected_option, [])
+            if selected_answers:
+                # Выбираем случайный вариант ответа
+                selected_answer = random.choice(selected_answers)
+                answers.append(selected_answer)
+
+                # Определение следующего вопроса
+                follow_up_question = current_question_info.get('follow_up', {}).get(selected_option)
+                if follow_up_question:
+                    current_question = follow_up_question
+                elif current_question_info.get('result', False):
+                    feedback_data = ', '.join(answers)
+                    save_feedback_to_database(student_id, feedback_data)
+
+                    # Если это конечный результат, завершаем опрос
+                    return render_template('result_test.html',
+                                           result=answers,
+                                           student_name=student['name'],
+                                           student=student
+                                           )
+            else:
+                current_question = get_next_question(questions, current_question)
+
+    # Если это первый вопрос после перезапуска, установим начальный вопрос
+    if 'current_question' not in session:
+        session['current_question'] = 'Количество посещенных занятий'
+
+    session['current_question'] = current_question
+    session['answers'] = answers
+
+    return render_template('create_feedback.html',
+                           current_question=current_question,
+                           questions=questions,
+                           answers=answers,
+                           student_name=student['name'],
+                           student=student
+                           )
 
 
 if __name__ == '__main__':

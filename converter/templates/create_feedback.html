@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block title %}Create Feedback{% endblock %}
+
+{% block content %}
+    <form method="post" action="{{ url_for('create_feedback', student_id=student.id) }}">
+        <!-- Вопросы -->
+        {% if current_question in questions %}
+            {% set current_question_info = questions[current_question] %}
+            <div class="flex flex-col space-y-2">
+                {% if current_question_info['options'] %}
+                    <h2>{{ current_question_info['question_text'] }}</h2>
+                    {% for option in current_question_info['options'] %}
+                        <div class="flex items-center">
+                            <input type="radio" name="{{ current_question }}" value="{{ option }}" id="{{ option }}">
+                            <label for="{{ option }}" class="ml-2">{{ option }}</label>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">
+                    Submit
+                </button>
+            </div>
+        {% endif %}
+    </form>
+{% endblock %}
