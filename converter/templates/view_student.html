@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block title %}Student Details{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Student Details</h1>
+
+    <h1>Имя: {{ student.name }}</h1>
+    <!-- Другие поля -->
+
+    <!-- Вывод информации из таблицы students_info -->
+    <h2>Дополнительная информация:</h2>
+    {% if info %}
+        <p>{{ info }}</p>
+    {% else %}
+        <p>Нет дополнительной информации.</p>
+    {% endif %}
+
+{% endblock %}

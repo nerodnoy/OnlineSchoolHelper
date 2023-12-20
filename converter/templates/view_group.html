@@ -29,7 +29,9 @@
         <tbody>
             {% for student in students %}
                 <tr>
-                    <td class="border border-gray-300 px-4 py-2">{{ student.name }}</td>
+                    <td class="border border-gray-300 px-4 py-2">
+                        <a href="{{ url_for('view_student', student_id=student.id) }}">{{ student.name }}</a>
+                    </td>
                     <td class="border border-gray-300 px-4 py-2">
                         <form method="post" action="{{ url_for('update_notes1', group_name=group.name, student_id=student.id) }}">
                             <textarea name="notes_lesson1" rows="2" cols="30">{{ student.notes_lesson1 }}</textarea>

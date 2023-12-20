@@ -12,3 +12,10 @@ CREATE TABLE IF NOT EXISTS students (
     present BOOLEAN,
     group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE
 );
+
+CREATE TABLE students_info (
+    id SERIAL PRIMARY KEY,
+    student_id INTEGER,
+    info TEXT,
+    FOREIGN KEY (student_id) REFERENCES students (id)
+);

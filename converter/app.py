@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for, a
 from converter.utils import generate_telegram_link, generate_whatsapp_link
 from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name, clear_database, \
     get_students_for_group, delete_student, update_student_notes1, update_student_notes2, \
-    get_absent_students, mark_student_absent, mark_student_present
+    get_absent_students, mark_student_absent, mark_student_present, get_student_by_id, get_student_info
 from converter.students import parse_and_add_students
 from converter.questions import questions
 from converter.question_logic import get_next_question
@@ -207,6 +207,17 @@ def reset_absent(group_name):
         return redirect(url_for('view_group', group_name=group_name))
     else:
         return render_template('error.html', message='Group not found')
+
+
+@app.route('/students/<int:student_id>', methods=['GET'])
+def view_student(student_id):
+    student = get_student_by_id(student_id)
+    if student:
+        # Получите информацию о студенте из таблицы students_info
+        info = get_student_info(student_id)
+        return render_template('view_student.html', student=student, info=info)
+    else:
+        abort(404)
 
 
 if __name__ == '__main__':

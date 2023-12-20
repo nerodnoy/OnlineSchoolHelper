@@ -111,3 +111,16 @@ def get_absent_students(group_id):
 def get_student_by_id(student_id):
     query = 'SELECT * FROM students WHERE id=(%s)'
     return execute_query(query, [student_id])
+
+
+def add_student_info(student_id, info):
+    query = 'INSERT INTO students_info (student_id, info) VALUES (%s, %s)'
+    data = (student_id, info)
+    execute_query(query, data, commit=True)
+
+
+def get_student_info(student_id):
+    query = 'SELECT info FROM students_info WHERE student_id = %s'
+    data = (student_id,)
+    result = execute_query(query, data)
+    return result[0] if result else None
