@@ -34,77 +34,87 @@ def index():
                            )
 
 
-# @app.route('/feedback', methods=['GET', 'POST'])
-# def feedback():
-#     answers = session.get('answers', [])
-#     current_question = session.get('current_question', 'Имя ученика')
-#     student_name = session.get('student_name', '')
-#     parent_name = session.get('parent_name', '')
-#
-#     if request.method == 'POST':
-#         if current_question == 'Имя ученика':
-#             student_name = request.form.get('student_name', '')
-#             session['student_name'] = student_name
-#             current_question = 'Имя родителя'
-#         elif current_question == 'Имя родителя':
-#             parent_name = request.form.get('parent_name', '')
-#             session['parent_name'] = parent_name
-#             current_question = 'Количество посещенных занятий'
-#         else:
-#             selected_option = request.form.get(current_question)
-#             if current_question in questions:
-#                 current_question_info = questions[current_question]
-#
-#                 # Проверяем, что список ответов не пуст
-#                 selected_answers = current_question_info['answers'].get(
-#                     selected_option, [])
-#                 if selected_answers:
-#
-#                     # Выбираем случайный вариант ответа
-#                     selected_answer = random.choice(selected_answers)
-#                     answers.append(selected_answer)
-#
-#                     # Определение следующего вопроса
-#                     follow_up_question = current_question_info.get(
-#                         'follow_up', {}).get(selected_option)
-#                     if follow_up_question:
-#                         current_question = follow_up_question
-#                     elif current_question_info.get('result', False):
-#
-#                         # Если это конечный результат, завершаем опрос
-#                         return render_template('result.html',
-#                                                result=answers,
-#                                                student_name=student_name,
-#                                                parent_name=parent_name
-#                                                )
-#                 else:
-#                     current_question = get_next_question(questions, current_question)
-#
-#     session['current_question'] = current_question
-#     session['answers'] = answers
-#
-#     return render_template('feedback.html',
-#                            current_question=current_question,
-#                            questions=questions,
-#                            answers=answers,
-#                            student_name=student_name,
-#                            parent_name=parent_name
-#                            )
+@app.route('/feedback', methods=['GET', 'POST'])
+def feedback():
+    answers = session.get('answers', [])
+    current_question = session.get('current_question', 'Имя ученика')
+    student_name = session.get('student_name', '')
+    parent_name = session.get('parent_name', '')
+
+    if request.method == 'POST':
+        if current_question == 'Имя ученика':
+            student_name = request.form.get('student_name', '')
+            session['student_name'] = student_name
+            current_question = 'Имя родителя'
+        elif current_question == 'Имя родителя':
+            parent_name = request.form.get('parent_name', '')
+            session['parent_name'] = parent_name
+            current_question = 'Количество посещенных занятий'
+        else:
+            selected_option = request.form.get(current_question)
+            if current_question in questions:
+                current_question_info = questions[current_question]
+
+                # Проверяем, что список ответов не пуст
+                selected_answers = current_question_info['answers'].get(
+                    selected_option, [])
+                if selected_answers:
+
+                    # Выбираем случайный вариант ответа
+                    selected_answer = random.choice(selected_answers)
+                    answers.append(selected_answer)
+
+                    # Определение следующего вопроса
+                    follow_up_question = current_question_info.get(
+                        'follow_up', {}).get(selected_option)
+                    if follow_up_question:
+                        current_question = follow_up_question
+                    elif current_question_info.get('result', False):
+
+                        # Если это конечный результат, завершаем опрос
+                        return render_template('result.html',
+                                               result=answers,
+                                               student_name=student_name,
+                                               parent_name=parent_name
+                                               )
+                else:
+                    current_question = get_next_question(questions, current_question)
+
+    session['current_question'] = current_question
+    session['answers'] = answers
+
+    return render_template('feedback.html',
+                           current_question=current_question,
+                           questions=questions,
+                           answers=answers,
+                           student_name=student_name,
+                           parent_name=parent_name
+                           )
+
+
+@app.route('/restart', methods=['POST'])
+def restart():
+    session.pop('answers', None)
+    session.pop('current_question', None)
+    session.pop('result', None)
+
+    # Устанавливаем первый вопрос для feedback
+    session['current_question'] = 'Имя ученика'
+
+    return redirect(url_for('feedback'))
 
 
 @app.route('/students/<int:student_id>/reset_feedback', methods=['POST'])
 def reset_feedback(student_id):
-    # Сбрасываем info у студента
     update_student_info(student_id, info='')
 
-    # Устанавливаем первый вопрос после сброса
+    # Устанавливаем первый вопрос для create_feedback
     first_question = 'Количество посещенных занятий'
 
     # Сохраняем текущий вопрос и ответы в сессию
     session['current_question'] = first_question
     session['answers'] = []
 
-    # Перенаправляем на страницу обратной связи для начала опроса заново
     return redirect(url_for('create_feedback', student_id=student_id))
 
 
@@ -228,7 +238,23 @@ def view_student_in_group(group_name, student_id):
 def create_feedback(student_id):
     student = get_student_by_id(student_id)
     answers = session.get('answers', [])
-    current_question = session.get('current_question', 'Количество посещенных занятий')
+
+    # Устанавливаем первый вопрос
+    first_question = 'Количество посещенных занятий'
+
+    # Устанавливаем текущий вопрос на первый, если это не было установлено
+    current_question = session.get('current_question', first_question)
+
+    # Проверяем, соответствует ли текущий студент студенту в сессии
+    if 'current_student' in session and session['current_student'] != student_id:
+
+        # Если студент изменился, сбросим сессию и начнем заново
+        session.pop('current_question', None)
+        session.pop('answers', None)
+        current_question = first_question  # Устанавливаем первый вопрос после сброса
+
+    # Сохраняем текущий студент в сессию
+    session['current_student'] = student_id
 
     if request.method == 'POST':
         selected_option = request.form.get(current_question)
@@ -259,10 +285,7 @@ def create_feedback(student_id):
             else:
                 current_question = get_next_question(questions, current_question)
 
-    # Если это первый вопрос после перезапуска, установим начальный вопрос
-    if 'current_question' not in session:
-        session['current_question'] = 'Количество посещенных занятий'
-
+    # Сохраняем текущий вопрос и ответы в сессию
     session['current_question'] = current_question
     session['answers'] = answers
 
