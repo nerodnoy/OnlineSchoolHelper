@@ -56,19 +56,25 @@ def get_all_groups():
     return execute_query(query, fetchall=True)
 
 
-def get_group_by_name(group_name):
-    query = 'SELECT * FROM groups WHERE name=(%s)'
-    return execute_query(query, [group_name])
+def get_group_by_id(group_id):
+    query = 'SELECT * FROM groups WHERE id=(%s)'
+    return execute_query(query, [group_id])
 
 
-def delete_group(group_name):
-    query = 'DELETE FROM groups WHERE name=(%s)'
-    execute_query(query, [group_name], commit=True)
+def delete_group_by_id(group_id):
+    query = 'DELETE FROM groups WHERE id=(%s)'
+    execute_query(query, [group_id], commit=True)
 
 
-def clear_database():
-    query = 'DELETE FROM groups'
-    execute_query(query, commit=True)
+# Функция для удаления группы и связанных записей в students_info
+def clear_database(group_id):
+    # Удалить связанные записи из students_info
+    query_info = 'DELETE FROM students_info WHERE student_id IN (SELECT id FROM students WHERE group_id = %s)'
+    execute_query(query_info, (group_id,), commit=True)
+
+    # Удалить группу
+    query_group = 'DELETE FROM groups WHERE id = %s'
+    execute_query(query_group, (group_id,), commit=True)
 
 
 def add_student(name, notes_lesson1=None, notes_lesson2=None, present=True, group_id=None):

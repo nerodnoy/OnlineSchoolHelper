@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, session, redirect, url_for, abort, jsonify
 from converter.utils import generate_telegram_link, generate_whatsapp_link
-from converter.database import create_table, add_group, get_all_groups, delete_group, get_group_by_name, clear_database, \
+from converter.database import create_table, add_group, get_all_groups, clear_database, \
     get_students_for_group, delete_student, update_student_notes1, update_student_notes2, \
     get_absent_students, mark_student_absent, mark_student_present, get_student_by_id, get_student_info, \
-    save_feedback_to_database, update_student_info
+    save_feedback_to_database, update_student_info, get_group_by_id, delete_group_by_id
 from converter.students import parse_and_add_students
 from converter.questions import questions
 from converter.question_logic import get_next_question
@@ -131,9 +131,10 @@ def create_group():
         day = request.form.get('day')
         link = request.form.get('link')
 
-        group_name = f"{skill}-{time}-{day}"
-        add_group(group_name, link)
-        return redirect(url_for('view_group', group_name=group_name))
+        group_name = f"{skill} {time} {day}"
+        added_group = add_group(group_name, link)
+
+        return redirect(url_for('list_groups'))
 
     return render_template('create_group.html')
 
@@ -144,92 +145,91 @@ def list_groups():
     return render_template('list_groups.html', groups=groups)
 
 
-@app.route('/groups/<group_name>/', methods=['GET'])
-def view_group(group_name):
-    group = get_group_by_name(group_name)
+@app.route('/groups/<int:group_id>/', methods=['GET'])
+def view_group(group_id):
+    group = get_group_by_id(group_id)
     if group:
-        group_id = group['id']  # Получаем ID группы
         students = get_students_for_group(group_id)
-        return render_template('view_group.html', group=group, students=students)
+        return render_template('view_group.html', group=group, students=students, group_id=group_id)
     else:
         abort(404)
 
 
-@app.route('/groups/<group_name>/delete', methods=['POST'])
-def delete_group_route(group_name):
-    delete_group(group_name)
+@app.route('/groups/<int:group_id>/delete', methods=['POST'])
+def delete_group_route(group_id):
+    delete_group_by_id(group_id)
     return redirect(url_for('list_groups'))
 
 
 @app.route('/clear_database', methods=['POST'])
 def clear_all_data():
-    clear_database()
+    groups = get_all_groups()
+    for group in groups:
+        clear_database(group['id'])
     return redirect(url_for('list_groups'))
 
 
-@app.route('/groups/<group_name>/add_students', methods=['POST'])
-def add_students(group_name):
+@app.route('/groups/<int:group_id>/add_students', methods=['POST'])
+def add_students(group_id):
     students_html = request.form.get('studentsHtml')
-    parse_and_add_students(group_name, students_html)
-    return redirect(url_for('view_group', group_name=group_name))
+    parse_and_add_students(group_id, students_html)
+    return redirect(url_for('view_group', group_id=group_id))
 
 
-@app.route('/groups/<group_name>/delete_student/<int:student_id>', methods=['POST'])
-def delete_student_route(group_name, student_id):
+@app.route('/groups/<int:group_id>/delete_student/<int:student_id>', methods=['POST'])
+def delete_student_route(group_id, student_id):
     delete_student(student_id)
-    return redirect(url_for('view_group', group_name=group_name))
+    return redirect(url_for('view_group', group_id=group_id))
 
 
-@app.route('/groups/<group_name>/students/<int:student_id>/update_notes_lesson1', methods=['POST'])
-def update_notes1(group_name, student_id):
+@app.route('/groups/<int:group_id>/students/<int:student_id>/update_notes_lesson1', methods=['POST'])
+def update_notes1(group_id, student_id):
     notes_lesson1 = request.form.get('notes_lesson1')
     update_student_notes1(student_id, notes_lesson1=notes_lesson1)
-    return redirect(url_for('view_group', group_name=group_name))
+    return redirect(url_for('view_group', group_id=group_id))
 
 
-@app.route('/groups/<group_name>/students/<int:student_id>/update_notes_lesson2', methods=['POST'])
-def update_notes2(group_name, student_id):
+@app.route('/groups/<int:group_id>/students/<int:student_id>/update_notes_lesson2', methods=['POST'])
+def update_notes2(group_id, student_id):
     notes_lesson2 = request.form.get('notes_lesson2')
     update_student_notes2(student_id, notes_lesson2=notes_lesson2)
-    return redirect(url_for('view_group', group_name=group_name))
+    return redirect(url_for('view_group', group_id=group_id))
 
 
-@app.route('/mark_absent/<group_name>/<student_id>', methods=['POST'])
-def mark_absent(group_name, student_id):
+@app.route('/mark_absent/<int:group_id>/<int:student_id>', methods=['POST'])
+def mark_absent(group_id, student_id):
     mark_student_absent(student_id)
-    return redirect(url_for('view_group', group_name=group_name))
+    return redirect(url_for('view_group', group_id=group_id))
 
 
-@app.route('/prepare_absent_list/<group_name>', methods=['POST'])
-def prepare_absent_list(group_name):
-    group = get_group_by_name(group_name)
+@app.route('/prepare_absent_list/<int:group_id>', methods=['POST'])
+def prepare_absent_list(group_id):
+    group = get_group_by_id(group_id)
     if group:
-        group_id = group['id']
         absent_students = get_absent_students(group_id)
-        return render_template('absent_list.html', absent_students=absent_students, group_name=group_name, group=group)
+        return render_template('absent_list.html', absent_students=absent_students, group_id=group_id, group=group)
     else:
         abort(404)
 
 
-@app.route('/reset_absent/<group_name>', methods=['POST'])
-def reset_absent(group_name):
-    group = get_group_by_name(group_name)
+@app.route('/reset_absent/<int:group_id>', methods=['POST'])
+def reset_absent(group_id):
+    group = get_group_by_id(group_id)
     if group:
-        group_id = group['id']
         students = get_students_for_group(group_id)
         for student in students:
             mark_student_present(student['id'])
-        return redirect(url_for('view_group', group_name=group_name))
+        return redirect(url_for('view_group', group_id=group_id))
     else:
         abort(404)
 
 
-@app.route('/groups/<group_name>/students/<int:student_id>', methods=['GET'])
-def view_student_in_group(group_name, student_id):
+@app.route('/groups/<int:group_id>/students/<int:student_id>', methods=['GET'])
+def view_student_in_group(group_id, student_id):
     student = get_student_by_id(student_id)
     if student:
         info = get_student_info(student_id)
-        return render_template('view_student.html', student=student, info=info, group_name=group_name)
+        return render_template('view_student.html', student=student, info=info, group_id=group_id)
     else:
         abort(404)
 
@@ -247,7 +247,6 @@ def create_feedback(student_id):
 
     # Проверяем, соответствует ли текущий студент студенту в сессии
     if 'current_student' in session and session['current_student'] != student_id:
-
         # Если студент изменился, сбросим сессию и начнем заново
         session.pop('current_question', None)
         session.pop('answers', None)
