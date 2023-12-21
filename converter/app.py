@@ -72,7 +72,7 @@ def feedback():
                     elif current_question_info.get('result', False):
 
                         # Если это конечный результат, завершаем опрос
-                        return render_template('result.html',
+                        return render_template('feedback_result.html',
                                                result=answers,
                                                student_name=student_name,
                                                parent_name=parent_name
@@ -276,7 +276,7 @@ def create_feedback(student_id):
                     save_feedback_to_database(student_id, feedback_data)
 
                     # Если это конечный результат, завершаем опрос
-                    return render_template('result_test.html',
+                    return render_template('student_result.html',
                                            result=answers,
                                            student_name=student['name'],
                                            student=student
