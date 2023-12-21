@@ -88,9 +88,14 @@ def get_students_for_group(group_id):
     return execute_query(query, [group_id], fetchall=True)
 
 
-def delete_student(student_id):
-    query = 'DELETE FROM students WHERE id=(%s)'
-    execute_query(query, [student_id], commit=True)
+def delete_student_and_info(student_id):
+    # Удаляем связанные записи из students_info
+    query_info = 'DELETE FROM students_info WHERE student_id = %s'
+    execute_query(query_info, [student_id], commit=True)
+
+    # Удаляем ученика
+    query_student = 'DELETE FROM students WHERE id = %s'
+    execute_query(query_student, [student_id], commit=True)
 
 
 def update_student_notes1(student_id, notes_lesson1):

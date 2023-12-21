@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, session, redirect, url_for, abort, jsonify
 from converter.utils import generate_telegram_link, generate_whatsapp_link
 from converter.database import create_table, add_group, get_all_groups, clear_database, \
-    get_students_for_group, delete_student, update_student_notes1, update_student_notes2, \
+    get_students_for_group, update_student_notes1, update_student_notes2, \
     get_absent_students, mark_student_absent, mark_student_present, get_student_by_id, get_student_info, \
-    save_feedback_to_database, update_student_info, get_group_by_id, delete_group_by_id
+    save_feedback_to_database, update_student_info, get_group_by_id, delete_group_by_id, delete_student_and_info
 from converter.students import parse_and_add_students
 from converter.questions import questions
 from converter.question_logic import get_next_question
@@ -178,7 +178,7 @@ def add_students(group_id):
 
 @app.route('/groups/<int:group_id>/delete_student/<int:student_id>', methods=['POST'])
 def delete_student_route(group_id, student_id):
-    delete_student(student_id)
+    delete_student_and_info(student_id)
     return redirect(url_for('view_group', group_id=group_id))
 
 
