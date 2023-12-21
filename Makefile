@@ -2,7 +2,7 @@ install:
 	poetry install
 
 dev:
-	poetry run flask --app converter:app run
+	poetry run flask --app osh:app run
 
 
 PORT ?= 8000

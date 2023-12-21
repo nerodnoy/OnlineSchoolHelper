@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "TelegramConverter"
+name = "OnlineSchoolHelper"
 version = "0.1.0"
 description = ""
 authors = ["Artem Iliushin <thatsforsure@mail.ru>"]
 readme = "README.md"
-packages = [{include = "converter"}]
+packages = [{include = "osh"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
