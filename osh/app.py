@@ -96,29 +96,16 @@ def restart():
     session.pop('current_question', None)
     session.pop('result', None)
 
-    # Устанавливаем первый вопрос для feedback
     session['current_question'] = 'Имя ученика'
 
     return redirect(url_for('feedback'))
 
 
-@app.route('/students/<int:student_id>/reset_feedback', methods=['POST'])
-def reset_feedback(student_id):
-    update_student_info(student_id, info='')
-
-    # Устанавливаем первый вопрос для create_feedback
-    first_question = 'Количество посещенных занятий'
-
-    # Сохраняем текущий вопрос и ответы в сессию
-    session['current_question'] = first_question
-    session['answers'] = []
-
-    return redirect(url_for('create_feedback', student_id=student_id))
-
-
-# @app.errorhandler(Exception)
-# def handle_error(e):
-#     return render_template('error.html', error=str(e))
+@app.errorhandler(Exception)
+def handle_error(e):
+    return render_template('error.html',
+                           error=str(e)
+                           )
 
 
 @app.route('/groups/create', methods=['GET', 'POST'])
@@ -140,7 +127,10 @@ def create_group():
 @app.route('/groups/', methods=['GET'])
 def list_groups():
     groups = get_all_groups()
-    return render_template('groups/group_list.html', groups=groups)
+
+    return render_template('groups/group_list.html',
+                           groups=groups
+                           )
 
 
 @app.route('/groups/<int:group_id>/', methods=['GET'])
@@ -148,14 +138,20 @@ def view_group(group_id):
     group = get_group_by_id(group_id)
     if group:
         students = get_students_for_group(group_id)
-        return render_template('groups/group_view.html', group=group, students=students, group_id=group_id)
+
+        return render_template('groups/group_view.html',
+                               group=group,
+                               students=students,
+                               group_id=group_id
+                               )
     else:
         abort(404)
 
 
 @app.route('/groups/<int:group_id>/delete', methods=['POST'])
-def delete_group_route(group_id):
+def delete_group(group_id):
     delete_group_by_id(group_id)
+
     return redirect(url_for('list_groups'))
 
 
@@ -164,6 +160,7 @@ def clear_all_data():
     groups = get_all_groups()
     for group in groups:
         clear_database(group['id'])
+
     return redirect(url_for('list_groups'))
 
 
@@ -171,19 +168,24 @@ def clear_all_data():
 def add_students(group_id):
     students_html = request.form.get('studentsHtml')
     parse_and_add_students(group_id, students_html)
-    return redirect(url_for('view_group', group_id=group_id))
+
+    return redirect(url_for('view_group',
+                            group_id=group_id))
 
 
 @app.route('/groups/<int:group_id>/delete_student/<int:student_id>', methods=['POST'])
-def delete_student_route(group_id, student_id):
+def delete_student(group_id, student_id):
     delete_student_and_info(student_id)
-    return redirect(url_for('view_group', group_id=group_id))
+
+    return redirect(url_for('view_group',
+                            group_id=group_id))
 
 
 @app.route('/groups/<int:group_id>/students/<int:student_id>/update_notes_lesson1', methods=['POST'])
 def update_notes1(group_id, student_id):
     notes_lesson1 = request.form.get('notes_lesson1')
     update_student_notes1(student_id, notes_lesson1=notes_lesson1)
+
     return redirect(url_for('view_group', group_id=group_id))
 
 
@@ -191,43 +193,55 @@ def update_notes1(group_id, student_id):
 def update_notes2(group_id, student_id):
     notes_lesson2 = request.form.get('notes_lesson2')
     update_student_notes2(student_id, notes_lesson2=notes_lesson2)
+
     return redirect(url_for('view_group', group_id=group_id))
 
 
 @app.route('/mark_absent/<int:group_id>/<int:student_id>', methods=['POST'])
 def mark_absent(group_id, student_id):
     mark_student_absent(student_id)
+
     return redirect(url_for('view_group', group_id=group_id))
 
 
-@app.route('/prepare_absent_list/<int:group_id>', methods=['POST'])
-def prepare_absent_list(group_id):
+@app.route('/create_absent_list/<int:group_id>', methods=['POST'])
+def create_absent_list(group_id):
     group = get_group_by_id(group_id)
     if group:
         absent_students = get_absent_students(group_id)
-        return render_template('groups/students/student_absent.html', absent_students=absent_students, group_id=group_id, group=group)
+
+        return render_template('groups/students/student_absent.html',
+                               absent_students=absent_students,
+                               group_id=group_id,
+                               group=group)
     else:
         abort(404)
 
 
 @app.route('/reset_absent/<int:group_id>', methods=['POST'])
-def reset_absent(group_id):
+def reset_absent_list(group_id):
     group = get_group_by_id(group_id)
     if group:
         students = get_students_for_group(group_id)
         for student in students:
             mark_student_present(student['id'])
+
         return redirect(url_for('view_group', group_id=group_id))
     else:
         abort(404)
 
 
 @app.route('/groups/<int:group_id>/students/<int:student_id>', methods=['GET'])
-def view_student_in_group(group_id, student_id):
+def view_student(group_id, student_id):
     student = get_student_by_id(student_id)
     if student:
         info = get_student_info(student_id)
-        return render_template('groups/students/student_view.html', student=student, info=info, group_id=group_id)
+
+        return render_template('groups/students/student_view.html',
+                               student=student,
+                               info=info,
+                               group_id=group_id
+                               )
     else:
         abort(404)
 
@@ -237,20 +251,15 @@ def create_feedback(student_id):
     student = get_student_by_id(student_id)
     answers = session.get('answers', [])
 
-    # Устанавливаем первый вопрос
     first_question = 'Количество посещенных занятий'
 
-    # Устанавливаем текущий вопрос на первый, если это не было установлено
     current_question = session.get('current_question', first_question)
 
-    # Проверяем, соответствует ли текущий студент студенту в сессии
     if 'current_student' in session and session['current_student'] != student_id:
-        # Если студент изменился, сбросим сессию и начнем заново
         session.pop('current_question', None)
         session.pop('answers', None)
-        current_question = first_question  # Устанавливаем первый вопрос после сброса
+        current_question = first_question
 
-    # Сохраняем текущий студент в сессию
     session['current_student'] = student_id
 
     if request.method == 'POST':
@@ -258,14 +267,12 @@ def create_feedback(student_id):
         if current_question in questions:
             current_question_info = questions[current_question]
 
-            # Проверяем, что список ответов не пуст
             selected_answers = current_question_info['answers'].get(selected_option, [])
+
             if selected_answers:
-                # Выбираем случайный вариант ответа
                 selected_answer = random.choice(selected_answers)
                 answers.append(selected_answer)
 
-                # Определение следующего вопроса
                 follow_up_question = current_question_info.get('follow_up', {}).get(selected_option)
                 if follow_up_question:
                     current_question = follow_up_question
@@ -273,7 +280,6 @@ def create_feedback(student_id):
                     feedback_data = ', '.join(answers)
                     save_feedback_to_database(student_id, feedback_data)
 
-                    # Если это конечный результат, завершаем опрос
                     return render_template('groups/students/student_result.html',
                                            result=answers,
                                            student_name=student['name'],
@@ -282,7 +288,6 @@ def create_feedback(student_id):
             else:
                 current_question = get_next_question(questions, current_question)
 
-    # Сохраняем текущий вопрос и ответы в сессию
     session['current_question'] = current_question
     session['answers'] = answers
 
@@ -293,6 +298,18 @@ def create_feedback(student_id):
                            student_name=student['name'],
                            student=student
                            )
+
+
+@app.route('/students/<int:student_id>/reset_feedback', methods=['POST'])
+def reset_feedback(student_id):
+    update_student_info(student_id, info='')
+
+    first_question = 'Количество посещенных занятий'
+
+    session['current_question'] = first_question
+    session['answers'] = []
+
+    return redirect(url_for('create_feedback', student_id=student_id))
 
 
 if __name__ == '__main__':
