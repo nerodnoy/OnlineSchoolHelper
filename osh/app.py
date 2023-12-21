@@ -1,12 +1,10 @@
-from flask import Flask, render_template, request, session, redirect, url_for, abort, jsonify
-from converter.utils import generate_telegram_link, generate_whatsapp_link
-from converter.database import create_table, add_group, get_all_groups, clear_database, \
+from flask import Flask, render_template, request, session, redirect, url_for, abort
+from osh.utility import generate_telegram_link, generate_whatsapp_link, parse_and_add_students, get_next_question
+from osh.database import create_table, add_group, get_all_groups, clear_database, \
     get_students_for_group, update_student_notes1, update_student_notes2, \
     get_absent_students, mark_student_absent, mark_student_present, get_student_by_id, get_student_info, \
     save_feedback_to_database, update_student_info, get_group_by_id, delete_group_by_id, delete_student_and_info
-from converter.students import parse_and_add_students
-from converter.questions import questions
-from converter.question_logic import get_next_question
+from osh.questions import questions
 from dotenv import load_dotenv
 import random
 import os

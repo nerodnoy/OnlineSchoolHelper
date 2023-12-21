@@ -66,13 +66,9 @@ def delete_group_by_id(group_id):
     execute_query(query, [group_id], commit=True)
 
 
-# Функция для удаления группы и связанных записей в students_info
 def clear_database(group_id):
-    # Удалить связанные записи из students_info
     query_info = 'DELETE FROM students_info WHERE student_id IN (SELECT id FROM students WHERE group_id = %s)'
     execute_query(query_info, (group_id,), commit=True)
-
-    # Удалить группу
     query_group = 'DELETE FROM groups WHERE id = %s'
     execute_query(query_group, (group_id,), commit=True)
 
@@ -88,16 +84,6 @@ def get_students_for_group(group_id):
     return execute_query(query, [group_id], fetchall=True)
 
 
-def delete_student_and_info(student_id):
-    # Удаляем связанные записи из students_info
-    query_info = 'DELETE FROM students_info WHERE student_id = %s'
-    execute_query(query_info, [student_id], commit=True)
-
-    # Удаляем ученика
-    query_student = 'DELETE FROM students WHERE id = %s'
-    execute_query(query_student, [student_id], commit=True)
-
-
 def update_student_notes1(student_id, notes_lesson1):
     query = 'UPDATE students SET notes_lesson1=%s WHERE id=%s'
     data = (notes_lesson1, student_id)
@@ -108,6 +94,13 @@ def update_student_notes2(student_id, notes_lesson2):
     query = 'UPDATE students SET notes_lesson2=%s WHERE id=%s'
     data = (notes_lesson2, student_id)
     execute_query(query, data, commit=True)
+
+
+def delete_student_and_info(student_id):
+    query_info = 'DELETE FROM students_info WHERE student_id = %s'
+    execute_query(query_info, [student_id], commit=True)
+    query_student = 'DELETE FROM students WHERE id = %s'
+    execute_query(query_student, [student_id], commit=True)
 
 
 def mark_student_absent(student_id):
