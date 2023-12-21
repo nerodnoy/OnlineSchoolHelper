@@ -72,7 +72,7 @@ def feedback():
                     elif current_question_info.get('result', False):
 
                         # Если это конечный результат, завершаем опрос
-                        return render_template('feedback_result.html',
+                        return render_template('feedback/feedback_result.html',
                                                result=answers,
                                                student_name=student_name,
                                                parent_name=parent_name
@@ -83,7 +83,7 @@ def feedback():
     session['current_question'] = current_question
     session['answers'] = answers
 
-    return render_template('feedback.html',
+    return render_template('feedback/feedback.html',
                            current_question=current_question,
                            questions=questions,
                            answers=answers,
@@ -132,17 +132,17 @@ def create_group():
         link = request.form.get('link')
 
         group_name = f"{skill} {time} {day}"
-        added_group = add_group(group_name, link)
+        add_group(group_name, link)
 
         return redirect(url_for('list_groups'))
 
-    return render_template('create_group.html')
+    return render_template('groups/group_create.html')
 
 
 @app.route('/groups/', methods=['GET'])
 def list_groups():
     groups = get_all_groups()
-    return render_template('list_groups.html', groups=groups)
+    return render_template('groups/group_list.html', groups=groups)
 
 
 @app.route('/groups/<int:group_id>/', methods=['GET'])
@@ -150,7 +150,7 @@ def view_group(group_id):
     group = get_group_by_id(group_id)
     if group:
         students = get_students_for_group(group_id)
-        return render_template('view_group.html', group=group, students=students, group_id=group_id)
+        return render_template('groups/group_view.html', group=group, students=students, group_id=group_id)
     else:
         abort(404)
 
@@ -207,7 +207,7 @@ def prepare_absent_list(group_id):
     group = get_group_by_id(group_id)
     if group:
         absent_students = get_absent_students(group_id)
-        return render_template('absent_list.html', absent_students=absent_students, group_id=group_id, group=group)
+        return render_template('groups/students/student_absent.html', absent_students=absent_students, group_id=group_id, group=group)
     else:
         abort(404)
 
@@ -229,7 +229,7 @@ def view_student_in_group(group_id, student_id):
     student = get_student_by_id(student_id)
     if student:
         info = get_student_info(student_id)
-        return render_template('view_student.html', student=student, info=info, group_id=group_id)
+        return render_template('groups/students/student_view.html', student=student, info=info, group_id=group_id)
     else:
         abort(404)
 
@@ -276,7 +276,7 @@ def create_feedback(student_id):
                     save_feedback_to_database(student_id, feedback_data)
 
                     # Если это конечный результат, завершаем опрос
-                    return render_template('student_result.html',
+                    return render_template('groups/students/student_result.html',
                                            result=answers,
                                            student_name=student['name'],
                                            student=student
@@ -288,7 +288,7 @@ def create_feedback(student_id):
     session['current_question'] = current_question
     session['answers'] = answers
 
-    return render_template('create_feedback.html',
+    return render_template('groups/students/student_feedback.html',
                            current_question=current_question,
                            questions=questions,
                            answers=answers,
