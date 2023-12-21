@@ -1,19 +1,45 @@
 # [Тестим](https://telegram-converter.onrender.com)
 
-1) Каждый ученик обладает своей гиперссылкой, которую попробуем взять из страницы группы
-берет её из его имени
-
-При переходе по имени ученика:
-
-- В идеале: мы сразу имеем его имя, имя родителя, телефон
-- Не в идеале: ничего не имеем, кроме имени, которое мы возьмем из таблицы учеников
-
-* В идеале: нажимаем "Создать обратную связь" и начинаем сразу с вопросом по существу
-* Не в идеале: нажимаем "Создать обратную связь" и начинаем с самого начала
-
-*** По результатам составления обратной связи выводится итоговый результат
-
-- В идеале: два результата (для голоса и для таблички); с этим позже разберемся 
+1) Подумать над двумя результатами (для голоса и для таблички);
+2) Внешний вид;
+3) Организовать модули:
+4) 
+OnlineSchoolHelper/
+|-- app.py
+|-- groups/
+|   |-- __init__.py
+|   |-- groups.py
+|   |-- templates/
+|       |-- groups/
+|           |-- group_list.html
+|           |-- group_view.html
+|           |-- group_create.html
+|-- students/
+|   |-- __init__.py
+|   |-- students.py
+|   |-- templates/
+|       |-- students/
+|           |-- student_absent.html
+|           |-- student_feedback.html
+|           |-- student_result.html
+|           |-- student_view.html
+|-- feedback/
+|   |-- __init__.py
+|   |-- feedback.py
+|   |-- templates/
+|       |-- feedback/
+|           |-- feedback.html
+|           |-- feedback_result.html
+|-- database/
+|   |-- __init__.py
+|   |-- operations.py
+|-- messenger/
+|   |-- __init__.py
+|   |-- messanger.py
+|   |-- templates/
+|       |-- messenger/
+|           |-- messenger.html
+|-- utility.py
 
 Придумать:
 
