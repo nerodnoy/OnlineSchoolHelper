@@ -54,9 +54,7 @@
     </form>
 
     <!-- Кнопка Начать сначала -->
-    <form method="post" action="/restart" class="mt-2">
-        <button type="submit" class="w-full bg-red-500 text-white p-3 rounded-md hover:bg-red-600">
-            Начать сначала
-        </button>
-    </form>
+            <form method="post" action="{{ url_for('feedback.restart') }}">
+                <button type="submit">Начать сначала</button>
+            </form>
 {% endblock %}

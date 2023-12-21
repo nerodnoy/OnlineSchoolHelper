@@ -6,7 +6,7 @@
     <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Create New Group</h1>
 
     <!-- Форма создания новой группы -->
-    <form action="{{ url_for('create_group') }}" method="post">
+    <form action="{{ url_for('groups.create_group') }}" method="post">
         <label for="skill">Уровень:</label>
         <select id="skill" name="skill" required>
             <option value="start">START</option>
@@ -37,7 +37,7 @@
     </form>
 
 
-    <a href="{{ url_for('list_groups') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+    <a href="{{ url_for('groups.list_groups') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
         Back to Groups
     </a>
 {% endblock %}

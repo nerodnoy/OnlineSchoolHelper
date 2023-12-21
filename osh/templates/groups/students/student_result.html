@@ -37,7 +37,7 @@
                 Скопировать текст для отправки
             </button>
 
-            <form method="post" action="{{ url_for('reset_feedback', student_id=student.id) }}">
+            <form method="post" action="{{ url_for('feedback.reset_feedback', student_id=student.id) }}">
                 <button type="submit">Начать сначала</button>
             </form>
 

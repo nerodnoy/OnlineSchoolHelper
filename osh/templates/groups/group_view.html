@@ -9,7 +9,7 @@
     <h2> <a href="{{ group.link }}" target="_blank" id="groupLink">Группа {{ group.name }}</a></h2>
 
     <!-- Форма для вставки HTML-разметки с учениками -->
-    <form id="studentsForm" method="post" action="{{ url_for('add_students', group_id=group.id) }}">
+    <form id="studentsForm" method="post" action="{{ url_for('students.add_students', group_id=group.id) }}">
         <label for="studentsHtml">HTML-разметка с учениками:</label>
         <textarea id="studentsHtml" name="studentsHtml" rows="1" required></textarea>
         <button type="submit">Добавить студентов</button>
@@ -30,16 +30,16 @@
             {% for student in students %}
                 <tr>
                     <td class="border border-gray-300 px-4 py-2">
-                        <a href="{{ url_for('view_student', group_id=group.id, student_id=student.id) }}">{{ student.name }}</a>
+                        <a href="{{ url_for('students.view_student', group_id=group.id, student_id=student.id) }}">{{ student.name }}</a>
                     </td>
                     <td class="border border-gray-300 px-4 py-2">
-                        <form method="post" action="{{ url_for('update_notes1', group_id=group.id, student_id=student.id) }}">
+                        <form method="post" action="{{ url_for('students.update_notes1', group_id=group.id, student_id=student.id) }}">
                             <textarea name="notes_lesson1" rows="2" cols="30">{{ student.notes_lesson1 }}</textarea>
                             <button type="submit">Сохранить</button>
                         </form>
                     </td>
                     <td class="border border-gray-300 px-4 py-2">
-                        <form method="post" action="{{ url_for('update_notes2', group_id=group.id, student_id=student.id) }}">
+                        <form method="post" action="{{ url_for('students.update_notes2', group_id=group.id, student_id=student.id) }}">
                             <textarea name="notes_lesson2" rows="2" cols="30">{{ student.notes_lesson2 }}</textarea>
                             <button type="submit">Сохранить</button>
                         </form>
@@ -51,7 +51,7 @@
                             {{ "" if student.present else "❌"}}
                         </span>
                         {% if student.present == True %}
-                            <form method="post" action="{{ url_for('mark_absent', group_id=group.id, student_id=student.id) }}">
+                            <form method="post" action="{{ url_for('students.mark_absent', group_id=group.id, student_id=student.id) }}">
                                 <button type="submit">✅</button>
                             </form>
                         {% endif %}
@@ -65,7 +65,7 @@
                         <div id="confirmationModal_{{ student.id }}" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center">
                             <div class="bg-white p-8 rounded shadow-md">
                                 <p>Вы уверены, что хотите удалить ученика "{{ student.name }}"?</p>
-                                <form method="post" action="{{ url_for('delete_student', group_id=group.id, student_id=student.id) }}">
+                                <form method="post" action="{{ url_for('students.delete_student', group_id=group.id, student_id=student.id) }}">
                                     <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
                                         Да, удалить
                                     </button>
@@ -82,7 +82,7 @@
     </table>
 
     <!-- Кнопка для создания списка отсутствующих -->
-    <form method="post" action="{{ url_for('create_absent_list', group_id=group.id) }}">
+    <form method="post" action="{{ url_for('students.create_absent_list', group_id=group.id) }}">
         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
             Создать список отсутствующих
         </button>
@@ -94,12 +94,12 @@
     </button>
 
     <!-- Кнопка для возврата к списку групп -->
-    <a href="{{ url_for('list_groups') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+    <a href="{{ url_for('groups.list_groups') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
         Назад к списку групп
     </a>
 
     <!-- Кнопка для "сброса" присутствия на уроке -->
-    <form method="post" action="{{ url_for('reset_absent_list', group_id=group.id) }}">
+    <form method="post" action="{{ url_for('students.reset_absent_list', group_id=group.id) }}">
         <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
             Сбросить посещаемость
         </button>
@@ -109,7 +109,7 @@
     <div id="confirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center">
         <div class="bg-white p-8 rounded shadow-md">
             <p>Вы уверены, что хотите удалить группу "{{ group.name }}"?</p>
-            <form id="deleteForm" method="post" action="{{ url_for('delete_group', group_id=group.id) }}">
+            <form id="deleteForm" method="post" action="{{ url_for('groups.delete_group', group_id=group.id) }}">
                 <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
                     Да, удалить
                 </button>

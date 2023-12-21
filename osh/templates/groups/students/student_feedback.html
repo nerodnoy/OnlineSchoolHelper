@@ -3,7 +3,7 @@
 {% block title %}Create Feedback{% endblock %}
 
 {% block content %}
-    <form method="post" action="{{ url_for('create_feedback', student_id=student.id) }}">
+    <form method="post" action="{{ url_for('feedback.create_feedback', student_id=student.id) }}">
         <h3 class="text-xl font-semibold mb-2">{{ current_question }}</h3>
         <!-- Вопросы -->
         {% if current_question in questions %}
@@ -26,7 +26,7 @@
             </div>
         {% endif %}
     </form>
-    <form method="post" action="{{ url_for('reset_feedback', student_id=student.id) }}">
+    <form method="post" action="{{ url_for('feedback.reset_feedback', student_id=student.id) }}">
          <button type="submit">Начать сначала</button>
     </form>
 {% endblock %}

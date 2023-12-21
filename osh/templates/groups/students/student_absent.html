@@ -16,7 +16,7 @@
             {% for student in absent_students %}
                 {% if not student.present %}
                     Ждём на занятии:
-                    <li><a href="{{ url_for('view_student_in_group', group_id=group.id, student_id=student.id) }}">{{ student.name }}</a></li>
+                    <li><a href="{{ url_for('students.view_student', group_id=group.id, student_id=student.id) }}">{{ student.name }}</a></li>
                     <!-- Другие детали студента, если необходимо -->
                 {% endif %}
             {% endfor %}
@@ -31,7 +31,7 @@
     </button>
 
     <!-- Кнопка для возврата к группе -->
-    <a href="{{ url_for('view_group', group_id=group.id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+    <a href="{{ url_for('groups.view_group', group_id=group.id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
         Назад к группе
     </a>
 
