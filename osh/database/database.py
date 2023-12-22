@@ -44,7 +44,6 @@ def create_table():
                         )''')
 
 
-
 def add_group(group_name, link=None):
     query = 'INSERT INTO groups (name, link) VALUES (%s, %s) RETURNING id'
     data = (group_name, link)
