@@ -27,7 +27,7 @@
 
     <!-- Кнопка для перехода к созданию новой группы -->
     <a href="{{ url_for('groups.create_group') }}">
-        Create New Group
+        Создать новую группу
     </a>
 
     <!-- Кнопка для очистки базы данных -->
@@ -53,14 +53,5 @@
     </div>
 
     <!-- скрипт для подтверждения -->
-    <script>
-            function showClearConfirmationModal() {
-                document.getElementById('clearConfirmationModal').classList.remove('hidden');
-            }
-
-            function hideClearConfirmationModal() {
-                document.getElementById('clearConfirmationModal').classList.add('hidden');
-            }
-
-    </script>
+    <script src="{{ url_for('groups.static', filename='js/clear_data.js') }}"></script>
 {% endblock %}

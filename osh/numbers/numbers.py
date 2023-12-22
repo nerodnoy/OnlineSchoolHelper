@@ -1,14 +1,14 @@
 from flask import Blueprint, render_template, request
 from osh.utility import generate_telegram_link, generate_whatsapp_link
 
-link_bp = Blueprint('numbers', __name__,
-                    static_folder='static',
-                    template_folder='templates'
-                    )
+num_bp = Blueprint('numbers', __name__,
+                   static_folder='static',
+                   template_folder='templates'
+                   )
 
 
-@link_bp.route('/', methods=['GET', 'POST'])
-def link_generator():
+@num_bp.route('/', methods=['GET', 'POST'])
+def generate_number():
     telegram_link = None
     whatsapp_link = None
     if request.method == 'POST':

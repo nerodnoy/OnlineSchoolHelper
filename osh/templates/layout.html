@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
-    <!-- Подключите ваши стили здесь, если они потребуются -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
 
@@ -12,7 +12,7 @@
 <nav>
     <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/link">Numbers</a></li>
+        <li><a href="/numbers">Numbers</a></li>
         <li><a href="/feedback">Feedback</a></li>
         <li><a href="/groups">Groups</a></li>
     </ul>
@@ -22,11 +22,6 @@
 <div>
     {% block content %}{% endblock %}
 </div>
-
-<!-- Закрывашка -->
-<footer>
-    <p>Check out the code on <a href="https://github.com/nerodnoy" target="_blank">GitHub</a></p>
-</footer>
 
 </body>
 </html>

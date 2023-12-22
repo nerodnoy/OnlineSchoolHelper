@@ -3,17 +3,19 @@
 {% block title %}Генератор ссылки на мессенджеры{% endblock %}
 
 {% block content %}
-    <h1>Генератор ссылки на мессенджеры</h1>
-    <form method="post" action="/">
-        <label for="phone_number">Введите номер телефона:</label>
-        <input type="text" name="phone_number" required>
-        <button type="submit">Создать ссылку</button>
-    </form>
-    {% if telegram_link and whatsapp_link %}
-        <div>
-            <h2> Результат </h2>
-            <p>Telegram: <a href="https://{{ telegram_link }}" target="_blank">{{ telegram_link }}</a></p>
-            <p>Whatsapp: <a href="https://{{ whatsapp_link }}" target="_blank">{{ whatsapp_link }}</a></p>
-        </div>
-    {% endif %}
+    <div class="form-container">
+        <h1>Генератор ссылки на мессенджеры</h1>
+        <form method="post" action="{{ url_for('numbers.generate_number') }}">
+            <label for="phone_number">Введите номер телефона:</label>
+            <input type="text" name="phone_number" required>
+            <button type="submit">Создать ссылку</button>
+        </form>
+        {% if telegram_link and whatsapp_link %}
+            <div class="result-container">
+            <h2 class="result-text">Результат</h2>
+                <p class="links">Telegram: <a href="https://{{ telegram_link }}" target="_blank">{{ telegram_link }}</a></p>
+                <p class="links">Whatsapp: <a href="https://{{ whatsapp_link }}" target="_blank">{{ whatsapp_link }}</a></p>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

@@ -3,35 +3,35 @@
 {% block title %}Итоговый результат{% endblock %}
 
 {% block content %}
-    <div>
-        <h1>Result</h1>
+    <div class="result-container">
+        <h1>Результат</h1>
 
         {% if result %}
-            <div>
+            <div class="result-message">
                 <p>Добрый день, {{ parent_name }}, меня зовут Илюшин Артём, я преподаватель онлайн-школы Алгоритмика.</p>
                 <br>
                 <p>Мне бы хотелось поделиться с вами результатами {{ student_name }} по итогам прохождения мини-курсов по изучению Python.</p>
             </div>
 
-            <div id="finalResultText">
+            <div id="finalResultText" class="result-text">
                 {% for answer in result %}
                     <p>{{ answer|replace('имя_ученика', student_name) }}</p>
                 {% endfor %}
             </div>
 
-            <button id="copyButton">
+            <button id="copyButton" class="copy-button">
                 Скопировать результат
             </button>
 
             <form method="post" action="{{ url_for('feedback.restart') }}">
-                <button type="submit">Начать сначала</button>
+                <button type="submit" class="restart-button">Начать сначала</button>
             </form>
 
-            <div id="TextToParents">
+            <div id="TextToParents" class="text-to-parents">
                 <p>Добрый день! Это онлайн-школа "Алгоритмика". Делимся с вами обратной связью по итогам прохождения мини-курсов по изучению Python ☺️</p>
             </div>
 
-            <button id="copyButton2">
+            <button id="copyButton2" class="copy-button">
                 Скопировать текст для отправки
             </button>
 
