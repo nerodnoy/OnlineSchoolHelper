@@ -1,52 +1,47 @@
 {% extends 'layout.html' %}
 
-{% block title %}Group Details{% endblock %}
+{% block title %}Детали группы{% endblock %}
 
 {% block content %}
-    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Group Details</h1>
+    <h1>Детали группы</h1>
 
-    <!-- Спрятал ссылку на группу внутрь имени -->
-    <h2> <a href="{{ group.link }}" target="_blank" id="groupLink">Группа {{ group.name }}</a></h2>
+    <h2><a href="{{ group.link }}" target="_blank" id="groupLink">Группа {{ group.name }}</a></h2>
 
-    <!-- Форма для вставки HTML-разметки с учениками -->
     <form id="studentsForm" method="post" action="{{ url_for('students.add_students', group_id=group.id) }}">
         <label for="studentsHtml">HTML-разметка с учениками:</label>
         <textarea id="studentsHtml" name="studentsHtml" rows="1" required></textarea>
         <button type="submit">Добавить студентов</button>
     </form>
 
-    <!-- Таблица с учениками -->
-    <table class="min-w-full">
+    <table>
         <thead>
             <tr>
-                <th class="border border-gray-300 px-4 py-2">Имя ученика</th>
-                <th class="border border-gray-300 px-4 py-2">Заметки по 1-му уроку</th>
-                <th class="border border-gray-300 px-4 py-2">Заметки по 2-му уроку</th>
-                <th class="border border-gray-300 px-4 py-2">Присутствует на уроке</th>
-                <th class="border border-gray-300 px-4 py-2">Действия</th>
+                <th>Имя ученика</th>
+                <th>Заметки по 1-му уроку</th>
+                <th>Заметки по 2-му уроку</th>
+                <th>Присутствует на уроке</th>
+                <th>Действия</th>
             </tr>
         </thead>
         <tbody>
             {% for student in students %}
                 <tr>
-                    <td class="border border-gray-300 px-4 py-2">
+                    <td>
                         <a href="{{ url_for('students.view_student', group_id=group.id, student_id=student.id) }}">{{ student.name }}</a>
                     </td>
-                    <td class="border border-gray-300 px-4 py-2">
+                    <td>
                         <form method="post" action="{{ url_for('students.update_notes1', group_id=group.id, student_id=student.id) }}">
                             <textarea name="notes_lesson1" rows="2" cols="30">{{ student.notes_lesson1 }}</textarea>
                             <button type="submit">Сохранить</button>
                         </form>
                     </td>
-                    <td class="border border-gray-300 px-4 py-2">
+                    <td>
                         <form method="post" action="{{ url_for('students.update_notes2', group_id=group.id, student_id=student.id) }}">
                             <textarea name="notes_lesson2" rows="2" cols="30">{{ student.notes_lesson2 }}</textarea>
                             <button type="submit">Сохранить</button>
                         </form>
                     </td>
-
-                    <!-- PRESENT -->
-                    <td class="border border-gray-300 px-4 py-2">
+                    <td>
                         <span class="presence-indicator {% if student.present %}present{% else %}absent{% endif %}">
                             {{ "" if student.present else "❌"}}
                         </span>
@@ -56,24 +51,14 @@
                             </form>
                         {% endif %}
                     </td>
-
-                    <!-- Кнопка для удаления ученика с подтверждением -->
-                    <td class="border border-gray-300 px-4 py-2">
-                        <button onclick="showDeleteConfirmation('{{ student.name }}', {{ student.id }})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Удалить</button>
-
-                        <!-- Модальное окно с подтверждением удаления ученика -->
-                        <div id="confirmationModal_{{ student.id }}" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center">
-                            <div class="bg-white p-8 rounded shadow-md">
-                                <p>Вы уверены, что хотите удалить ученика "{{ student.name }}"?</p>
-                                <form method="post" action="{{ url_for('students.delete_student', group_id=group.id, student_id=student.id) }}">
-                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
-                                        Да, удалить
-                                    </button>
-                                    <button type="button" onclick="hideDeleteConfirmation('{{ student.id }}')" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
-                                        Отмена
-                                    </button>
-                                </form>
-                            </div>
+                    <td>
+                        <button onclick="showDeleteConfirmation('{{ student.name }}', {{ student.id }})">Удалить</button>
+                        <div id="confirmationModal_{{ student.id }}" class="hidden">
+                            <p>Вы уверены, что хотите удалить ученика "{{ student.name }}"?</p>
+                            <form method="post" action="{{ url_for('students.delete_student', group_id=group.id, student_id=student.id) }}">
+                                <button type="submit">Да, удалить</button>
+                                <button type="button" onclick="hideDeleteConfirmation('{{ student.id }}')">Отмена</button>
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -81,60 +66,25 @@
         </tbody>
     </table>
 
-    <!-- Кнопка для создания списка отсутствующих -->
     <form method="post" action="{{ url_for('students.create_absent_list', group_id=group.id) }}">
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-            Создать список отсутствующих
-        </button>
+        <button type="submit">Создать список отсутствующих</button>
     </form>
 
-    <!-- Кнопка для удаления группы с подтверждением -->
-    <button onclick="showConfirmationModal()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
-        Delete Group
-    </button>
+    <button onclick="showConfirmationModal()">Удалить группу</button>
 
-    <!-- Кнопка для возврата к списку групп -->
-    <a href="{{ url_for('groups.list_groups') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-        Назад к списку групп
-    </a>
+    <a href="{{ url_for('groups.list_groups') }}">Назад к списку групп</a>
 
-    <!-- Кнопка для "сброса" присутствия на уроке -->
     <form method="post" action="{{ url_for('students.reset_absent_list', group_id=group.id) }}">
-        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
-            Сбросить посещаемость
-        </button>
+        <button type="submit">Сбросить посещаемость</button>
     </form>
 
-    <!-- Модальное окно с подтверждением удаления группы -->
-    <div id="confirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center">
-        <div class="bg-white p-8 rounded shadow-md">
-            <p>Вы уверены, что хотите удалить группу "{{ group.name }}"?</p>
-            <form id="deleteForm" method="post" action="{{ url_for('groups.delete_group', group_id=group.id) }}">
-                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
-                    Да, удалить
-                </button>
-                <button type="button" onclick="hideConfirmationModal()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
-                    Отмена
-                </button>
-            </form>
-        </div>
+    <div id="confirmationModal" class="hidden">
+        <p>Вы уверены, что хотите удалить группу "{{ group.name }}"?</p>
+        <form id="deleteForm" method="post" action="{{ url_for('groups.delete_group', group_id=group.id) }}">
+            <button type="submit">Да, удалить</button>
+            <button type="button" onclick="hideConfirmationModal()">Отмена</button>
+        </form>
     </div>
+    <script src="{{ url_for('groups.static', filename='js/delete_group.js') }}"></script>
 
-    <script>
-        function showConfirmationModal() {
-            document.getElementById('confirmationModal').classList.remove('hidden');
-        }
-
-        function hideConfirmationModal() {
-            document.getElementById('confirmationModal').classList.add('hidden');
-        }
-
-        function showDeleteConfirmation(studentName, studentId) {
-            document.getElementById('confirmationModal_' + studentId).classList.remove('hidden');
-        }
-
-        function hideDeleteConfirmation(studentId) {
-            document.getElementById('confirmationModal_' + studentId).classList.add('hidden');
-        }
-    </script>
 {% endblock %}

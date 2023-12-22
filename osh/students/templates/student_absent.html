@@ -3,7 +3,7 @@
 {% block title %}Absent List{% endblock %}
 
 {% block content %}
-    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Список отсутствующих</h1>
+    <h1>Список отсутствующих</h1>
 
     <h2>{{ group.name }}</h2>
     <br>
@@ -26,14 +26,10 @@
     </ul>
 
     <!-- Кнопка для копирования текста -->
-    <button id="copyButton" class="copy-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-        Копировать текст
-    </button>
+    <button id="copyButton">Копировать текст</button>
 
     <!-- Кнопка для возврата к группе -->
-    <a href="{{ url_for('groups.view_group', group_id=group.id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-        Назад к группе
-    </a>
+    <a href="{{ url_for('groups.view_group', group_id=group.id) }}">Назад к группе</a>
 
     <!-- В зависимости от дня недели пишем разным кураторам -->
     {% if 'Понедельник' in group.name %}
@@ -43,32 +39,7 @@
     {% endif %}
 
     <!-- Скрипт для копирования текста с id=studentsList -->
+    <!-- Скрипт для копирования текста с id=studentsList -->
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var clipboard = new ClipboardJS('#copyButton', {
-                text: function () {
-                    var copiedText = '';
-                    copiedText += 'Ссылка на группу: ' + decodeURIComponent('{{ group.link }}') + '\n\n';
-                    copiedText += 'Ждём на занятии:\n\n';
-
-                    var studentsList = document.getElementById('studentsList');
-                    for (var i = 0; i < studentsList.children.length; i++) {
-                        copiedText += studentsList.children[i].innerText + '\n';
-                    }
-
-                    return copiedText;
-                }
-            });
-
-            clipboard.on('success', function (e) {
-                alert('Текст скопирован в буфер обмена!');
-                e.clearSelection();
-            });
-
-            clipboard.on('error', function (e) {
-                alert('Не удалось скопировать текст. Используйте сочетание клавиш.');
-            });
-        });
-    </script>
+    <script src="{{ url_for('students.static', filename='js/copy_students.js') }}"></script>
 {% endblock %}

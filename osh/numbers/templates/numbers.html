@@ -1,21 +1,19 @@
 {% extends "layout.html" %}
 
-{% block title %}Messenger Link Generator{% endblock %}
+{% block title %}Генератор ссылки на мессенджеры{% endblock %}
 
 {% block content %}
-    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Messenger Link Generator</h1>
-    <form class="mb-8" method="post" action="/">
-        <label for="phone_number" class="block text-gray-700 text-sm font-bold mb-2">Enter a phone number:</label>
-        <input type="text" name="phone_number" class="w-full p-3 border border-gray-300 rounded-md" required>
-        <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">Generate Link</button>
+    <h1>Генератор ссылки на мессенджеры</h1>
+    <form method="post" action="/">
+        <label for="phone_number">Введите номер телефона:</label>
+        <input type="text" name="phone_number" required>
+        <button type="submit">Создать ссылку</button>
     </form>
     {% if telegram_link and whatsapp_link %}
-        <div class="text-center">
-            <h2 class="text-2xl font-semibold text-blue-500 mb-2">Result</h2>
-            <p>Telegram: <a href="https://{{ telegram_link }}" target="_blank" class="text-blue-500 hover:underline">{{ telegram_link }}</a></p>
-            <p>Whatsapp: <a href="https://{{ whatsapp_link }}" target="_blank" class="text-blue-500 hover:underline">{{ whatsapp_link }}</a></p>
+        <div>
+            <h2> Результат </h2>
+            <p>Telegram: <a href="https://{{ telegram_link }}" target="_blank">{{ telegram_link }}</a></p>
+            <p>Whatsapp: <a href="https://{{ whatsapp_link }}" target="_blank">{{ whatsapp_link }}</a></p>
         </div>
     {% endif %}
 {% endblock %}
-
-

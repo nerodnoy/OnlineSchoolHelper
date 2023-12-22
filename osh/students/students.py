@@ -6,7 +6,7 @@ from osh.database.database import (
 )
 from osh.utility import parse_and_add_students
 
-students_bp = Blueprint('students', __name__, template_folder='templates')
+students_bp = Blueprint('students', __name__, static_folder='static', template_folder='templates')
 
 
 @students_bp.route('/<int:group_id>/add_students', methods=['POST'])

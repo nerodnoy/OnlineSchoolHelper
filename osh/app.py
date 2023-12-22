@@ -10,8 +10,9 @@ load_dotenv()
 
 secret_key = os.getenv('SECRET_KEY')
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', template_folder='templates')
 app.secret_key = secret_key
+
 
 app.register_blueprint(groups_bp, url_prefix='/groups')
 app.register_blueprint(students_bp, url_prefix='/students')

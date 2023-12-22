@@ -1,24 +1,23 @@
 {% extends 'layout.html' %}
 
-{% block title %}All Groups{% endblock %}
+{% block title %}Список групп{% endblock %}
 
 {% block content %}
-    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">All Groups</h1>
+    <h1>Список групп</h1>
 
     <!-- Выводим список всех созданных групп в виде таблицы -->
-    <!-- Выводим список всех созданных групп в виде таблицы -->
-    <table class="min-w-full">
+    <table>
         <thead>
             <tr>
-                <th class="border border-gray-300 px-4 py-2">ID</th>
-                <th class="border border-gray-300 px-4 py-2">Group Name</th>
+                <th>ID</th>
+                <th>Имя группы</th>
             </tr>
         </thead>
         <tbody>
             {% for group in groups %}
                 <tr>
-                    <td class="border border-gray-300 px-4 py-2">{{ group.id }}</td>
-                    <td class="border border-gray-300 px-4 py-2">
+                    <td>{{ group.id }}</td>
+                    <td>
                         <a href="{{ url_for('groups.view_group', group_id=group.id) }}">{{ group.name }}</a>
                     </td>
                 </tr>
@@ -27,26 +26,26 @@
     </table>
 
     <!-- Кнопка для перехода к созданию новой группы -->
-    <a href="{{ url_for('groups.create_group') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+    <a href="{{ url_for('groups.create_group') }}">
         Create New Group
     </a>
 
     <!-- Кнопка для очистки базы данных -->
     <form action="{{ url_for('groups.clear_all_data') }}" method="post">
-        <button type="button" onclick="showClearConfirmationModal()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
-            Clear All Groups
+        <button type="button" onclick="showClearConfirmationModal()">
+            Удалить все группы
         </button>
     </form>
 
     <!-- Модальное окно с подтверждением очистки базы данных -->
-    <div id="clearConfirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center">
-        <div class="bg-white p-8 rounded shadow-md">
-            <p>Вы уверены, что хотите очистить все группы?</p>
+    <div id="clearConfirmationModal" class="hidden">
+        <div>
+            <p>Вы уверены, что хотите удалить все группы?</p>
             <form id="clearDeleteForm" method="post" action="{{ url_for('groups.clear_all_data') }}">
-                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
-                    Да, очистить
+                <button type="submit">
+                    Да, удалить
                 </button>
-                <button type="button" onclick="hideClearConfirmationModal()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-4 ml-2">
+                <button type="button" onclick="hideClearConfirmationModal()">
                     Отмена
                 </button>
             </form>
@@ -54,13 +53,5 @@
     </div>
 
     <!-- скрипт для подтверждения -->
-    <script>
-        function showClearConfirmationModal() {
-            document.getElementById('clearConfirmationModal').classList.remove('hidden');
-        }
-
-        function hideClearConfirmationModal() {
-            document.getElementById('clearConfirmationModal').classList.add('hidden');
-        }
-    </script>
+    <script src="{{ url_for('groups.static', filename='js/clear_data.js') }}"></script>
 {% endblock %}

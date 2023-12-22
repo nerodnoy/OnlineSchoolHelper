@@ -1,9 +1,9 @@
 {% extends 'layout.html' %}
 
-{% block title %}Create New Group{% endblock %}
+{% block title %}Создание новой группы{% endblock %}
 
 {% block content %}
-    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Create New Group</h1>
+    <h1>Создать новую группу</h1>
 
     <!-- Форма создания новой группы -->
     <form action="{{ url_for('groups.create_group') }}" method="post">
@@ -29,15 +29,14 @@
             <option value="Пятница">Пятница</option>
         </select>
 
-    <!-- Поле для ввода ссылки -->
-    <label for="link">Ссылка на группу:</label>
-    <input type="text" id="link" name="link">
+        <!-- Поле для ввода ссылки -->
+        <label for="link">Ссылка на группу:</label>
+        <input type="text" id="link" name="link">
 
-    <button type="submit">Create</button>
+        <button type="submit">Создать</button>
     </form>
 
-
-    <a href="{{ url_for('groups.list_groups') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-        Back to Groups
+    <a href="{{ url_for('groups.list_groups') }}">
+        Назад к группам
     </a>
 {% endblock %}

@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request
 from osh.utility import generate_telegram_link, generate_whatsapp_link
 
-link_bp = Blueprint('link', __name__, template_folder='templates')
+link_bp = Blueprint('numbers', __name__, static_folder='static', template_folder='templates')
 
 
 @link_bp.route('/', methods=['GET', 'POST'])

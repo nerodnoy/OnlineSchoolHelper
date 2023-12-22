@@ -6,7 +6,7 @@ from osh.database.database import (
 from osh.questions import questions
 import random
 
-feedback_bp = Blueprint('feedback', __name__, template_folder='templates')
+feedback_bp = Blueprint('feedback', __name__, static_folder='static', template_folder='templates')
 
 
 @feedback_bp.route('/', methods=['GET', 'POST'])

@@ -1,60 +1,48 @@
 {% extends 'layout.html' %}
 
-{% block title %}Feedback Generator{% endblock %}
+{% block title %}Обратная связь{% endblock %}
 
 {% block content %}
-    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Feedback Generator</h1>
+    <h1>Создание обратной связи</h1>
 
-    <form method="post" action="/feedback">
-        <h3 class="text-xl font-semibold mb-2">{{ current_question }}</h3>
+    <form method="post" action="{{ url_for('feedback.feedback') }}">
+        <h3>{{ current_question }}</h3>
 
-        <!-- Вопрос про имя ученика -->
         {% if current_question == 'Имя ученика' %}
-            <div class="mt-4">
-                <input type="text" name="student_name" id="student_name" placeholder="Введите имя ученика" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
-                <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">
-                    Submit
-                </button>
+            <div>
+                <input type="text" name="student_name" id="student_name" placeholder="Введите имя ученика" required>
+                <button type="submit">Submit</button>
             </div>
-
-        <!-- Вопрос про имя родителя -->
         {% elif current_question == 'Имя родителя' %}
-            <div class="mt-4">
-                <input type="text" name="parent_name" id="parent_name" placeholder="Введите имя родителя" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
-                <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">
-                    Submit
-                </button>
+            <div>
+                <input type="text" name="parent_name" id="parent_name" placeholder="Введите имя родителя" required>
+                <button type="submit">Submit</button>
             </div>
-
-        <!-- Остальные вопросы -->
         {% elif current_question in questions %}
             {% set current_question_info = questions[current_question] %}
-            <div class="flex flex-col space-y-2">
+            <div>
                 {% if current_question_info['options'] %}
                     {% for option in current_question_info['options'] %}
-                        <div class="flex items-center">
+                        <div>
                             <input type="radio" name="{{ current_question }}" value="{{ option }}" id="{{ option }}">
-                            <label for="{{ option }}" class="ml-2">{{ option }}</label>
+                            <label for="{{ option }}">{{ option }}</label>
                         </div>
                     {% endfor %}
                 {% endif %}
 
-                <!-- Для input -->
                 {% if current_question_info['input'] %}
-                    <div class="flex items-center">
-                        <label for="custom_input" class="ml-2">Ваш ответ:</label>
-                        <input type="text" name="custom_input" id="custom_input" required class="mt-1 p-2 border border-gray-300 rounded-md w-full">
+                    <div>
+                        <label for="custom_input">Ваш ответ:</label>
+                        <input type="text" name="custom_input" id="custom_input" required>
                     </div>
                 {% endif %}
-                <button type="submit" class="mt-4 w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">
-                    Submit
-                </button>
+                <button type="submit">Submit</button>
             </div>
         {% endif %}
     </form>
 
     <!-- Кнопка Начать сначала -->
-            <form method="post" action="{{ url_for('feedback.restart') }}">
-                <button type="submit">Начать сначала</button>
-            </form>
+    <form method="post" action="{{ url_for('feedback.restart') }}">
+        <button type="submit">Начать сначала</button>
+    </form>
 {% endblock %}
