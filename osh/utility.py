@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from osh.database import add_student
+from osh.database.database import add_student
 
 
 def parse_and_add_students(group_id, html_content):

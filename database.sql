@@ -13,11 +13,9 @@ CREATE TABLE IF NOT EXISTS students (
     group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE
 );
 
-CREATE TABLE students_info (
+CREATE TABLE IF NOT EXISTS students_info (
     id SERIAL PRIMARY KEY,
-    student_id INTEGER,
-    group_id INTEGER,
-    info TEXT,
-    FOREIGN KEY (student_id) REFERENCES students (id),
-    FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE CASCADE
+    student_id INTEGER REFERENCES students(id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
+    info TEXT
 );

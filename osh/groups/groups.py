@@ -1,9 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, abort
-from osh.database import add_group, get_all_groups, clear_database, \
+from osh.database.database import add_group, get_all_groups, clear_database, \
     get_students_for_group, get_group_by_id, delete_group_by_id
-from osh.utility import parse_and_add_students
 
-groups_bp = Blueprint('groups', __name__)
+groups_bp = Blueprint('groups', __name__, template_folder='templates')
 
 
 @groups_bp.route('/create', methods=['GET', 'POST'])
@@ -19,14 +18,14 @@ def create_group():
 
         return redirect(url_for('groups.list_groups'))
 
-    return render_template('groups/group_create.html')
+    return render_template('group_create.html')
 
 
 @groups_bp.route('/', methods=['GET'])
 def list_groups():
     groups = get_all_groups()
 
-    return render_template('groups/group_list.html',
+    return render_template('group_list.html',
                            groups=groups)
 
 
@@ -36,7 +35,7 @@ def view_group(group_id):
     if group:
         students = get_students_for_group(group_id)
 
-        return render_template('groups/group_view.html',
+        return render_template('group_view.html',
                                group=group,
                                students=students,
                                group_id=group_id)

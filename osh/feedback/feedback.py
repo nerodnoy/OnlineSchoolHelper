@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
 from osh.utility import get_next_question
-from osh.database import save_feedback_to_database, update_student_info, get_student_by_id
+from osh.database.database import (
+    save_feedback_to_database, update_student_info, get_student_by_id
+)
 from osh.questions import questions
 import random
 
-feedback_bp = Blueprint('feedback', __name__)
+feedback_bp = Blueprint('feedback', __name__, template_folder='templates')
 
 
 @feedback_bp.route('/', methods=['GET', 'POST'])
@@ -41,8 +43,7 @@ def feedback():
                     if follow_up_question:
                         current_question = follow_up_question
                     elif current_question_info.get('result', False):
-
-                        return render_template('feedback/feedback_result.html',
+                        return render_template('feedback_result.html',
                                                result=answers,
                                                student_name=student_name,
                                                parent_name=parent_name
@@ -53,7 +54,7 @@ def feedback():
     session['current_question'] = current_question
     session['answers'] = answers
 
-    return render_template('feedback/feedback.html',
+    return render_template('feedback.html',
                            current_question=current_question,
                            questions=questions,
                            answers=answers,
@@ -100,14 +101,15 @@ def create_feedback(student_id):
                 selected_answer = random.choice(selected_answers)
                 answers.append(selected_answer)
 
-                follow_up_question = current_question_info.get('follow_up', {}).get(selected_option)
+                follow_up_question = current_question_info.get(
+                    'follow_up', {}).get(selected_option)
                 if follow_up_question:
                     current_question = follow_up_question
                 elif current_question_info.get('result', False):
                     feedback_data = ', '.join(answers)
                     save_feedback_to_database(student_id, feedback_data)
 
-                    return render_template('groups/students/student_result.html',
+                    return render_template('student_result.html',
                                            result=answers,
                                            student_name=student['name'],
                                            student=student
@@ -118,7 +120,7 @@ def create_feedback(student_id):
     session['current_question'] = current_question
     session['answers'] = answers
 
-    return render_template('groups/students/student_feedback.html',
+    return render_template('student_feedback.html',
                            current_question=current_question,
                            questions=questions,
                            answers=answers,

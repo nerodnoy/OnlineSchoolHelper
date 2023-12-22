@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
-from osh.groups import groups_bp
-from osh.students import students_bp
-from osh.feedback import feedback_bp
-from osh.messenger import link_bp
+from osh.groups.groups import groups_bp
+from osh.students.students import students_bp
+from osh.feedback.feedback import feedback_bp
+from osh.numbers.numbers import link_bp
 from flask import Flask, render_template
 import os
 

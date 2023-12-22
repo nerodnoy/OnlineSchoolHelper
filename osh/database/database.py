@@ -44,6 +44,7 @@ def create_table():
                         )''')
 
 
+
 def add_group(group_name, link=None):
     query = 'INSERT INTO groups (name, link) VALUES (%s, %s) RETURNING id'
     data = (group_name, link)
@@ -62,19 +63,23 @@ def get_group_by_id(group_id):
 
 
 def delete_group_by_id(group_id):
-    query = 'DELETE FROM groups WHERE id=(%s)'
-    execute_query(query, [group_id], commit=True)
+    query_delete_group = 'DELETE FROM groups WHERE id=(%s)'
+    execute_query(query_delete_group, [group_id], commit=True)
 
 
 def clear_database(group_id):
-    query_info = 'DELETE FROM students_info WHERE student_id IN (SELECT id FROM students WHERE group_id = %s)'
+    query_info = 'DELETE FROM students_info WHERE group_id = %s'
     execute_query(query_info, (group_id,), commit=True)
-    query_group = 'DELETE FROM groups WHERE id = %s'
-    execute_query(query_group, (group_id,), commit=True)
+    query_delete_students = 'DELETE FROM students WHERE group_id = %s'
+    execute_query(query_delete_students, (group_id,), commit=True)
 
 
 def add_student(name, notes_lesson1=None, notes_lesson2=None, present=True, group_id=None):
-    query = 'INSERT INTO students (name, notes_lesson1, notes_lesson2, present, group_id) VALUES (%s, %s, %s, %s, %s) RETURNING id'
+    query = '''
+        INSERT INTO students (
+        name, notes_lesson1, notes_lesson2, present, group_id
+        ) VALUES (%s, %s, %s, %s, %s) RETURNING id
+        '''
     data = (name, notes_lesson1 or '', notes_lesson2 or '', present, group_id)
     execute_query(query, data, commit=True)
 
@@ -130,7 +135,10 @@ def add_student_info(student_id, info):
 
 
 def get_student_info(student_id):
-    query = 'SELECT si.info FROM students_info si WHERE si.student_id = %s ORDER BY id DESC LIMIT 1'
+    query = '''
+        SELECT si.info FROM students_info si
+        WHERE si.student_id = %s ORDER BY id DESC LIMIT 1
+     '''
     data = (student_id,)
     result = execute_query(query, data)
     return result['info'] if result else None
