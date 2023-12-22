@@ -71,6 +71,8 @@ def clear_database(group_id):
     execute_query(query_info, (group_id,), commit=True)
     query_delete_students = 'DELETE FROM students WHERE group_id = %s'
     execute_query(query_delete_students, (group_id,), commit=True)
+    query_delete_group = 'DELETE FROM groups WHERE id = %s'
+    execute_query(query_delete_group, (group_id,), commit=True)
 
 
 def add_student(name, notes_lesson1=None, notes_lesson2=None, present=True, group_id=None):

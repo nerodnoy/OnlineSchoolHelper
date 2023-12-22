@@ -32,7 +32,7 @@
 
     <!-- Кнопка для очистки базы данных -->
     <form action="{{ url_for('groups.clear_all_data') }}" method="post">
-        <button type="button" onclick="showClearConfirmationModal()">
+        <button type="submit" onclick="showClearConfirmationModal()">
             Удалить все группы
         </button>
     </form>
@@ -53,5 +53,14 @@
     </div>
 
     <!-- скрипт для подтверждения -->
-    <script src="{{ url_for('groups.static', filename='js/clear_data.js') }}"></script>
+    <script>
+            function showClearConfirmationModal() {
+                document.getElementById('clearConfirmationModal').classList.remove('hidden');
+            }
+
+            function hideClearConfirmationModal() {
+                document.getElementById('clearConfirmationModal').classList.add('hidden');
+            }
+
+    </script>
 {% endblock %}
