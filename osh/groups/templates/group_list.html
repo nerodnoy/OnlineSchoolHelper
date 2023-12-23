@@ -6,7 +6,7 @@
     <h1>Список групп</h1>
 
     <!-- Выводим список всех созданных групп в виде таблицы -->
-    <table>
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>ID</th>
@@ -26,32 +26,22 @@
     </table>
 
     <!-- Кнопка для перехода к созданию новой группы -->
-    <a href="{{ url_for('groups.create_group') }}">
-        Создать новую группу
-    </a>
+
+    <form action="{{ url_for('groups.create_group') }}" method="get">
+        <button type="submit" class="btn btn-primary">
+            Создать новую группу
+        </button>
+    </form>
+
+    <br>
 
     <!-- Кнопка для очистки базы данных -->
     <form action="{{ url_for('groups.clear_all_data') }}" method="post">
-        <button type="submit" onclick="showClearConfirmationModal()">
+        <button type="submit" class="btn btn-danger">
             Удалить все группы
         </button>
     </form>
 
-    <!-- Модальное окно с подтверждением очистки базы данных -->
-    <div id="clearConfirmationModal" class="hidden">
-        <div>
-            <p>Вы уверены, что хотите удалить все группы?</p>
-            <form id="clearDeleteForm" method="post" action="{{ url_for('groups.clear_all_data') }}">
-                <button type="submit">
-                    Да, удалить
-                </button>
-                <button type="button" onclick="hideClearConfirmationModal()">
-                    Отмена
-                </button>
-            </form>
-        </div>
-    </div>
 
-    <!-- скрипт для подтверждения -->
     <script src="{{ url_for('groups.static', filename='js/clear_data.js') }}"></script>
 {% endblock %}

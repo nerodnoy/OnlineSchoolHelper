@@ -8,7 +8,7 @@
         <form method="post" action="{{ url_for('numbers.generate_number') }}">
             <label for="phone_number">Введите номер телефона:</label>
             <input type="text" name="phone_number" required>
-            <button type="submit">Создать ссылку</button>
+            <button type="submit" class="btn btn-primary">Создать ссылку</button>
         </form>
         {% if telegram_link and whatsapp_link %}
             <div class="result-container">

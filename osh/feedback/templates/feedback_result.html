@@ -19,21 +19,21 @@
                 {% endfor %}
             </div>
 
-            <button id="copyButton" class="copy-button">
+            <button id="copyButton" class="copy-button btn btn-success">
                 Скопировать результат
             </button>
-
-            <form method="post" action="{{ url_for('feedback.restart') }}">
-                <button type="submit" class="restart-button">Начать сначала</button>
-            </form>
 
             <div id="TextToParents" class="text-to-parents">
                 <p>Добрый день! Это онлайн-школа "Алгоритмика". Делимся с вами обратной связью по итогам прохождения мини-курсов по изучению Python ☺️</p>
             </div>
 
-            <button id="copyButton2" class="copy-button">
+            <button id="copyButton2" class="copy-button btn btn-success">
                 Скопировать текст для отправки
             </button>
+
+            <form method="post" action="{{ url_for('feedback.restart') }}">
+                    <button type="submit" class="restart-button btn btn-danger">Начать сначала</button>
+            </form>
 
             <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
             <script src="{{ url_for('feedback.static', filename='js/copy_result.js') }}"></script>

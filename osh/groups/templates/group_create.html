@@ -9,8 +9,8 @@
     <form action="{{ url_for('groups.create_group') }}" method="post">
         <label for="skill">Уровень:</label>
         <select id="skill" name="skill" required>
-            <option value="start">START</option>
-            <option value="pro">PRO</option>
+            <option value="START">START</option>
+            <option value="PRO">PRO</option>
         </select>
 
         <label for="time">Время:</label>
@@ -33,10 +33,10 @@
         <label for="link">Ссылка на группу:</label>
         <input type="text" id="link" name="link">
 
-        <button type="submit">Создать</button>
+        <button type="submit" class="btn btn-primary">Создать</button>
     </form>
 
-    <a href="{{ url_for('groups.list_groups') }}">
-        Назад к группам
-    </a>
+    <form method="get" action="{{ url_for('groups.list_groups') }}">
+        <button class="btn btn-primary">Назад к группам</button>
+    </form>
 {% endblock %}

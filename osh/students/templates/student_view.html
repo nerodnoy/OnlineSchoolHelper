@@ -5,7 +5,7 @@
 {% block content %}
     <h1>Информация об ученике</h1>
 
-    <h2>Имя ученика: {{ student.name }}</h2>
+    <h2>{{ student.name }}</h2>
 
     <h3>Заметки по 1-му уроку:</h3>
     <p>{{ student.notes_lesson1 }}</p>
@@ -13,14 +13,15 @@
     <h3>Заметки по 2-му уроку:</h3>
     <p>{{ student.notes_lesson2 }}</p>
 
-    <!-- Итоговый результат генерации обратной связи -->
+    <h3>Обратная связь:</h3>
+    {% if info %}
+        <p>{{ info }}</p>
+    {% else %}
+        <p>Обратная связь пока не сгенерирована.</p>
+    {% endif %}
 
-    <h3>Итоговый результат генерации обратной связи:</h3>
-    <p>{{ info }}</p>
-
-    <!-- Кнопка "Создать ОС" с ссылкой на форму обратной связи -->
     <form method="post" action="{{ url_for('feedback.create_feedback', student_id=student.id) }}">
-        <button type="submit">Создать ОС</button>
+        <button type="submit" class="btn btn-primary">Создать обратную связь</button>
     </form>
 
     <!-- Кнопка для возврата к группе -->

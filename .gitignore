@@ -8,4 +8,4 @@ coverage.xml
 .pytest_cache/
 .idea/
 .env
-.static/
+static/

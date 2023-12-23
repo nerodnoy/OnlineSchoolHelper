@@ -13,18 +13,18 @@
                     <h2>{{ current_question_info['question_text'] }}</h2>
                     {% for option in current_question_info['options'] %}
                         <div>
-                            <input type="radio" name="{{ current_question }}" value="{{ option }}" id="{{ option }}">
+                            <input class="form-check-input" type="checkbox" name="{{ current_question }}" value="{{ option }}" id="{{ option }}">
                             <label for="{{ option }}">{{ option }}</label>
                         </div>
                     {% endfor %}
                 {% endif %}
 
-                <button type="submit">Submit</button>
+                <button type="submit" class="btn btn-success">Submit</button>
 
             </div>
         {% endif %}
     </form>
     <form method="post" action="{{ url_for('feedback.reset_feedback', student_id=student.id) }}">
-         <button type="submit">Начать сначала</button>
+         <button type="submit" class="btn btn-danger">Начать сначала</button>
     </form>
 {% endblock %}

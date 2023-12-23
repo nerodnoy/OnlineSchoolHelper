@@ -5,8 +5,6 @@
 {% block content %}
     <div>
         <h1>Итоговый результат</h1>
-
-        <!-- Результат -->
         {% if result %}
             <div>
                 <p>Добрый день, меня зовут Илюшин Артём, я преподаватель онлайн-школы Алгоритмика.</p>
@@ -14,34 +12,26 @@
                 <p>Мне бы хотелось поделиться с вами результатами {{ student_name }} по итогам прохождения мини-курсов по изучению Python.</p>
             </div>
 
-            <!-- Результаты -->
             <div id="finalResultText">
                 {% for answer in result %}
-                    <!-- Заменяем пробелы на имя ученика -->
                     <p>{{ answer|replace('имя_ученика', student_name) }}</p>
                 {% endfor %}
             </div>
 
-            <!-- Кнопки и форма -->
             <div>
-                <!-- Кнопка "Скопировать результат" -->
-                <button id="copyButton">Скопировать результат</button>
+                <button id="copyButton" class="copy-button btn btn-success">Скопировать результат</button>
 
-                <!-- Текст для чата -->
                 <div id="TextToParents">
                     <p>Добрый день! Это онлайн-школа "Алгоритмика". Делимся с вами обратной связью по итогам прохождения мини-курсов по изучению Python ☺️</p>
                 </div>
 
-                <!-- Кнопка "Скопировать текст для отправки" -->
-                <button id="copyButton2">Скопировать текст для отправки</button>
+                <button id="copyButton2" class="copy-button btn btn-success">Скопировать текст для отправки</button>
 
-                <!-- Форма для сброса обратной связи -->
                 <form method="post" action="{{ url_for('feedback.reset_feedback', student_id=student.id) }}">
-                    <button type="submit">Начать сначала</button>
+                    <button type="submit" class="restart-button btn btn-danger">Начать сначала</button>
                 </form>
             </div>
 
-            <!-- Скрипты для копирования текста -->
             <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
             <script src="{{ url_for('students.static', filename='js/copy_result.js') }}"></script>
             <script src="{{ url_for('students.static', filename='js/copy_parents.js') }}"></script>

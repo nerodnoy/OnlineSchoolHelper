@@ -10,13 +10,13 @@
 
         {% if current_question == 'Имя ученика' %}
             <div>
-                <input type="text" name="student_name" id="student_name" placeholder="Введите имя ученика" required>
-                <button type="submit">Submit</button>
+                <input type="text" name="student_name" id="student_name" placeholder="Например, Иван" required>
+                <button type="submit" class="btn btn-success">Submit</button>
             </div>
         {% elif current_question == 'Имя родителя' %}
             <div>
-                <input type="text" name="parent_name" id="parent_name" placeholder="Введите имя родителя" required>
-                <button type="submit">Submit</button>
+                <input type="text" name="parent_name" id="parent_name" placeholder="Например, Светлана" required>
+                <button type="submit" class="btn btn-success">Submit</button>
             </div>
         {% elif current_question in questions %}
             {% set current_question_info = questions[current_question] %}
@@ -24,7 +24,7 @@
                 {% if current_question_info['options'] %}
                     {% for option in current_question_info['options'] %}
                         <div>
-                            <input type="radio" name="{{ current_question }}" value="{{ option }}" id="{{ option }}">
+                            <input class="form-check-input" type="checkbox" name="{{ current_question }}" value="{{ option }}" id="{{ option }}">
                             <label for="{{ option }}">{{ option }}</label>
                         </div>
                     {% endfor %}
@@ -36,13 +36,13 @@
                         <input type="text" name="custom_input" id="custom_input" required>
                     </div>
                 {% endif %}
-                <button type="submit">Submit</button>
+                <button type="submit" class="btn btn-success">Submit</button>
             </div>
         {% endif %}
     </form>
 
     <!-- Кнопка Начать сначала -->
     <form method="post" action="{{ url_for('feedback.restart') }}">
-        <button type="submit">Начать сначала</button>
+        <button type="submit" class="btn btn-danger">Начать сначала</button>
     </form>
 {% endblock %}
