@@ -1,12 +1,11 @@
 # [osh](https://online-school-helper.onrender.com) [![linter](https://github.com/nerodnoy/OnlineSchoolHelper/actions/workflows/linter.yml/badge.svg)](https://github.com/nerodnoy/OnlineSchoolHelper/actions/workflows/linter.yml)
 
-1) Подумать над двумя результатами (для голоса и для таблички);
-2) Внешний вид;
+1) Подумать над возможностью получать сразу два результата:
+- для голосового сообщения
+- для таблицы Excel
 
-Придумать:
+2) Внешний вид
 
-I. Логику для заполнения таблицы
+3) README.md
 
-1) Автоматический перенос текста в таблицу Excel
-- Перенос имен в таблицу
-- Перенос обратной связи в таблицу
+4) Узнать о возможности переносить результат в таблицу Excel
