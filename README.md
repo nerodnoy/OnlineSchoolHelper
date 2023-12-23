@@ -1,4 +1,4 @@
-# [osh](https://online-school-helper.onrender.com) [![linter](https://github.com/nerodnoy/OnlineSchoolHelper/actions/workflows/linter.yml/badge.svg)](https://github.com/nerodnoy/OnlineSchoolHelper/actions/workflows/linter.yml)
+[![linter](https://github.com/nerodnoy/OnlineSchoolHelper/actions/workflows/linter.yml/badge.svg)](https://github.com/nerodnoy/OnlineSchoolHelper/actions/workflows/linter.yml)
 
 1) Подумать над возможностью получать сразу два результата:
 - для голосового сообщения
