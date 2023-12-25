@@ -14,7 +14,9 @@
         {% if absent_students %}
             {% for student in absent_students %}
                 {% if not student.present %}
-                        <a href="{{ url_for('students.view_student', group_id=group.id, student_id=student.id) }}">{{ student.name }}</a>
+                    {{ student.name }}<br>
+                    <!-- заменю эту строчку на гиперссылку на ученика, когда добавлю кнопку скопировать -->
+                    <!-- <a href="{{ url_for('students.view_student', group_id=group.id, student_id=student.id) }}">{{ student.name }}</a> -->
                 {% endif %}
             {% endfor %}
         {% else %}
