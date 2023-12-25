@@ -16,7 +16,8 @@
         <tbody>
             {% for group in groups %}
                 <tr>
-                    <td>{{ group.id }}</td>
+                    <!-- <td>{{ group.id }}</td> - если хотим по id отсортировать -->
+                    <td>{{ loop.index }}</td>
                     <td>
                         <a href="{{ url_for('groups.view_group', group_id=group.id) }}">{{ group.name }}</a>
                     </td>

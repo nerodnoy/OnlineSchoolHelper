@@ -13,33 +13,30 @@
         <button type="submit" class="btn btn-success">Добавить студентов</button>
     </form>
 
+<form method="post" action="{{ url_for('students.update_all_notes', group_id=group.id) }}">
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Имя ученика</th>
+                <th>#</th>
+                <th>Имя</th>
                 <th>Заметки по 1-му уроку</th>
                 <th>Заметки по 2-му уроку</th>
-                <th>Присутствует на уроке</th>
+                <th>Присутствие</th>
                 <th>Действия</th>
             </tr>
         </thead>
         <tbody>
             {% for student in students %}
                 <tr>
+                    <td>{{ loop.index }}</td>
                     <td>
                         <a href="{{ url_for('students.view_student', group_id=group.id, student_id=student.id) }}">{{ student.name }}</a>
                     </td>
                     <td>
-                        <form method="post" action="{{ url_for('students.update_notes1', group_id=group.id, student_id=student.id) }}">
-                            <textarea name="notes_lesson1" rows="2" cols="30">{{ student.notes_lesson1 }}</textarea>
-                            <button type="submit">Сохранить</button>
-                        </form>
+                        <textarea name="notes_lesson1_{{ student.id }}" rows="2" cols="30">{{ student.notes_lesson1 }}</textarea>
                     </td>
                     <td>
-                        <form method="post" action="{{ url_for('students.update_notes2', group_id=group.id, student_id=student.id) }}">
-                            <textarea name="notes_lesson2" rows="2" cols="30">{{ student.notes_lesson2 }}</textarea>
-                            <button type="submit">Сохранить</button>
-                        </form>
+                        <textarea name="notes_lesson2_{{ student.id }}" rows="2" cols="30">{{ student.notes_lesson2 }}</textarea>
                     </td>
                     <td>
                         <span class="presence-indicator {% if student.present %}present{% else %}absent{% endif %}">
@@ -52,14 +49,17 @@
                         {% endif %}
                     </td>
                     <td>
-                            <form method="post" action="{{ url_for('students.delete_student', group_id=group.id, student_id=student.id) }}">
-                                <button type="submit">Удалить</button>
-                            </form>
+                        <form method="post" action="{{ url_for('students.delete_student', group_id=group.id, student_id=student.id) }}">
+                            <button type="submit">Удалить</button>
+                        </form>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <button type="submit" class="btn btn-info">Сохранить все заметки</button>
+</form>
 
     <form method="post" action="{{ url_for('students.create_absent_list', group_id=group.id) }}">
         <button type="submit" class="btn btn-success">Создать список отсутствующих</button>
@@ -76,7 +76,6 @@
     <form method="get" action="{{ url_for('groups.list_groups') }}">
         <button class="btn btn-primary">Назад к группам</button>
     </form>
-
 
     <script src="{{ url_for('groups.static', filename='js/delete_group.js') }}"></script>
 

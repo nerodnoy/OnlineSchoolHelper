@@ -60,6 +60,23 @@ def update_notes2(group_id, student_id):
     return redirect(url_for('groups.view_group', group_id=group_id))
 
 
+@students_bp.route('/groups/<int:group_id>/update_all_notes', methods=['POST'])
+def update_all_notes(group_id):
+    students = get_students_for_group(group_id)
+
+    for student in students:
+        notes_lesson1_key = f'notes_lesson1_{student["id"]}'
+        notes_lesson2_key = f'notes_lesson2_{student["id"]}'
+
+        notes_lesson1 = request.form.get(notes_lesson1_key)
+        notes_lesson2 = request.form.get(notes_lesson2_key)
+
+        update_student_notes1(student["id"], notes_lesson1=notes_lesson1)
+        update_student_notes2(student["id"], notes_lesson2=notes_lesson2)
+
+    return redirect(url_for('groups.view_group', group_id=group_id))
+
+
 @students_bp.route('/mark_absent/<int:group_id>/<int:student_id>', methods=['POST'])
 def mark_absent(group_id, student_id):
     mark_student_absent(student_id)
