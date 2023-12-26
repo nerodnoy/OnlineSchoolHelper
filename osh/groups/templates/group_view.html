@@ -9,9 +9,19 @@
 
     <form id="studentsForm" method="post" action="{{ url_for('students.add_students', group_id=group.id) }}">
         <label for="studentsHtml">HTML-разметка с учениками:</label>
-        <textarea id="studentsHtml" name="studentsHtml" rows="1" required></textarea>
-        <button type="submit" class="btn btn-success">Добавить студентов</button>
+        <input type="text" id="studentsHtml" name="newStudent" required placeholder="<h3> ... </h3>">
+        <button type="submit" class="btn btn-success">Добавить учеников</button>
     </form>
+
+    <br>
+
+    <form method="post" action="{{ url_for('students.add_student', group_id=group.id) }}">
+        <label for="newStudent">Имя и фамилия ученика:</label>
+        <input type="text" id="newStudent" name="newStudent" required placeholder="Имя Фамилия">
+        <button type="submit" class="btn btn-success">Добавить ученика</button>
+    </form>
+
+    <br>
 
     <form method="post" action="{{ url_for('students.update_all_notes', group_id=group.id) }}">
         <table class="table table-bordered">

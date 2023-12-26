@@ -93,6 +93,16 @@ def add_student(name, notes_lesson1=None, notes_lesson2=None, present=True, grou
     execute_query(query, data, commit=True)
 
 
+def add_new_student(name, notes_lesson1=None, notes_lesson2=None, present=True, group_id=None):
+    query = '''
+        INSERT INTO students (
+        name, notes_lesson1, notes_lesson2, present, group_id
+        ) VALUES (%s, %s, %s, %s, %s) RETURNING id
+        '''
+    data = (name, notes_lesson1 or '', notes_lesson2 or '', present, group_id)
+    execute_query(query, data, commit=True)
+
+
 def get_students_for_group(group_id):
     query = 'SELECT * FROM students WHERE group_id=(%s) ORDER BY name'
     return execute_query(query, [group_id], fetchall=True)

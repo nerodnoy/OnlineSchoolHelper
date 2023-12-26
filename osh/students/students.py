@@ -12,7 +12,7 @@ from osh.database.database import (
     delete_student_and_info,
     get_group_by_id,
     get_absent_students,
-    get_students_for_group
+    get_students_for_group, add_new_student
 )
 
 students_bp = Blueprint('students', __name__,
@@ -25,6 +25,20 @@ students_bp = Blueprint('students', __name__,
 def add_students(group_id):
     students_html = request.form.get('studentsHtml')
     parse_and_add_students(group_id, students_html)
+
+    return redirect(url_for('groups.view_group', group_id=group_id))
+
+
+@students_bp.route('/<int:group_id>/add_new_student', methods=['POST'])
+def add_student(group_id):
+    full_name = request.form.get('newStudent')
+
+    name, surname = full_name.split(maxsplit=1)
+
+    add_new_student(
+        name=f"{name} {surname}",
+        group_id=group_id,
+    )
 
     return redirect(url_for('groups.view_group', group_id=group_id))
 
@@ -71,7 +85,6 @@ def delete_student(group_id, student_id):
 
 @students_bp.route('/groups/<int:group_id>/update_all_notes', methods=['POST'])
 def update_all_notes(group_id):
-
     students = get_students_for_group(group_id)
 
     for student in students:
@@ -84,7 +97,6 @@ def update_all_notes(group_id):
         update_student_notes1(student["id"], notes_lesson1=notes_lesson1)
         update_student_notes2(student["id"], notes_lesson2=notes_lesson2)
 
-    print("Update all notes endpoint reached!")
     return redirect(url_for('groups.view_group', group_id=group_id))
 
 
