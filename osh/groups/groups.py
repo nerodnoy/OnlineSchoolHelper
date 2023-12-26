@@ -49,18 +49,18 @@ def list_groups():
     current_month = get_current_month()
     current_week = get_current_week()
 
+    # Это для drop-down menu
     current_week_groups = filter_groups(groups, current_week, current_month)
 
     selected_month = request.args.get('selected_month')
-
     selected_month = selected_month or current_month
 
     translated_month = translate_month_name(selected_month)
 
-    filtered_groups = filter_groups(groups, current_week, selected_month)
+    filtered_groups = [group for group in groups if group['month'] == selected_month]
 
-    week_groups = {f'Неделя {i}': filter_groups(
-        filtered_groups, i, selected_month) for i in range(1, 6)}
+    week_groups = {f'Неделя {i}': [
+        group for group in filtered_groups if group['week'] == i] for i in range(1, 6)}
 
     return render_template('group_list.html',
                            current_week_groups=current_week_groups,
