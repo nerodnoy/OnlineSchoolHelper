@@ -3,49 +3,74 @@
 {% block title %}Список групп{% endblock %}
 
 {% block content %}
-    {% for week, groups in week_groups.items() %}
-        {% if groups %}
-            <h1>{{ week }}</h1>
 
-            <!-- Выводим список групп для текущей недели -->
-            <table class="table table-hover">
-                <!-- Заголовки таблицы -->
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Имя группы</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for group in groups %}
-                        <tr>
-                            <!-- <td>{{ group.id }}</td> - если хотим по id отсортировать -->
-                            <td>{{ loop.index }}</td>
-                            <td>
-                                <a href="{{ url_for('groups.view_group', group_id=group.id) }}">{{ group.name }}</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
+<form action="{{ url_for('groups.list_groups') }}" method="get" id="monthForm">
+    <label for="selectMonth">Выберите месяц:</label>
+
+    <!-- закинул javascript, чтобы месяц сам подтверждался -->
+    <select id="selectMonth" name="selected_month" onchange="document.getElementById('monthForm').submit()">
+        <option value="January">Январь</option>
+        <option value="February">Февраль</option>
+        <option value="March">Март</option>
+        <option value="April">Апрель</option>
+        <option value="May">Май</option>
+        <option value="June">Июнь</option>
+        <option value="July">Июль</option>
+        <option value="August">Август</option>
+        <option value="September">Сентябрь</option>
+        <option value="October">Октябрь</option>
+        <option value="November">Ноябрь</option>
+        <option value="December">Декабрь</option>
+    </select>
+</form>
+
+<!-- Выбранный месяц или текущий месяц -->
+{% set display_month = selected_month or current_month %}
+
+<!-- Заголовок с наименованием месяца -->
+<h1>{{ display_month }}</h1>
+
+{% for week, groups in week_groups.items() %}
+{% if groups %}
+<h2>{{ week }}</h2>
+
+<!-- Выводим список групп для текущей недели -->
+<table class="table table-hover">
+    <!-- Заголовки таблицы -->
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Имя группы</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for group in groups %}
+    <tr>
+        <!-- <td>{{ group.id }}</td> - если хотим по id отсортировать -->
+        <td>{{ loop.index }}</td>
+        <td>
+            <a href="{{ url_for('groups.view_group', group_id=group.id) }}">{{ group.name }}</a>
+        </td>
+    </tr>
     {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endfor %}
 
-    <!-- Кнопка для перехода к созданию новой группы -->
-    <form action="{{ url_for('groups.create_group') }}" method="get">
-        <button type="submit" class="btn btn-primary">
-            Создать новую группу
-        </button>
-    </form>
+<!-- Кнопка для перехода к созданию новой группы -->
+<form action="{{ url_for('groups.create_group') }}" method="get">
+    <button type="submit" class="btn btn-primary">
+        Создать новую группу
+    </button>
+</form>
 
-    <br>
+<!-- Кнопка для очистки базы данных -->
+<form action="{{ url_for('groups.clear_all_data') }}" method="post">
+    <button type="submit" class="btn btn-danger">
+        Удалить все группы
+    </button>
+</form>
 
-    <!-- Кнопка для очистки базы данных -->
-    <form action="{{ url_for('groups.clear_all_data') }}" method="post">
-        <button type="submit" class="btn btn-danger">
-            Удалить все группы
-        </button>
-    </form>
-
-    <script src="{{ url_for('groups.static', filename='js/clear_data.js') }}"></script>
+<script src="{{ url_for('groups.static', filename='js/clear_data.js') }}"></script>
 {% endblock %}

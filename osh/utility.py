@@ -12,6 +12,10 @@ def parse_and_add_students(group_id, html_content):
         add_student(name, group_id=group_id)
 
 
+def get_current_month():
+    return datetime.now().strftime('%B')
+
+
 def calculate_week_in_month(start_date):
     start_date_obj = datetime.strptime(start_date, '%Y-%m-%d')
     week = (start_date_obj.day - 1) // 7 + 1
@@ -24,6 +28,25 @@ def calculate_month(start_date):
     month = start_date_obj.strftime('%B')
 
     return month
+
+
+def translate_month_name(month_name):
+    month_translation = {
+        'January': 'Январь',
+        'February': 'Февраль',
+        'March': 'Март',
+        'April': 'Апрель',
+        'May': 'Май',
+        'June': 'Июнь',
+        'July': 'Июль',
+        'August': 'Август',
+        'September': 'Сентябрь',
+        'October': 'Октябрь',
+        'November': 'Ноябрь',
+        'December': 'Декабрь'
+    }
+
+    return month_translation.get(month_name, month_name)
 
 
 def generate_telegram_link(phone_number):
