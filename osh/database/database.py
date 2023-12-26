@@ -47,7 +47,13 @@ def create_table():
 
 
 def add_group(group_name, link=None, week=None, month=None):
-    query = 'INSERT INTO groups (name, link, week, month) VALUES (%s, %s, %s, %s) RETURNING id'
+    query = '''
+        INSERT INTO groups (
+        name,
+        link,
+        week,
+        month) VALUES (%s, %s, %s, %s) RETURNING id
+        '''
     data = (group_name, link, week, month)
     result = execute_query(query, data, commit=True)
     return result['id'] if result else None
