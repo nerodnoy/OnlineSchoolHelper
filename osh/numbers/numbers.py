@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from osh.utility import generate_telegram_link, generate_whatsapp_link
+from osh.numbers.numbers_utility import generate_telegram_link, generate_whatsapp_link
 
 num_bp = Blueprint('numbers', __name__,
                    static_folder='static',

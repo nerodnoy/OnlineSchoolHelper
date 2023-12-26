@@ -1,7 +1,20 @@
 from flask import Blueprint, render_template, request, redirect, url_for, abort
-from osh.database.database import add_group, get_all_groups, clear_database, \
-    get_students_for_group, get_group_by_id, delete_group_by_id
-from osh.utility import calculate_week_in_month, calculate_month, get_current_month, translate_month_name
+from osh.database.database import (
+    add_group,
+    get_all_groups,
+    clear_database,
+    get_students_for_group,
+    get_group_by_id,
+    delete_group_by_id
+)
+from osh.groups.groups_utility import (
+    calculate_week_in_month,
+    calculate_month,
+    get_current_month,
+    translate_month_name,
+    get_current_week,
+    filter_groups
+)
 
 groups_bp = Blueprint('groups', __name__,
                       static_folder='static',
@@ -33,26 +46,27 @@ def create_group():
 def list_groups():
     groups = get_all_groups()
 
-    # Получаем текущий месяц с использованием функции из utility.py
     current_month = get_current_month()
+    current_week = get_current_week()
 
-    # Получаем значение выбранного месяца из параметра запроса
+    current_week_groups = filter_groups(groups, current_week, current_month)
+
     selected_month = request.args.get('selected_month')
 
-    # Если месяц не указан, используем текущий месяц
     selected_month = selected_month or current_month
 
-    # Преобразуем английское название месяца в русское
     translated_month = translate_month_name(selected_month)
 
-    # Фильтрация групп по выбранному месяцу
-    filtered_groups = [group for group in groups if group['month'] == selected_month]
+    filtered_groups = filter_groups(groups, current_week, selected_month)
 
-    # Группировка по неделям
-    week_groups = {f'Неделя {i}': [group for group in filtered_groups if group['week'] == i] for i in range(1, 6)}
+    week_groups = {f'Неделя {i}': filter_groups(
+        filtered_groups, i, selected_month) for i in range(1, 6)}
 
-    return render_template('group_list.html', week_groups=week_groups, current_month=translated_month)
-
+    return render_template('group_list.html',
+                           current_week_groups=current_week_groups,
+                           week_groups=week_groups,
+                           current_month=translated_month
+                           )
 
 
 @groups_bp.route('/<int:group_id>/', methods=['GET'])

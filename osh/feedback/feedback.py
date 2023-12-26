@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
-from osh.utility import get_next_question
+from osh.feedback.feedback_utility import get_next_question
 from osh.database.database import (
     save_feedback_to_database, update_student_info, get_student_by_id
 )
