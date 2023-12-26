@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, abort
 from osh.database.database import add_group, get_all_groups, clear_database, \
     get_students_for_group, get_group_by_id, delete_group_by_id
+from osh.utility import calculate_week_in_month
 
 groups_bp = Blueprint('groups', __name__,
                       static_folder='static',
@@ -15,9 +16,12 @@ def create_group():
         time = request.form.get('time')
         day = request.form.get('day')
         link = request.form.get('link')
+        start_date = request.form.get('start_date')
+
+        week_number = calculate_week_in_month(start_date)
 
         group_name = f"{skill} {time} {day}"
-        add_group(group_name, link)
+        add_group(group_name, link, week_number)
 
         return redirect(url_for('groups.list_groups'))
 
@@ -28,8 +32,9 @@ def create_group():
 def list_groups():
     groups = get_all_groups()
 
-    return render_template('group_list.html',
-                           groups=groups)
+    week_groups = {f'Week_{i}': [group for group in groups if group['week_number'] == i] for i in range(1, 6)}
+
+    return render_template('group_list.html', week_groups=week_groups)
 
 
 @groups_bp.route('/<int:group_id>/', methods=['GET'])

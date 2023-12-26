@@ -3,31 +3,35 @@
 {% block title %}Список групп{% endblock %}
 
 {% block content %}
-    <h1>Список групп</h1>
+    {% for week, groups in week_groups.items() %}
+        {% if groups %}
+            <h1>{{ week.replace('_', ' ') }}</h1>
 
-    <!-- Выводим список всех созданных групп в виде таблицы -->
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Имя группы</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for group in groups %}
-                <tr>
-                    <!-- <td>{{ group.id }}</td> - если хотим по id отсортировать -->
-                    <td>{{ loop.index }}</td>
-                    <td>
-                        <a href="{{ url_for('groups.view_group', group_id=group.id) }}">{{ group.name }}</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            <!-- Выводим список групп для текущей недели -->
+            <table class="table table-hover">
+                <!-- Заголовки таблицы -->
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Имя группы</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for group in groups %}
+                        <tr>
+                            <!-- <td>{{ group.id }}</td> - если хотим по id отсортировать -->
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                <a href="{{ url_for('groups.view_group', group_id=group.id) }}">{{ group.name }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    {% endfor %}
 
     <!-- Кнопка для перехода к созданию новой группы -->
-
     <form action="{{ url_for('groups.create_group') }}" method="get">
         <button type="submit" class="btn btn-primary">
             Создать новую группу
@@ -42,7 +46,6 @@
             Удалить все группы
         </button>
     </form>
-
 
     <script src="{{ url_for('groups.static', filename='js/clear_data.js') }}"></script>
 {% endblock %}
