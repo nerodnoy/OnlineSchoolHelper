@@ -2,7 +2,8 @@ CREATE TABLE IF NOT EXISTS groups (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     link TEXT,
-    week_number INTEGER NOT NULL
+    week INTEGER NOT NULL,
+    month TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS students (

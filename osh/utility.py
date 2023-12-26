@@ -14,9 +14,16 @@ def parse_and_add_students(group_id, html_content):
 
 def calculate_week_in_month(start_date):
     start_date_obj = datetime.strptime(start_date, '%Y-%m-%d')
-    week_number = (start_date_obj.day - 1) // 7 + 1
+    week = (start_date_obj.day - 1) // 7 + 1
 
-    return week_number
+    return week
+
+
+def calculate_month(start_date):
+    start_date_obj = datetime.strptime(start_date, '%Y-%m-%d')
+    month = start_date_obj.strftime('%B')
+
+    return month
 
 
 def generate_telegram_link(phone_number):

@@ -5,14 +5,14 @@
 {% block content %}
     {% for week, groups in week_groups.items() %}
         {% if groups %}
-            <h1>{{ week.replace('_', ' ') }}</h1>
+            <h1>{{ week }}</h1>
 
             <!-- Выводим список групп для текущей недели -->
             <table class="table table-hover">
                 <!-- Заголовки таблицы -->
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>#</th>
                         <th>Имя группы</th>
                     </tr>
                 </thead>

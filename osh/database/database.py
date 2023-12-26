@@ -29,7 +29,8 @@ def create_table():
                           (id SERIAL PRIMARY KEY,
                            name TEXT NOT NULL,
                            link TEXT,
-                           week_number INTEGER)''')
+                           week INTEGER NOT NULL,
+                           month TEXT NOT NULL)''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS students
                           (id SERIAL PRIMARY KEY,
                            name VARCHAR(255) NOT NULL,
@@ -45,9 +46,9 @@ def create_table():
                         )''')
 
 
-def add_group(group_name, link=None, week_number=None):
-    query = 'INSERT INTO groups (name, link, week_number) VALUES (%s, %s, %s) RETURNING id'
-    data = (group_name, link, week_number)
+def add_group(group_name, link=None, week=None, month=None):
+    query = 'INSERT INTO groups (name, link, week, month) VALUES (%s, %s, %s, %s) RETURNING id'
+    data = (group_name, link, week, month)
     result = execute_query(query, data, commit=True)
     return result['id'] if result else None
 
