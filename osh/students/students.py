@@ -1,3 +1,5 @@
+import logging
+
 from flask import Blueprint, render_template, redirect, url_for, abort, request
 from osh.students.students_utility import parse_and_add_students
 from osh.database.database import (
@@ -69,6 +71,7 @@ def delete_student(group_id, student_id):
 
 @students_bp.route('/groups/<int:group_id>/update_all_notes', methods=['POST'])
 def update_all_notes(group_id):
+
     students = get_students_for_group(group_id)
 
     for student in students:
@@ -81,6 +84,7 @@ def update_all_notes(group_id):
         update_student_notes1(student["id"], notes_lesson1=notes_lesson1)
         update_student_notes2(student["id"], notes_lesson2=notes_lesson2)
 
+    print("Update all notes endpoint reached!")
     return redirect(url_for('groups.view_group', group_id=group_id))
 
 
