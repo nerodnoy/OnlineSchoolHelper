@@ -9,8 +9,8 @@
 
     <form id="studentsForm" method="post" action="{{ url_for('students.add_students', group_id=group.id) }}">
         <label for="studentsHtml">HTML-разметка с учениками:</label>
-        <input type="text" id="studentsHtml" name="newStudent" required placeholder="<h3> ... </h3>">
-        <button type="submit" class="btn btn-success">Добавить учеников</button>
+        <textarea id="studentsHtml" name="studentsHtml" rows="1" placeholder="<h3> ... </h3>" required></textarea>
+        <button type="submit" class="btn btn-success">Добавить студентов</button>
     </form>
 
     <br>
