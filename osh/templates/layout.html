@@ -29,16 +29,16 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="/groups" role="button" data-bs-toggle="dropdown"
                    aria-expanded="false">
-                    Groups this week
+                    Active groups
                 </a>
                 <ul class="dropdown-menu">
-                {% if current_week_groups %}
-                    {% for group in current_week_groups %}
-                        <li><a class="dropdown-item" href="{{ url_for('groups.view_group', group_id=group.id) }}">{{ group.name }}</a></li>
-                    {% endfor %}
-                {% else %}
-                    <li><span class="dropdown-item">No groups available this week</span></li>
-                {% endif %}
+                    {% if active_groups %}
+                        {% for group in active_groups %}
+                            <li><a class="dropdown-item" href="{{ url_for('groups.view_group', group_id=group.id) }}">{{ group.name }}</a></li>
+                        {% endfor %}
+                    {% else %}
+                        <li><span class="dropdown-item">No active groups available</span></li>
+                    {% endif %}
                 </ul>
             </li>
         </ul>

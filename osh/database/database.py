@@ -30,7 +30,9 @@ def create_table():
                            name TEXT NOT NULL,
                            link TEXT,
                            week INTEGER NOT NULL,
-                           month TEXT NOT NULL)''')
+                           month TEXT NOT NULL
+                           status VARCHAR(50) DEFAULT 'Active' NOT NULL
+                           ''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS students
                           (id SERIAL PRIMARY KEY,
                            name VARCHAR(255) NOT NULL,
@@ -52,7 +54,8 @@ def add_group(group_name, link=None, week=None, month=None):
         name,
         link,
         week,
-        month) VALUES (%s, %s, %s, %s) RETURNING id
+        month,
+        status) VALUES (%s, %s, %s, %s, %s) RETURNING id
         '''
     data = (group_name, link, week, month)
     result = execute_query(query, data, commit=True)
@@ -62,6 +65,17 @@ def add_group(group_name, link=None, week=None, month=None):
 def get_all_groups():
     query = 'SELECT * FROM groups ORDER BY id'
     return execute_query(query, fetchall=True)
+
+
+def get_active_groups():
+    query = 'SELECT * FROM groups WHERE status = %s ORDER BY id'
+    return execute_query(query, ('Active',), fetchall=True)
+
+
+def update_group_status(group_id, new_status):
+    query = 'UPDATE groups SET status = %s WHERE id = %s'
+    data = (new_status, group_id)
+    execute_query(query, data, commit=True)
 
 
 def get_group_by_id(group_id):

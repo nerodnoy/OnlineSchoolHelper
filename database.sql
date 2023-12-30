@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS groups (
     name VARCHAR(255) NOT NULL,
     link TEXT,
     week INTEGER NOT NULL,
-    month TEXT NOT NULL
+    month TEXT NOT NULL,
+    status VARCHAR(50) DEFAULT 'Active' NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS students (

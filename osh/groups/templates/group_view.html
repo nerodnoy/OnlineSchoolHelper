@@ -87,6 +87,15 @@
         <button class="btn btn-danger">Удалить группу</button>
     </form>
 
+    <!-- Форма для изменения статуса группы -->
+    <form method="post" action="{{ url_for('groups.update_group_status_route', group_id=group.id) }}">
+        {% if group.status == 'Active' %}
+            <button type="submit" class="btn btn-warning">Завершить группу</button>
+        {% elif group.status == 'Finished' %}
+            <button type="submit" class="btn btn-success">Сделать активной</button>
+        {% endif %}
+    </form>
+
     <form method="get" action="{{ url_for('groups.list_groups') }}">
         <button class="btn btn-primary">Назад к группам</button>
     </form>

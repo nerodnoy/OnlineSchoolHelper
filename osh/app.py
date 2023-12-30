@@ -1,5 +1,5 @@
 from osh.groups.groups_utility import get_current_month, get_current_week, filter_groups
-from osh.database.database import get_all_groups
+from osh.database.database import get_active_groups
 from osh.groups.groups import groups_bp
 from osh.students.students import students_bp
 from osh.feedback.feedback import feedback_bp
@@ -29,12 +29,13 @@ def index():
 
 @app.context_processor
 def inject_groups():
-    groups = get_all_groups()
+    active_groups = get_active_groups()
     current_month = get_current_month()
     current_week = get_current_week()
-    current_week_groups = filter_groups(groups, current_week, current_month)
 
-    return dict(groups=groups, current_week_groups=current_week_groups)
+    current_week_groups = filter_groups(active_groups, current_week, current_month)
+
+    return dict(current_week_groups=current_week_groups, active_groups=active_groups)
 
 
 @app.errorhandler(404)

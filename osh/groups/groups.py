@@ -5,7 +5,7 @@ from osh.database.database import (
     clear_database,
     get_students_for_group,
     get_group_by_id,
-    delete_group_by_id
+    delete_group_by_id, get_active_groups, update_group_status
 )
 from osh.groups.groups_utility import (
     calculate_week_in_month,
@@ -46,6 +46,8 @@ def create_group():
 def list_groups():
     groups = get_all_groups()
 
+    active_groups = get_active_groups()
+
     current_month = get_current_month()
     current_week = get_current_week()
 
@@ -62,10 +64,15 @@ def list_groups():
     week_groups = {f'Неделя {i}': [
         group for group in filtered_groups if group['week'] == i] for i in range(1, 6)}
 
+    active = request.args.get('active')  # Добавлено здесь
+
     return render_template('group_list.html',
                            current_week_groups=current_week_groups,
                            week_groups=week_groups,
-                           current_month=translated_month
+                           current_month=translated_month,
+                           groups=active_groups if active else groups,  # Изменено здесь
+                           active_groups=active_groups,
+                           active=active  # Добавлено здесь
                            )
 
 
@@ -81,6 +88,19 @@ def view_group(group_id):
                                group_id=group_id)
     else:
         abort(404)
+
+
+@groups_bp.route('/<int:group_id>/update_status', methods=['POST'])
+def update_group_status_route(group_id):
+    group = get_group_by_id(group_id)
+
+    current_status = group['status']
+    new_status = 'Finished' if current_status == 'Active' else 'Active'
+
+    update_group_status(group_id, new_status)
+
+    # После обновления статуса, перенаправляем пользователя обратно на страницу группы
+    return redirect(url_for('groups.view_group', group_id=group_id))
 
 
 @groups_bp.route('/<int:group_id>/delete', methods=['POST'])
