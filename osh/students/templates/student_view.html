@@ -21,10 +21,12 @@
     {% endif %}
 
     <form method="post" action="{{ url_for('feedback.create_feedback', student_id=student.id) }}">
-        <button type="submit" class="btn btn-primary">Создать обратную связь</button>
+        <button type="submit" class="btn btn-success">Создать обратную связь</button>
     </form>
 
     <!-- Кнопка для возврата к группе -->
-    <a href="{{ url_for('groups.view_group', group_id=group_id) }}">Назад к группе</a>
+    <form method="get" action="{{ url_for('groups.view_group', group_id=group_id) }}">
+        <button class="btn btn-primary">Назад к группе</button>
+    </form>
 
 {% endblock %}

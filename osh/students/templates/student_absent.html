@@ -23,16 +23,20 @@
             Все ученики присутствуют на занятии
         {% endif %}
 
+    {% if 'Понедельник' in group.name %}
+        {% set curator_link = 'https://t.me/+79272559173' %}
+        {% set curator_name = 'Валерии' %}
+    {% elif 'Четверг' in group.name or 'Пятница' in group.name %}
+        {% set curator_link = 'https://t.me/ira_frolova' %}
+        {% set curator_name = 'Ирине' %}
+    {% endif %}
+
+    <!-- Добавляем кнопку с именем куратора и ссылкой -->
+    <button class="btn btn-success" onclick="window.open('{{ curator_link }}', '_blank')">Отправить {{ curator_name }}</button>
+
     <!-- Кнопка для возврата к группе -->
-    <form method="get" action="{{ url_for('groups.view_group', group_id=group.id) }}">
+    <form method="get" action="{{ url_for('groups.view_group', group_id=group_id) }}">
         <button class="btn btn-primary">Назад к группе</button>
     </form>
-
-    <!-- В зависимости от дня недели пишем разным кураторам -->
-    {% if 'Понедельник' in group.name %}
-        <p><a href="https://t.me/+79272559173" target="_blank">Отправить Валерии</a></p>
-    {% elif 'Четверг' in group.name or 'Пятница' in group.name %}
-        <p><a href="https://t.me/ira_frolova" target="_blank">Отправить Ирине</a></p>
-    {% endif %}
 
 {% endblock %}
