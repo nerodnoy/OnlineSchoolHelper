@@ -1,6 +1,10 @@
 from datetime import datetime
 
 
+def get_current_day():
+    return datetime.now().strftime('%Y-%m-%d')
+
+
 def get_current_month():
     return datetime.now().strftime('%B')
 

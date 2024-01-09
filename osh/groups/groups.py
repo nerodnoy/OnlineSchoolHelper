@@ -1,11 +1,20 @@
-from flask import Blueprint, render_template, request, redirect, url_for, abort
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    abort
+)
 from osh.database.database import (
     add_group,
     get_all_groups,
     clear_database,
     get_students_for_group,
     get_group_by_id,
-    delete_group_by_id, get_active_groups, update_group_status
+    delete_group_by_id,
+    get_active_groups,
+    update_group_status
 )
 from osh.groups.groups_utility import (
     calculate_week_in_month,
@@ -13,7 +22,8 @@ from osh.groups.groups_utility import (
     get_current_month,
     translate_month_name,
     get_current_week,
-    filter_groups
+    filter_groups,
+    get_current_day
 )
 
 groups_bp = Blueprint('groups', __name__,
@@ -39,7 +49,9 @@ def create_group():
 
         return redirect(url_for('groups.list_groups'))
 
-    return render_template('group_create.html')
+    current_day = get_current_day()
+
+    return render_template('group_create.html', current_day=current_day)
 
 
 @groups_bp.route('/', methods=['GET'])
@@ -64,15 +76,15 @@ def list_groups():
     week_groups = {f'Неделя {i}': [
         group for group in filtered_groups if group['week'] == i] for i in range(1, 6)}
 
-    active = request.args.get('active')  # Добавлено здесь
+    active = request.args.get('active')
 
     return render_template('group_list.html',
                            current_week_groups=current_week_groups,
                            week_groups=week_groups,
                            current_month=translated_month,
-                           groups=active_groups if active else groups,  # Изменено здесь
+                           groups=active_groups if active else groups,
                            active_groups=active_groups,
-                           active=active  # Добавлено здесь
+                           active=active
                            )
 
 
@@ -99,7 +111,6 @@ def update_group_status_route(group_id):
 
     update_group_status(group_id, new_status)
 
-    # После обновления статуса, перенаправляем пользователя обратно на страницу группы
     return redirect(url_for('groups.view_group', group_id=group_id))
 
 
