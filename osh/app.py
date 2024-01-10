@@ -3,11 +3,11 @@ from osh.database.database import get_active_groups
 from osh.groups.groups import groups_bp
 from osh.students.students import students_bp
 from osh.feedback.feedback import feedback_bp
+from osh.statistics.stats import stats_bp
 from osh.numbers.numbers import num_bp
 from flask import Flask, render_template
 from dotenv import load_dotenv
 import os
-
 
 load_dotenv()
 
@@ -20,6 +20,7 @@ app.register_blueprint(groups_bp, url_prefix='/groups')
 app.register_blueprint(students_bp, url_prefix='/students')
 app.register_blueprint(feedback_bp, url_prefix='/feedback')
 app.register_blueprint(num_bp, url_prefix='/numbers')
+app.register_blueprint(stats_bp, url_prefix='/stats')
 
 
 @app.route('/', methods=['GET', 'POST'])
