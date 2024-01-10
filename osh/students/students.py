@@ -1,5 +1,3 @@
-import logging
-
 from flask import Blueprint, render_template, redirect, url_for, abort, request
 from osh.students.students_utility import parse_and_add_students
 from osh.database.database import (
@@ -12,7 +10,8 @@ from osh.database.database import (
     delete_student_and_info,
     get_group_by_id,
     get_absent_students,
-    get_students_for_group, add_new_student
+    get_students_for_group,
+    add_new_student
 )
 
 students_bp = Blueprint('students', __name__,

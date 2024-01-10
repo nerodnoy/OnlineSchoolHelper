@@ -107,7 +107,8 @@ def add_student(name, notes_lesson1=None, notes_lesson2=None, present=True, grou
     execute_query(query, data, commit=True)
 
 
-def add_new_student(name, notes_lesson1=None, notes_lesson2=None, present=True, group_id=None):
+def add_new_student(
+        name, notes_lesson1=None, notes_lesson2=None, present=True, group_id=None):
     query = '''
         INSERT INTO students (
         name, notes_lesson1, notes_lesson2, present, group_id
