@@ -37,6 +37,14 @@ def create_group():
     if request.method == 'POST':
         skill = request.form.get('skill')
         time = request.form.get('time')
+
+        # Если выбрано "Другое", используем введенное пользователем значение
+        if time == "custom":
+            custom_time = request.form.get('custom_time')
+            if not custom_time:
+                return redirect(url_for('groups.create_group'))
+            time = custom_time
+
         day_of_week = request.form.get('day')
         link = request.form.get('link')
         start_date = request.form.get('start_date')
