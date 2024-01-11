@@ -26,13 +26,14 @@ def create_table():
     with psycopg2.connect(DATABASE_URL) as connection:
         cursor = connection.cursor()
         cursor.execute('''CREATE TABLE IF NOT EXISTS groups
-                          (id SERIAL PRIMARY KEY,
-                           name TEXT NOT NULL,
-                           link TEXT,
-                           week INTEGER NOT NULL,
-                           month TEXT NOT NULL
-                           status VARCHAR(50) DEFAULT 'Active' NOT NULL
-                           ''')
+                            (id SERIAL PRIMARY KEY,
+                            name TEXT NOT NULL,
+                            link TEXT,
+                            date DATE,
+                            week INTEGER NOT NULL,
+                            month TEXT NOT NULL,
+                            status VARCHAR(50) DEFAULT 'Active' NOT NULL
+                            )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS students
                           (id SERIAL PRIMARY KEY,
                            name VARCHAR(255) NOT NULL,
@@ -48,16 +49,17 @@ def create_table():
                         )''')
 
 
-def add_group(group_name, link=None, week=None, month=None, status='Active'):
+def add_group(group_name, link=None, start_date=None, week=None, month=None, status='Active'):
     query = '''
         INSERT INTO groups (
         name,
         link,
+        date,
         week,
         month,
-        status) VALUES (%s, %s, %s, %s, %s) RETURNING id
+        status) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id
         '''
-    data = (group_name, link, week, month, status)
+    data = (group_name, link, start_date, week, month, status)
     result = execute_query(query, data, commit=True)
     return result['id'] if result else None
 

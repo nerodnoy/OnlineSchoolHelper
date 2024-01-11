@@ -37,15 +37,15 @@ def create_group():
     if request.method == 'POST':
         skill = request.form.get('skill')
         time = request.form.get('time')
-        day = request.form.get('day')
+        day_of_week = request.form.get('day')
         link = request.form.get('link')
         start_date = request.form.get('start_date')
 
         week = calculate_week_in_month(start_date)
         month = calculate_month(start_date)
 
-        group_name = f"{skill} {time} {day}"
-        add_group(group_name, link, week, month)
+        group_name = f"{skill} {time} {day_of_week}"
+        add_group(group_name, link, start_date, week, month)
 
         return redirect(url_for('groups.list_groups'))
 
@@ -78,13 +78,16 @@ def list_groups():
 
     active = request.args.get('active')
 
+    current_day = get_current_day()
+
     return render_template('group_list.html',
                            current_week_groups=current_week_groups,
                            week_groups=week_groups,
                            current_month=translated_month,
                            groups=active_groups if active else groups,
                            active_groups=active_groups,
-                           active=active
+                           active=active,
+                           current_day=current_day
                            )
 
 

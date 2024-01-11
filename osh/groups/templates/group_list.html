@@ -3,11 +3,8 @@
 {% block title %}Список групп{% endblock %}
 
 {% block content %}
-
     <form action="{{ url_for('groups.list_groups') }}" method="get" id="monthForm">
         <label for="selectMonth">Выберите месяц:</label>
-
-        <!-- закинул javascript, чтобы месяц сам подтверждался -->
         <select id="selectMonth" name="selected_month" onchange="document.getElementById('monthForm').submit()">
             <option value="January">Январь</option>
             <option value="February">Февраль</option>
@@ -30,33 +27,34 @@
     <!-- Заголовок с наименованием месяца -->
     <h1>{{ display_month }}</h1>
 
-    {% for week, groups in week_groups.items() %}
-        {% if groups %}
-            <h2>{{ week }}</h2>
-
-            <!-- Выводим список групп для текущей недели -->
-            <table class="table table-hover">
-                <!-- Заголовки таблицы -->
-                <thead>
+    <table class="table table-hover">
+        <!-- Заголовки таблицы -->
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Имя группы</th>
+            <th>Дата начала занятий</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for week, groups in week_groups.items() %}
+            {% if groups %}
                 <tr>
-                    <th>#</th>
-                    <th>Имя группы</th>
+                    <td colspan="3" class="text-left"><strong>{{ week }}</strong></td>
                 </tr>
-                </thead>
-                <tbody>
                 {% for group in groups %}
                     <tr>
-                        <!-- <td>{{ group.id }}</td> - если хотим по id отсортировать -->
                         <td>{{ loop.index }}</td>
                         <td>
                             <a href="{{ url_for('groups.view_group', group_id=group.id) }}">{{ group.name }}</a>
                         </td>
+                        <td>{{ group.date }}</td>
                     </tr>
                 {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-    {% endfor %}
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
 
     <!-- Кнопка для перехода к созданию новой группы -->
     <form action="{{ url_for('groups.create_group') }}" method="get">

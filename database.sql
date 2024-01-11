@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS groups (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     link TEXT,
+    date DATE,
     week INTEGER NOT NULL,
     month TEXT NOT NULL,
     status VARCHAR(50) DEFAULT 'Active' NOT NULL
