@@ -1,6 +1,6 @@
 from flask import (
     Blueprint,
-    # render_template,
+    render_template,
     # request,
     # redirect,
     # url_for,
@@ -15,4 +15,4 @@ stats_bp = Blueprint('stats', __name__,
 
 @stats_bp.route('/', methods=['GET'])
 def view_stats():
-    pass
+    return render_template('stats.html')
