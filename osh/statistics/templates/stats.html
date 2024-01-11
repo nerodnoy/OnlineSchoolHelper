@@ -5,7 +5,63 @@
 {% block content %}
     <h1>Статистика по месяцам</h1>
 
-    <p>За текущий месяц у вас было ХХХХХХ групп.</p>
+    <!-- тут пиздец -->
+    <form action="{{ url_for('stats.stats') }}" method="get" id="monthForm">
+        <label for="selectMonth">Выберите месяц:</label>
+        <select id="selectMonth" name="selected_month" onchange="document.getElementById('monthForm').submit()">
+            <option value="January" {% if current_month == 'Январь' %}selected{% endif %}>Январь</option>
+            <option value="February" {% if current_month == 'Февраль' %}selected{% endif %}>Февраль</option>
+            <option value="March" {% if current_month == 'Март' %}selected{% endif %}>Март</option>
+            <option value="April" {% if current_month == 'Апрель' %}selected{% endif %}>Апрель</option>
+            <option value="May" {% if current_month == 'Май' %}selected{% endif %}>Май</option>
+            <option value="June" {% if current_month == 'Июнь' %}selected{% endif %}>Июнь</option>
+            <option value="July" {% if current_month == 'Июль' %}selected{% endif %}>Июль</option>
+            <option value="August" {% if current_month == 'Август' %}selected{% endif %}>Август</option>
+            <option value="September" {% if current_month == 'Сентябрь' %}selected{% endif %}>Сентябрь</option>
+            <option value="October" {% if current_month == 'Октябрь' %}selected{% endif %}>Октябрь</option>
+            <option value="November" {% if current_month == 'Ноябрь' %}selected{% endif %}>Ноябрь</option>
+            <option value="December" {% if current_month == 'Декабрь' %}selected{% endif %}>Декабрь</option>
+        </select>
+    </form>
 
+    <!-- Выбранный месяц или текущий месяц -->
+    {% set display_month = selected_month or current_month %}
+
+    <!-- Заголовок с наименованием месяца -->
+    <h2>{{ display_month }}</h2>
+
+    <!-- Вывод статистики по группам -->
+    {% if groups_for_month %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Имя группы</th>
+                    <th>Дата начала</th>
+                    <th>Оплата</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for group in groups_for_month %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ group.name }}</td>
+                        <td>{{ group.date }}</td>
+                        <td>3250</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    <!-- Информация после таблицы -->
+    <p>Количество групп: {{ total_groups }}</p>
+    <p>Итоговая оплата: {{ total_payment }}</p>
+
+    {% else %}
+        <p>Нет данных для выбранного месяца.</p>
+    {% endif %}
+
+    <!-- Кнопка для возврата к списку групп -->
     <a href="{{ url_for('groups.list_groups') }}" class="btn btn-primary">Назад к группам</a>
 {% endblock %}
+

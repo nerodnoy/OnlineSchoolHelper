@@ -3,21 +3,23 @@
 {% block title %}Список групп{% endblock %}
 
 {% block content %}
+
+    <!--тут пиздец -->
     <form action="{{ url_for('groups.list_groups') }}" method="get" id="monthForm">
         <label for="selectMonth">Выберите месяц:</label>
         <select id="selectMonth" name="selected_month" onchange="document.getElementById('monthForm').submit()">
-            <option value="January">Январь</option>
-            <option value="February">Февраль</option>
-            <option value="March">Март</option>
-            <option value="April">Апрель</option>
-            <option value="May">Май</option>
-            <option value="June">Июнь</option>
-            <option value="July">Июль</option>
-            <option value="August">Август</option>
-            <option value="September">Сентябрь</option>
-            <option value="October">Октябрь</option>
-            <option value="November">Ноябрь</option>
-            <option value="December">Декабрь</option>
+            <option value="January" {% if current_month == 'Январь' %}selected{% endif %}>Январь</option>
+            <option value="February" {% if current_month == 'Февраль' %}selected{% endif %}>Февраль</option>
+            <option value="March" {% if current_month == 'Март' %}selected{% endif %}>Март</option>
+            <option value="April" {% if current_month == 'Апрель' %}selected{% endif %}>Апрель</option>
+            <option value="May" {% if current_month == 'Май' %}selected{% endif %}>Май</option>
+            <option value="June" {% if current_month == 'Июнь' %}selected{% endif %}>Июнь</option>
+            <option value="July" {% if current_month == 'Июль' %}selected{% endif %}>Июль</option>
+            <option value="August" {% if current_month == 'Август' %}selected{% endif %}>Август</option>
+            <option value="September" {% if current_month == 'Сентябрь' %}selected{% endif %}>Сентябрь</option>
+            <option value="October" {% if current_month == 'Октябрь' %}selected{% endif %}>Октябрь</option>
+            <option value="November" {% if current_month == 'Ноябрь' %}selected{% endif %}>Ноябрь</option>
+            <option value="December" {% if current_month == 'Декабрь' %}selected{% endif %}>Декабрь</option>
         </select>
     </form>
 
