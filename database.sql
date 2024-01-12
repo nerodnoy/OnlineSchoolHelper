@@ -2,9 +2,10 @@ CREATE TABLE IF NOT EXISTS groups (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     link TEXT,
-    date DATE,
+    start_date DATE,
     week INTEGER NOT NULL,
     month TEXT NOT NULL,
+    payment INTEGER,
     status VARCHAR(50) DEFAULT 'Active' NOT NULL
 );
 
