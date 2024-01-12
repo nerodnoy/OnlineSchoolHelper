@@ -38,7 +38,6 @@ def create_group():
         skill = request.form.get('skill')
         time = request.form.get('time')
 
-        # Если выбрано "Другое", используем введенное пользователем значение
         if time == "custom":
             custom_time = request.form.get('custom_time')
             if not custom_time:
@@ -52,8 +51,14 @@ def create_group():
         week = calculate_week_in_month(start_date)
         month = calculate_month(start_date)
 
+        # Определение платы в зависимости от уровня
+        if skill in ('START', 'PRO'):
+            payment = 3250
+        else:
+            payment = 6000
+
         group_name = f"{skill} {time} {day_of_week}"
-        add_group(group_name, link, start_date, week, month)
+        add_group(group_name, link, start_date, week, month, payment)
 
         return redirect(url_for('groups.list_groups'))
 
