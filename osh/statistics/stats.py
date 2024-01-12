@@ -33,11 +33,16 @@ def stats():
     # фильтруем группы для выбранного месяца
     groups_for_month = sorted(
         [group for group in groups if group['month'] == selected_month],
-        key=lambda x: x['date']
+        key=lambda x: x['start_date']
     )
 
+    # Количество групп в месяце
     total_groups = len(groups_for_month)
-    total_payment = total_groups * 3250
+
+    # Итоговая оплата за месяц
+    total_payment = sum(
+        3250 if 'PRO' in group['name'] or 'START' in group['name']
+        else 6000 for group in groups_for_month)
 
     return render_template('stats.html',
                            groups_for_month=groups_for_month,
