@@ -1,8 +1,6 @@
-from random import choice, random
-
+from random import choice
 from flask import render_template, request, session
-
-from osh.list_of_questions import questions
+from osh.feedback.utility.questions_db import questions
 from osh.feedback.utility.handlers.question_logic import get_next_question
 
 

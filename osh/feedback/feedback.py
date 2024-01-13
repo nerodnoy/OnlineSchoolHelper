@@ -11,7 +11,7 @@ from osh.database.database import (
     db_get_student_by_id
 )
 from osh.feedback.utility.feedback_utility import feedback_for_anyone
-from osh.list_of_questions import questions
+from osh.feedback.utility.questions_db import questions
 import random
 
 feedback_bp = Blueprint('feedback', __name__,
