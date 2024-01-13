@@ -1,4 +1,4 @@
-from osh.database.database import (
+from osh.database.db_groups import (
     db_add_group,
     db_get_all_groups,
     db_get_active_groups,

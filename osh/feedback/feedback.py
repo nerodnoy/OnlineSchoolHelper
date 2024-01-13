@@ -1,6 +1,6 @@
-import random
-from osh.feedback.feedback_utility import get_next_question
+from osh.feedback.utility.handlers.question_logic import get_next_question
 from osh.feedback.utility.questions_db import questions
+import random
 from flask import (
     Blueprint,
     render_template,

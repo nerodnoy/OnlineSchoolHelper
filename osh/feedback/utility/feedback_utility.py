@@ -1,6 +1,6 @@
 from flask import session
 
-from osh.database.database import (
+from osh.database.db_feedback import (
     db_get_student_by_id,
     db_save_feedback_to_database,
     db_update_student_info
