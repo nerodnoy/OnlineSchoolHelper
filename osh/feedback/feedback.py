@@ -12,7 +12,8 @@ from flask import (
 from osh.feedback.utility.feedback_utility import (
     get_student_by_id,
     save_feedback_to_database,
-    reset_feedback_utility
+    reset_feedback_utility,
+    restart_utility
 )
 
 feedback_bp = Blueprint('feedback', __name__,
@@ -77,11 +78,7 @@ def feedback():
 
 @feedback_bp.route('/restart', methods=['POST'])
 def restart():
-    session.pop('answers', None)
-    session.pop('current_question', None)
-    session.pop('result', None)
-
-    session['current_question'] = 'Имя ученика'
+    restart_utility()
 
     return redirect(url_for('feedback.feedback'))
 
