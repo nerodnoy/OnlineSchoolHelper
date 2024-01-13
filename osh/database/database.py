@@ -184,13 +184,13 @@ def add_student_info(student_id, info):
     execute_query(query, data, commit=True)
 
 
-def update_student_info(student_id, info):
+def db_update_student_info(student_id, info):
     query = 'UPDATE students_info SET info=%s WHERE student_id=%s'
     data = (info, student_id)
     execute_query(query, data, commit=True)
 
 
-def save_feedback_to_database(student_id, feedback_data):
+def db_save_feedback_to_database(student_id, feedback_data):
     query = "INSERT INTO students_info (student_id, info) VALUES (%s, %s)"
     data = (student_id, feedback_data)
     execute_query(query, data, commit=True)
