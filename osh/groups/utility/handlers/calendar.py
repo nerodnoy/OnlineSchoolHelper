@@ -5,15 +5,15 @@ def get_current_day():
     return datetime.now().strftime('%Y-%m-%d')
 
 
-def get_current_month():
-    return datetime.now().strftime('%B')
-
-
 def get_current_week():
     today = datetime.now()
     first_day_of_month = today.replace(day=1)
     current_week_in_month = (today - first_day_of_month).days // 7 + 1
     return current_week_in_month
+
+
+def get_current_month():
+    return datetime.now().strftime('%B')
 
 
 def calculate_week_in_month(start_date):
@@ -47,7 +47,3 @@ def translate_month_name(month_name):
     }
 
     return month_translation.get(month_name, month_name)
-
-
-def filter_groups(groups, week, month):
-    return [group for group in groups if group['week'] == week and group['month'] == month]

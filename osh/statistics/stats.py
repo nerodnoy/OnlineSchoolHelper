@@ -7,7 +7,7 @@ from flask import (
     # abort
 )
 
-from osh.database.database import get_groups_for_month, get_all_groups
+from osh.database.database import get_groups_for_month, db_get_all_groups
 from osh.statistics.stats_utility import get_current_month, translate_month_name
 
 stats_bp = Blueprint('stats', __name__,
@@ -19,7 +19,7 @@ stats_bp = Blueprint('stats', __name__,
 @stats_bp.route('/', methods=['GET'])
 def stats():
     # все группы
-    groups = get_all_groups()
+    groups = db_get_all_groups()
 
     # текущий месяц
     current_month = get_current_month()

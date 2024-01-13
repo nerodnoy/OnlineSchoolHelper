@@ -3,25 +3,17 @@ from flask import (
     render_template,
     request,
     redirect,
-    url_for,
-    abort
+    url_for
 )
-from osh.database.database import (
-    add_group,
-    get_all_groups,
-    clear_database,
+from osh.groups.utility.groups_utility import (
+    create_new_group,
+    get_current_day,
+    get_group_data,
+    get_group_and_students,
+    update_group_status_toggle,
     delete_group_by_id,
-    get_active_groups,
-    update_group_status, db_get_students_for_group, db_get_group_by_id
-)
-from osh.groups.groups_utility import (
-    calculate_week_in_month,
-    calculate_month,
-    get_current_month,
-    translate_month_name,
-    get_current_week,
-    filter_groups,
-    get_current_day
+    clear_all_data_from_db,
+    inject_groups_utility
 )
 
 groups_bp = Blueprint('groups', __name__,
@@ -33,32 +25,9 @@ groups_bp = Blueprint('groups', __name__,
 @groups_bp.route('/create', methods=['GET', 'POST'])
 def create_group():
     if request.method == 'POST':
-        skill = request.form.get('skill')
-        time = request.form.get('time')
-
-        if time == "custom":
-            custom_time = request.form.get('custom_time')
-            if not custom_time:
-                return redirect(url_for('groups.create_group'))
-            time = custom_time
-
-        day_of_week = request.form.get('day')
-        link = request.form.get('link')
-        start_date = request.form.get('start_date')
-
-        week = calculate_week_in_month(start_date)
-        month = calculate_month(start_date)
-
-        # Определение платы в зависимости от уровня
-        if skill in ('START', 'PRO'):
-            payment = 3250
-        else:
-            payment = 6000
-
-        group_name = f"{skill} {time} {day_of_week}"
-        add_group(group_name, link, start_date, week, month, payment)
-
-        return redirect(url_for('groups.list_groups'))
+        group_name = create_new_group(request)
+        if group_name:
+            return redirect(url_for('groups.list_groups'))
 
     current_day = get_current_day()
 
@@ -67,63 +36,24 @@ def create_group():
 
 @groups_bp.route('/', methods=['GET'])
 def list_groups():
-    groups = get_all_groups()
+    group_data = get_group_data(request)
 
-    active_groups = get_active_groups()
-
-    current_month = get_current_month()
-    current_week = get_current_week()
-
-    # Это для drop-down menu
-    current_week_groups = filter_groups(groups, current_week, current_month)
-
-    selected_month = request.args.get('selected_month')
-    selected_month = selected_month or current_month
-
-    translated_month = translate_month_name(selected_month)
-
-    filtered_groups = [group for group in groups if group['month'] == selected_month]
-
-    week_groups = {f'Неделя {i}': [
-        group for group in filtered_groups if group['week'] == i] for i in range(1, 6)}
-
-    active = request.args.get('active')
-
-    current_day = get_current_day()
-
-    return render_template('group_list.html',
-                           current_week_groups=current_week_groups,
-                           week_groups=week_groups,
-                           current_month=translated_month,
-                           groups=active_groups if active else groups,
-                           active_groups=active_groups,
-                           active=active,
-                           current_day=current_day
-                           )
+    return render_template('group_list.html', **group_data)
 
 
 @groups_bp.route('/<int:group_id>/', methods=['GET'])
 def view_group(group_id):
-    group = db_get_group_by_id(group_id)
-    if group:
-        students = db_get_students_for_group(group_id)
+    group, students = get_group_and_students(group_id)
 
-        return render_template('group_view.html',
-                               group=group,
-                               students=students,
-                               group_id=group_id)
-    else:
-        abort(404)
+    return render_template('group_view.html',
+                           group=group,
+                           students=students,
+                           group_id=group_id)
 
 
 @groups_bp.route('/<int:group_id>/update_status', methods=['POST'])
-def update_group_status_route(group_id):
-    group = db_get_group_by_id(group_id)
-
-    current_status = group['status']
-    new_status = 'Finished' if current_status == 'Active' else 'Active'
-
-    update_group_status(group_id, new_status)
+def update_group_status(group_id):
+    update_group_status_toggle(group_id)
 
     return redirect(url_for('groups.view_group', group_id=group_id))
 
@@ -137,8 +67,11 @@ def delete_group(group_id):
 
 @groups_bp.route('/clear_database', methods=['POST'])
 def clear_all_data():
-    groups = get_all_groups()
-    for group in groups:
-        clear_database(group['id'])
+    clear_all_data_from_db()
 
     return redirect(url_for('groups.list_groups'))
+
+
+@groups_bp.context_processor
+def inject_groups():
+    return inject_groups_utility()
