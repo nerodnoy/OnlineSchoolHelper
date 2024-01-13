@@ -3,7 +3,7 @@ from flask import (
     render_template
 )
 
-from osh.statistics.stats_utility import prepare_stats_data
+from osh.statistics.utility.stats_utility import prepare_stats_data
 
 stats_bp = Blueprint('stats', __name__,
                      static_folder='static',
