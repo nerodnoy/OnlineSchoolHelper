@@ -177,6 +177,7 @@ def db_get_absent_students(group_id):
     return execute_query(query, [group_id], fetchall=True)
 
 
+# C этим работаем
 def add_student_info(student_id, info):
     query = 'INSERT INTO students_info (student_id, info) VALUES (%s, %s)'
     data = (student_id, info)
@@ -194,9 +195,3 @@ def save_feedback_to_database(student_id, feedback_data):
     data = (student_id, feedback_data)
     execute_query(query, data, commit=True)
 
-
-#     Ниже всё то, что относится к stats
-
-def get_groups_for_month(month):
-    query = 'SELECT * FROM groups WHERE month = %s ORDER BY date'
-    return execute_query(query, [month], fetchall=True)

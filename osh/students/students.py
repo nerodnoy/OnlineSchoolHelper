@@ -5,7 +5,7 @@ from flask import (
     url_for,
     request
 )
-from osh.students.students_utility import (
+from osh.students.utility.students_utility import (
     add_student_to_group,
     add_students_to_group,
     get_student_id_and_info,
