@@ -10,11 +10,9 @@ from osh.database.database import (
     add_group,
     get_all_groups,
     clear_database,
-    get_students_for_group,
-    get_group_by_id,
     delete_group_by_id,
     get_active_groups,
-    update_group_status
+    update_group_status, db_get_students_for_group, db_get_group_by_id
 )
 from osh.groups.groups_utility import (
     calculate_week_in_month,
@@ -106,9 +104,9 @@ def list_groups():
 
 @groups_bp.route('/<int:group_id>/', methods=['GET'])
 def view_group(group_id):
-    group = get_group_by_id(group_id)
+    group = db_get_group_by_id(group_id)
     if group:
-        students = get_students_for_group(group_id)
+        students = db_get_students_for_group(group_id)
 
         return render_template('group_view.html',
                                group=group,
@@ -120,7 +118,7 @@ def view_group(group_id):
 
 @groups_bp.route('/<int:group_id>/update_status', methods=['POST'])
 def update_group_status_route(group_id):
-    group = get_group_by_id(group_id)
+    group = db_get_group_by_id(group_id)
 
     current_status = group['status']
     new_status = 'Finished' if current_status == 'Active' else 'Active'

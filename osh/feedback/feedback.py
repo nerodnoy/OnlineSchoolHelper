@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
 from osh.feedback.feedback_utility import get_next_question
 from osh.database.database import (
-    save_feedback_to_database, update_student_info, get_student_by_id
+    save_feedback_to_database, update_student_info, db_get_student_by_id
 )
 from osh.questions import questions
 import random
@@ -79,7 +79,7 @@ def restart():
 
 @feedback_bp.route('/students/<int:student_id>/create_feedback', methods=['GET', 'POST'])
 def create_feedback(student_id):
-    student = get_student_by_id(student_id)
+    student = db_get_student_by_id(student_id)
     answers = session.get('answers', [])
 
     first_question = 'Количество посещенных занятий'
