@@ -45,7 +45,7 @@ def create_new_group(request):
     if skill in ('START', 'PRO'):
         payment = 3250
     else:
-        payment = 6000
+        payment = 7500
 
     group_name = f"{skill} {time} {day_of_week}"
     db_add_group(group_name, link, start_date, week, month, payment)

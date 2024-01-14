@@ -6,7 +6,6 @@ def get_groups_for_month(groups, selected_month):
 
 
 def calculate_total_payment(groups_for_month):
-    return sum(
-        3250 if 'PRO' in group['name'] or 'START' in group['name']
-        else 6000 for group in groups_for_month
-    )
+    total_payment = sum(group['payment'] for group in groups_for_month)
+
+    return total_payment
