@@ -24,3 +24,11 @@ CREATE TABLE IF NOT EXISTS students_info (
     group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
     info TEXT
 );
+
+CREATE TABLE IF NOT EXISTS stats (
+    id SERIAL PRIMARY KEY,
+    id_month INTEGER,
+    month TEXT REFERENCES groups(month),
+    total_groups INTEGER,
+    total_payment INTEGER
+);

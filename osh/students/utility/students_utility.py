@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from flask import request
-from osh.database.db_students import (
+from osh.database.sections.db_students import (
     db_add_students,
     db_add_student,
     db_get_student_by_id,

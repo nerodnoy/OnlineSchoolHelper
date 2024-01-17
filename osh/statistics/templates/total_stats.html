@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block title %}Полная статистика{% endblock %}
+
+{% block content %}
+    <h1>Статистика за год</h1>
+
+    <!-- Вывод всей информации из таблицы stats -->
+    <table class="table" id="totalStatsTable">
+        <thead>
+            <tr>
+                <th>Месяц</th>
+                <th>Количество групп</th>
+                <th>Итоговая оплата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stats in total_stats_data %}
+                {% if stats.total_groups > 0 %}
+                    <tr>
+                        <td>{{ stats.month }}</td>
+                        <td>{{ stats.total_groups }}</td>
+                        <td>{{ stats.total_payment }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

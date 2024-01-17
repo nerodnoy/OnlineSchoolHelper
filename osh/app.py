@@ -1,3 +1,4 @@
+from osh.database.database import create_tables
 from osh.groups.utility.groups_utility import inject_groups_utility
 from osh.groups.groups import groups_bp
 from osh.students.students import students_bp
@@ -20,6 +21,8 @@ app.register_blueprint(students_bp, url_prefix='/students')
 app.register_blueprint(feedback_bp, url_prefix='/feedback')
 app.register_blueprint(num_bp, url_prefix='/numbers')
 app.register_blueprint(stats_bp, url_prefix='/stats')
+
+create_tables()
 
 
 @app.route('/', methods=['GET', 'POST'])
