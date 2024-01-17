@@ -39,8 +39,15 @@
                     {% endif %}
                 </ul>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/stats">Statistics</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    Statistics
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ url_for('stats.stats') }}">By Month</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('stats.total_stats') }}">Total</a></li>
+                </ul>
             </li>
         </ul>
     </div>

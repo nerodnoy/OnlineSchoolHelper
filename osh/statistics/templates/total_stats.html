@@ -16,6 +16,8 @@
         </thead>
         <tbody>
             {% for stats in total_stats_data %}
+
+                <!-- если групп в месяце не было, то он не будет отображаться -->
                 {% if stats.total_groups > 0 %}
                     <tr>
                         <td>{{ stats.month }}</td>
