@@ -13,5 +13,3 @@ def generate_number_links():
         telegram_link = generate_telegram_link(phone_number)
         whatsapp_link = generate_whatsapp_link(phone_number)
     return {'telegram_link': telegram_link, 'whatsapp_link': whatsapp_link}
-
-

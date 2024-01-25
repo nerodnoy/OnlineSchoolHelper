@@ -1,7 +1,8 @@
 from osh.database.database import execute_query
 
 
-def db_add_group(group_name, link=None, start_date=None, week=None, month=None, payment=0, status='Active'):
+def db_add_group(group_name, link=None, start_date=None,
+                 week=None, month=None, payment=0, status='Active'):
     query = '''
         INSERT INTO groups (
             name,

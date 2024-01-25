@@ -1,4 +1,8 @@
-from osh.groups.utility.handlers.calendar import get_current_week, get_current_month, translate_month_name
+from osh.groups.utility.handlers.calendar import (
+    get_current_week,
+    get_current_month,
+    translate_month_name
+)
 
 
 def get_current_week_and_month():
@@ -25,4 +29,5 @@ def get_groups_for_current_month(groups, selected_month):
 
 
 def get_week_groups(filtered_groups):
-    return {f'Неделя {i}': [group for group in filtered_groups if group['week'] == i] for i in range(1, 6)}
+    return {f'Неделя {i}': [group for group in filtered_groups
+                            if group['week'] == i] for i in range(1, 6)}

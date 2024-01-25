@@ -110,6 +110,7 @@ def inject_groups_utility():
     current_month = get_current_month()
     current_week = get_current_week()
 
-    current_week_groups = get_groups_for_current_week(active_groups, current_week, current_month)
+    current_week_groups = get_groups_for_current_week(
+        active_groups, current_week, current_month)
 
     return dict(current_week_groups=current_week_groups, active_groups=active_groups)

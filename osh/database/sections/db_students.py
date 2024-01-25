@@ -1,7 +1,8 @@
 from osh.database.database import execute_query
 
 
-def db_add_students(name, notes_lesson1=None, notes_lesson2=None, present=True, group_id=None):
+def db_add_students(name, notes_lesson1=None, notes_lesson2=None,
+                    present=True, group_id=None):
     query = '''
         INSERT INTO students (
         name, notes_lesson1, notes_lesson2, present, group_id

@@ -22,7 +22,7 @@ app.register_blueprint(feedback_bp, url_prefix='/feedback')
 app.register_blueprint(num_bp, url_prefix='/numbers')
 app.register_blueprint(stats_bp, url_prefix='/stats')
 
-# create_tables()
+create_tables()
 
 
 @app.route('/', methods=['GET', 'POST'])
