@@ -8,7 +8,7 @@ def db_add_stats(month, total_groups, total_payment):
             (SELECT COALESCE(MAX(id_month), 0) + 1 FROM stats),
             %s, %s, %s
         )
-        ON CONFLICT (month) DO UPDATE
+        ON CONFLICT (id_month) DO UPDATE
         SET total_groups = EXCLUDED.total_groups,
             total_payment = EXCLUDED.total_payment
     """
